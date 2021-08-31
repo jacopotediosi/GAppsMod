@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">GoogleDialerMod</string>
+    <string name="suggested_mods">Suggested mods</string>
+    <string name="all_switches">All switches</string>
+    <string name="root_access_denied">Root access denied. Please allow root access.</string>
+    <string name="cpu_arch_not_supported">Your CPU architecture isn\'t supported</string>
+    <string name="search">Search</string>
+    <string name="delete_all_applied_mods">Delete all applied mods</string>
+    <string name="delete_all_mods_alert">Do you really want to delete all mods applied by this app to the Phenotype DB?</string>
+    <string name="force_enable_call_recording">Force enable call recording</string>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="UnsafeNativeCodeLocation">
+        <ignore path="src/main/res/raw/sqlite3_arm" />
+        <ignore path="src/main/res/raw/sqlite3_x86" />
+    </issue>
+</lint>
