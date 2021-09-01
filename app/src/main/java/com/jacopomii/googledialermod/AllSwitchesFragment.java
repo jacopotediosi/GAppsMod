@@ -8,14 +8,20 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +34,6 @@ public class AllSwitchesFragment extends Fragment {
     private List<SwitchRowItem> mLstSwitch = new ArrayList<>();
 
     public AllSwitchesFragment() {}
-
-    // TODO filter all / only enabled / only disabled
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,19 +56,49 @@ public class AllSwitchesFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.all_switches_menu, menu);
 
-        MenuItem deleteIcon = menu.findItem(R.id.delete_icon);
+        FragmentActivity parentActivity = getActivity();
+        RadioGroup radioGroupSearch = parentActivity.findViewById(R.id.radiogroup_search);
 
+        MenuItem deleteIcon = menu.findItem(R.id.delete_icon);
         MenuItem searchIcon = menu.findItem(R.id.search_icon);
+
         SearchView searchView = (SearchView) searchIcon.getActionView();
+
+        radioGroupSearch.setOnCheckedChangeListener((group, checkedId) -> {
+            RadioButton radioButtonChecked = parentActivity.findViewById(checkedId);
+            if (radioButtonChecked.isChecked()) {
+                try {
+                    JSONObject filterConfig = new JSONObject();
+
+                    filterConfig.put("key", searchView.getQuery().toString());
+
+                    int radioGroupSearchCheckedButtonId = radioButtonChecked.getId();
+                    if (radioGroupSearchCheckedButtonId == R.id.radiobutton_enabled)
+                        filterConfig.put("mode", "enabled_only");
+                    else if (radioGroupSearchCheckedButtonId == R.id.radiobutton_disabled)
+                        filterConfig.put("mode", "disabled_only");
+                    else
+                        filterConfig.put("mode", "all");
+
+                    mAllSwitchesRecyclerViewAdapter.getFilter().filter(filterConfig.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         searchIcon.setOnActionExpandListener(new  MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
                 deleteIcon.setVisible(false);
+                radioGroupSearch.setVisibility(View.VISIBLE);
                 return true;
             }
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
+                radioGroupSearch.check(R.id.radiobutton_all);
+                radioGroupSearch.setVisibility(View.GONE);
                 getActivity().invalidateOptionsMenu();
                 return true;
             }
@@ -77,7 +111,24 @@ public class AllSwitchesFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                mAllSwitchesRecyclerViewAdapter.getFilter().filter(newText);
+                try {
+                    JSONObject filterConfig = new JSONObject();
+
+                    filterConfig.put("key", newText);
+
+                    int radioGroupSearchCheckedButtonId = radioGroupSearch.getCheckedRadioButtonId();
+                    if (radioGroupSearchCheckedButtonId == R.id.radiobutton_enabled)
+                        filterConfig.put("mode", "enabled_only");
+                    else if (radioGroupSearchCheckedButtonId == R.id.radiobutton_disabled)
+                        filterConfig.put("mode", "disabled_only");
+                    else
+                        filterConfig.put("mode", "all");
+
+                    mAllSwitchesRecyclerViewAdapter.getFilter().filter(filterConfig.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 return false;
             }
         });

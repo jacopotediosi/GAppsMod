@@ -34,13 +34,13 @@ public class SuggestedModsFragment extends Fragment {
         mDBFlagsSingleton = DBFlagsSingleton.getInstance(requireActivity());
 
         mForce_enable_call_recording_switch = mView.findViewById(R.id.force_enable_call_recording_switch);
-        mForce_enable_call_recording_switch.setOnClickListener(view -> {
+        mForce_enable_call_recording_switch.setOnClickListener(view -> { // TODO: doesn't work if user slide the switch
             for (String flag : enable_call_recording_flags) {
                 mDBFlagsSingleton.updateDBFlag(flag, mForce_enable_call_recording_switch.isChecked());
             }
         });
 
-        //TODO: switch / button to delete recordcallingprompt
+        // TODO: switch / button to delete recordcallingprompt
 
         refreshSwitchesStatus();
         return mView;

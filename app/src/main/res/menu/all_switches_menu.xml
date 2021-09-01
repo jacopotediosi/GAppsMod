@@ -12,4 +12,5 @@
         android:title="@string/delete_all_applied_mods"
         android:icon="@drawable/ic_baseline_delete_24"
         app:showAsAction="ifRoom" />
+
 </menu>

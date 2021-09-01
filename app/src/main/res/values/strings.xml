@@ -8,4 +8,7 @@
     <string name="delete_all_applied_mods">Delete all applied mods</string>
     <string name="delete_all_mods_alert">Do you really want to delete all mods applied by this app to the Phenotype DB?</string>
     <string name="force_enable_call_recording">Force enable call recording</string>
+    <string name="all">All</string>
+    <string name="enabled_only">Enabled only</string>
+    <string name="disabled_only">Disabled only</string>
 </resources>

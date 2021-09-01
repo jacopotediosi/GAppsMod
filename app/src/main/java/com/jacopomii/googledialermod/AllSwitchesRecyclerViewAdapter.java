@@ -13,6 +13,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +36,7 @@ public class AllSwitchesRecyclerViewAdapter extends RecyclerView.Adapter<AllSwit
         View v = LayoutInflater.from(mContext).inflate(R.layout.switch_row_item, parent, false);
         AllSwitchesViewHolder viewHolder = new AllSwitchesViewHolder(v);
 
-        viewHolder.mS.setOnClickListener(view -> {
+        viewHolder.mS.setOnClickListener(view -> { // TODO: doesn't work if user slide the switch
             mDataFiltered.get(viewHolder.getAdapterPosition()).setSwitchChecked(viewHolder.mS.isChecked());
             DBFlagsSingleton.getInstance(mContext).updateDBFlag(viewHolder.mT.getText().toString(), viewHolder.mS.isChecked());
             notifyItemChanged(viewHolder.getAdapterPosition());
@@ -58,17 +61,22 @@ public class AllSwitchesRecyclerViewAdapter extends RecyclerView.Adapter<AllSwit
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
-                String key = charSequence.toString();
+                try {
+                    JSONObject filterConfig = new JSONObject(charSequence.toString());
+                    String key = filterConfig.getString("key");
+                    String mode = filterConfig.getString("mode");
 
-                if (key.isEmpty()) {
-                    mDataFiltered = mData;
-                } else {
                     List<SwitchRowItem> lstFiltered = new ArrayList<>();
                     for (SwitchRowItem row : mData) {
-                        if (row.getSwitchText().toLowerCase().contains(key.toLowerCase()))
-                            lstFiltered.add(row);
+                        if (row.getSwitchText().toLowerCase().contains(key.toLowerCase())) {
+                            boolean switchStatus = row.getSwitchChecked();
+                            if (mode.equals("all") || (mode.equals("enabled_only") && switchStatus) || (mode.equals("disabled_only") && !switchStatus))
+                                lstFiltered.add(row);
+                        }
                     }
                     mDataFiltered = lstFiltered;
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
 
                 FilterResults filterResults = new FilterResults();

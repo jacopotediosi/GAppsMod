@@ -7,6 +7,8 @@ import static com.jacopomii.googledialermod.Utils.runSuWithCmd;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -78,6 +80,10 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onPageSelected(int position) {
+                    RadioGroup radioGroupSearch = findViewById(R.id.radiogroup_search);
+                    radioGroupSearch.setVisibility(View.GONE);
+                    radioGroupSearch.check(R.id.radiobutton_all);
+
                     switch (position) {
                         case 0:
                             suggestedModsFragment.refreshSwitchesStatus();

@@ -16,16 +16,56 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
+        <RadioGroup
+            android:id="@+id/radiogroup_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:orientation="horizontal"
+            android:checkedButton="@id/radiobutton_all"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <RadioButton
+                android:id="@+id/radiobutton_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:minHeight="0dp"
+                android:text="@string/all"
+                tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
+
+            <RadioButton
+                android:id="@+id/radiobutton_enabled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:minHeight="0dp"
+                android:text="@string/enabled_only"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <RadioButton
+                android:id="@+id/radiobutton_disabled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:minHeight="0dp"
+                android:text="@string/disabled_only"
+                tools:ignore="TouchTargetSizeCheck" />
+        </RadioGroup>
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tablayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:ignore="SpeakableTextPresentCheck" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
