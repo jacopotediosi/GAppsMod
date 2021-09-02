@@ -34,21 +34,22 @@ public class AllSwitchesRecyclerViewAdapter extends RecyclerView.Adapter<AllSwit
     @Override
     public AllSwitchesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(mContext).inflate(R.layout.switch_row_item, parent, false);
-        AllSwitchesViewHolder viewHolder = new AllSwitchesViewHolder(v);
-
-        viewHolder.mS.setOnClickListener(view -> { // TODO: doesn't work if user slide the switch
-            mDataFiltered.get(viewHolder.getAdapterPosition()).setSwitchChecked(viewHolder.mS.isChecked());
-            DBFlagsSingleton.getInstance(mContext).updateDBFlag(viewHolder.mT.getText().toString(), viewHolder.mS.isChecked());
-            notifyItemChanged(viewHolder.getAdapterPosition());
-        });
-
-        return viewHolder;
+        return new AllSwitchesViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull AllSwitchesViewHolder holder, int position) {
         holder.mT.setText(mDataFiltered.get(position).getSwitchText());
+
+        holder.mS.setOnCheckedChangeListener(null); // Remove any existing listener from recycled view
+
         holder.mS.setChecked(mDataFiltered.get(position).getSwitchChecked());
+
+        holder.mS.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mDataFiltered.get(position).setSwitchChecked(isChecked);
+            DBFlagsSingleton.getInstance(mContext).updateDBFlag(holder.mT.getText().toString(), isChecked);
+            notifyItemChanged(position);
+        });
     }
 
     @Override

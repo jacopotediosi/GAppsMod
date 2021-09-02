@@ -15,9 +15,9 @@ import androidx.fragment.app.Fragment;
 
 public class SuggestedModsFragment extends Fragment {
     private View mView;
-    private Switch mForce_enable_call_recording_switch;
+    private Switch mForceEnableCallRecordingSwitch;
     private DBFlagsSingleton mDBFlagsSingleton;
-    private final String[] enable_call_recording_flags = {"G__enable_call_recording", "G__force_within_call_recording_geofence_value", "G__use_call_recording_geofence_overrides", "G__force_within_crosby_geofence_value"};
+    private final String[] ENABLE_CALL_RECORDING_FLAGS = {"G__enable_call_recording", "G__force_within_call_recording_geofence_value", "G__use_call_recording_geofence_overrides", "G__force_within_crosby_geofence_value"};
 
     public SuggestedModsFragment() {}
 
@@ -33,16 +33,18 @@ public class SuggestedModsFragment extends Fragment {
 
         mDBFlagsSingleton = DBFlagsSingleton.getInstance(requireActivity());
 
-        mForce_enable_call_recording_switch = mView.findViewById(R.id.force_enable_call_recording_switch);
-        mForce_enable_call_recording_switch.setOnClickListener(view -> { // TODO: doesn't work if user slide the switch
-            for (String flag : enable_call_recording_flags) {
-                mDBFlagsSingleton.updateDBFlag(flag, mForce_enable_call_recording_switch.isChecked());
+        mForceEnableCallRecordingSwitch = mView.findViewById(R.id.force_enable_call_recording_switch);
+
+        refreshSwitchesStatus();
+
+        mForceEnableCallRecordingSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            for (String flag : ENABLE_CALL_RECORDING_FLAGS) {
+                mDBFlagsSingleton.updateDBFlag(flag, isChecked);
             }
         });
 
         // TODO: switch / button to delete recordcallingprompt
 
-        refreshSwitchesStatus();
         return mView;
     }
 
@@ -72,8 +74,8 @@ public class SuggestedModsFragment extends Fragment {
     }
 
     public void refreshSwitchesStatus() {
-        mForce_enable_call_recording_switch.setChecked(
-                mDBFlagsSingleton.areAllFlagsTrue(enable_call_recording_flags)
+        mForceEnableCallRecordingSwitch.setChecked(
+                mDBFlagsSingleton.areAllFlagsTrue(ENABLE_CALL_RECORDING_FLAGS)
         );
 
     }
