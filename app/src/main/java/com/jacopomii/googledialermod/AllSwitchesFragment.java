@@ -1,6 +1,5 @@
 package com.jacopomii.googledialermod;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -155,7 +154,6 @@ public class AllSwitchesFragment extends Fragment {
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     public void refreshAdapter() {
         mLstSwitch.clear();
 
@@ -163,8 +161,10 @@ public class AllSwitchesFragment extends Fragment {
             mLstSwitch.add(new SwitchRowItem(flag.getKey(), flag.getValue()));
         }
 
-        if (mAllSwitchesRecyclerViewAdapter != null) {
-            mAllSwitchesRecyclerViewAdapter.notifyDataSetChanged();
+        mAllSwitchesRecyclerViewAdapter = new AllSwitchesRecyclerViewAdapter(getContext(), mLstSwitch);
+
+        if (mRecyclerView != null) {
+            mRecyclerView.setAdapter(mAllSwitchesRecyclerViewAdapter);
         }
     }
 }
