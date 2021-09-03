@@ -157,7 +157,7 @@ public class AllSwitchesFragment extends Fragment {
     public void refreshAdapter() {
         mLstSwitch.clear();
 
-        for (Map.Entry<String, Boolean> flag : DBFlagsSingleton.getInstance(getActivity()).getDBFlags().entrySet()) {
+        for (Map.Entry<String, Boolean> flag : DBFlagsSingleton.getInstance(getActivity()).getDBBooleanFlags().entrySet()) {
             mLstSwitch.add(new SwitchRowItem(flag.getKey(), flag.getValue()));
         }
 

@@ -15,7 +15,8 @@ import java.util.TreeMap;
 
 public class DBFlagsSingleton {
     private static DBFlagsSingleton mUniqueInstance = null;
-    private Map<String, Boolean> mDBFlags = new TreeMap<>();
+    private Map<String, Boolean> mDBBooleanFlags = new TreeMap<>();
+    private Map<String, String> mDBStringFlags = new TreeMap<>();
     ArrayList<String> mDBUsers = new ArrayList<>();
     private Context mContext;
 
@@ -30,17 +31,26 @@ public class DBFlagsSingleton {
         return mUniqueInstance;
     }
 
-    public boolean getDBFlag(String flag) {
-        return mDBFlags.get(flag);
+    public boolean getDBBooleanFlag(String flag) {
+        return mDBBooleanFlags.get(flag);
     }
 
-    public Map<String, Boolean> getDBFlags() {
-        return mDBFlags;
+    public String getDBStringFlag(String flag) {
+        return mDBStringFlags.get(flag);
+    }
+
+    public Map<String, Boolean> getDBBooleanFlags() {
+        return mDBBooleanFlags;
+    }
+
+    public Map<String, String> getDBStringFlags() {
+        return mDBStringFlags;
     }
 
     public void reloadDB() {
         reloadDBUsers();
-        reloadDBFlags();
+        reloadDBBooleanFlags();
+        reloadDBStringFlags();
     }
 
     private void reloadDBUsers() {
@@ -56,15 +66,31 @@ public class DBFlagsSingleton {
         }
     }
 
-    public void reloadDBFlags() {
-        mDBFlags.clear();
+    public void reloadDBBooleanFlags() {
+        mDBBooleanFlags.clear();
         String[] tables = {"Flags", "FlagOverrides"};
         for (String table : tables) {
-            JSONArray query_result = execPhenotypeQuery(mContext, "SELECT DISTINCT name,boolVal FROM " + table + " WHERE packageName = 'com.google.android.dialer' AND user = '' AND boolVal != 'NULL'");
+            JSONArray query_result = execPhenotypeQuery(mContext, "SELECT DISTINCT name, boolVal FROM " + table + " WHERE packageName = 'com.google.android.dialer' AND user = '' AND boolVal != 'NULL'");
             for (int i=0; i < query_result.length(); i++) {
                 try {
                     JSONObject flag = query_result.getJSONObject(i);
-                    mDBFlags.put(flag.getString("name"), flag.getInt("boolVal")!=0);
+                    mDBBooleanFlags.put(flag.getString("name"), flag.getInt("boolVal")!=0);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void reloadDBStringFlags() {
+        mDBStringFlags.clear();
+        String[] tables = {"Flags", "FlagOverrides"};
+        for (String table : tables) {
+            JSONArray query_result = execPhenotypeQuery(mContext, "SELECT DISTINCT name, stringVal FROM " + table + " WHERE packageName = 'com.google.android.dialer' AND user = '' AND stringVal != 'NULL'");
+            for (int i=0; i < query_result.length(); i++) {
+                try {
+                    JSONObject flag = query_result.getJSONObject(i);
+                    mDBStringFlags.put(flag.getString("name"), flag.getString("stringVal"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -73,16 +99,31 @@ public class DBFlagsSingleton {
     }
 
     public void updateDBFlag(String flag, boolean value) {
-        mDBFlags.put(flag, value);
+        mDBBooleanFlags.put(flag, value);
         killDialerAndDeletePhenotypeCache();
         execPhenotypeQuery(mContext, "DELETE FROM FlagOverrides WHERE packageName = 'com.google.android.dialer' AND name = '" + flag.replace("'", "\\'") + "'");
         for (String user : mDBUsers)
             execPhenotypeQuery(mContext, "INSERT OR REPLACE INTO FlagOverrides (packageName, flagType, name, user, boolVal, committed) VALUES ('com.google.android.dialer', 0, '" + flag.replace("'", "\\'") + "', '" + user.replace("'", "\\'") + "', " + (value ? 1 : 0) + ", 0)");
     }
 
-    public boolean areAllFlagsTrue(String... flags) {
+    public void updateDBFlag(String flag, String value) {
+        mDBStringFlags.put(flag, value);
+        killDialerAndDeletePhenotypeCache();
+        execPhenotypeQuery(mContext, "DELETE FROM FlagOverrides WHERE packageName = 'com.google.android.dialer' AND name = '" + flag.replace("'", "\\'") + "'");
+        for (String user : mDBUsers)
+            execPhenotypeQuery(mContext, "INSERT OR REPLACE INTO FlagOverrides (packageName, flagType, name, user, stringVal, committed) VALUES ('com.google.android.dialer', 0, '" + flag.replace("'", "\\'") + "', '" + user.replace("'", "\\'") + "', '" + value.replace("'", "\\'") + "', 0)");
+    }
+
+    public boolean areAllBooleanFlagsTrue(String... flags) {
         for (String flag : flags)
-            if (!getDBFlag(flag))
+            if (!getDBBooleanFlag(flag))
+                return false;
+        return true;
+    }
+
+    public boolean areAllStringFlagsEmpty(String... flags) {
+        for (String flag : flags)
+            if (!getDBStringFlag(flag).isEmpty())
                 return false;
         return true;
     }

@@ -75,7 +75,7 @@ public class SuggestedModsFragment extends Fragment {
 
     public void refreshSwitchesStatus() {
         mForceEnableCallRecordingSwitch.setChecked(
-                mDBFlagsSingleton.areAllFlagsTrue(ENABLE_CALL_RECORDING_FLAGS)
+                mDBFlagsSingleton.areAllBooleanFlagsTrue(ENABLE_CALL_RECORDING_FLAGS)
         );
 
     }
