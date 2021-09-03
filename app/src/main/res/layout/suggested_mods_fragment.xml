@@ -24,7 +24,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@id/force_enable_call_recording_switch"
                 android:layout_marginRight="6dp"
-                android:text="@string/force_enable_call_recording" />
+                android:text="@string/force_enable_disable_call_recording" />
             <Switch
                 android:id="@+id/force_enable_call_recording_switch"
                 android:layout_width="wrap_content"
