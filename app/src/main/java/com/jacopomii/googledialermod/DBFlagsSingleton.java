@@ -88,6 +88,7 @@ public class DBFlagsSingleton {
     }
 
     public void deleteAllFlagOverrides() {
+        killDialerAndDeletePhenotypeCache();
         execPhenotypeQuery(mContext, "DELETE FROM FlagOverrides WHERE packageName = 'com.google.android.dialer'");
         reloadDB();
     }
