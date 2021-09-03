@@ -17,7 +17,7 @@ public class SuggestedModsFragment extends Fragment {
     private View mView;
     private Switch mForceEnableCallRecordingSwitch;
     private DBFlagsSingleton mDBFlagsSingleton;
-    private final String[] ENABLE_CALL_RECORDING_FLAGS = {"G__enable_call_recording", "G__force_within_call_recording_geofence_value", "G__use_call_recording_geofence_overrides", "G__force_within_crosby_geofence_value"};
+    private final String[] ENABLE_CALL_RECORDING_FLAGS = {"G__enable_call_recording", "G__force_within_call_recording_geofence_value", "G__use_call_recording_geofence_overrides", "G__force_within_crosby_geofence_value", "CallRecording__enable_call_recording_for_fi", "enable_call_recording_system_feature"};
 
     public SuggestedModsFragment() {}
 
