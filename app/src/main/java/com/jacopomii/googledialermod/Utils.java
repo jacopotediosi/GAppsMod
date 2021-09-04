@@ -19,12 +19,15 @@ public class Utils {
         return runSuWithCmd("echo 1").getInputStreamLog().equals("1");
     }
 
-    public static void copyFile(InputStream in, OutputStream out) throws IOException {
+    public static void copyFile(InputStream inputStream, OutputStream outputStream) throws IOException {
         byte[] buffer = new byte[1024];
         int read;
-        while ((read = in.read(buffer)) != -1) {
-            out.write(buffer, 0, read);
+        while ((read = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, read);
         }
+        inputStream.close();
+        outputStream.flush();
+        outputStream.close();
     }
 
     public static JSONArray execPhenotypeQuery(Context context, String query) {

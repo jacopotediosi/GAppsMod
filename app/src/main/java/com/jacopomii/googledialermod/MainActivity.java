@@ -99,30 +99,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void copyAssets() {
-        String dataDir = getApplicationInfo().dataDir;
+        final String dataDir = getApplicationInfo().dataDir;
+        InputStream inputStream = null;
+        OutputStream outputStream;
+        File outputFile;
 
-        InputStream in = null;
         for (String supportedAbi : Build.SUPPORTED_ABIS) {
             if (supportedAbi.contains("arm")) {
-                in = getResources().openRawResource(R.raw.sqlite3_arm);
+                inputStream = getResources().openRawResource(R.raw.sqlite3_arm);
                 break;
             } else if (supportedAbi.contains("x86")) {
-                in = getResources().openRawResource(R.raw.sqlite3_x86);
+                inputStream = getResources().openRawResource(R.raw.sqlite3_x86);
                 break;
             }
         }
 
-        if(in != null) {
+        if(inputStream != null) {
             Log.v(TAG, "copyAssets: copying sqlite3 to data directory");
             try {
-                OutputStream out = new FileOutputStream(new File(dataDir, "sqlite3"));
-                copyFile(in, out);
-                in.close();
-                out.flush();
-                out.close();
+                outputFile = new File(dataDir, "sqlite3");
+                outputStream = new FileOutputStream(outputFile);
+                copyFile(inputStream, outputStream);
             } catch (IOException e) {
                 Log.e(TAG, "copyAssets: failed to copy asset file: sqlite3", e);
             }
+
             runSuWithCmd("chmod 755 " + dataDir + "/sqlite3");
         } else {
             Log.e(TAG, "copyAssets: CPU arch not supported");

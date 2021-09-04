@@ -31,7 +31,7 @@ public class DBFlagsSingleton {
         return mUniqueInstance;
     }
 
-    public boolean getDBBooleanFlag(String flag) {
+    public Boolean getDBBooleanFlag(String flag) {
         return mDBBooleanFlags.get(flag);
     }
 
@@ -115,16 +115,20 @@ public class DBFlagsSingleton {
     }
 
     public boolean areAllBooleanFlagsTrue(String... flags) {
-        for (String flag : flags)
-            if (!getDBBooleanFlag(flag))
+        for (String flag : flags) {
+            Boolean flagValue = getDBBooleanFlag(flag);
+            if (flagValue == null || !flagValue)
                 return false;
+        }
         return true;
     }
 
     public boolean areAllStringFlagsEmpty(String... flags) {
-        for (String flag : flags)
-            if (!getDBStringFlag(flag).isEmpty())
+        for (String flag : flags) {
+            String flagValue = getDBStringFlag(flag);
+            if (flagValue == null || !flagValue.isEmpty())
                 return false;
+        }
         return true;
     }
 
