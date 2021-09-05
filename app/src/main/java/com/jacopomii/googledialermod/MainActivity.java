@@ -1,9 +1,14 @@
 package com.jacopomii.googledialermod;
 
 import static com.jacopomii.googledialermod.Utils.checkIsDeviceRooted;
+import static com.jacopomii.googledialermod.Utils.checkIsDialerInstalled;
+import static com.jacopomii.googledialermod.Utils.checkIsPhenotypeDBInstalled;
 import static com.jacopomii.googledialermod.Utils.copyFile;
 import static com.jacopomii.googledialermod.Utils.runSuWithCmd;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,9 +51,56 @@ public class MainActivity extends AppCompatActivity {
 
             builder.setMessage(R.string.root_access_denied)
                     .setCancelable(false)
-                    .setPositiveButton(getString(android.R.string.ok), (dialog, which) -> finishAffinity());
+                    .setPositiveButton(android.R.string.ok, (dialog, which) -> finishAffinity());
 
             AlertDialog alert = builder.create();
+            alert.show();
+        } else if (!checkIsDialerInstalled(this)) {
+            Log.e(TAG, "onCreate: dialer app not installed");
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            builder.setMessage(getString(R.string.dialer_not_installed_error))
+                    .setCancelable(false)
+                    .setNeutralButton(R.string.github, null)
+                    .setNegativeButton(R.string.play_store, null)
+                    .setPositiveButton(android.R.string.ok, (dialog, which) -> finishAffinity());
+
+            AlertDialog alert = builder.create();
+
+            alert.setOnShowListener(dialogInterface -> {
+                ((AlertDialog) alert).getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener((View.OnClickListener) view ->
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_link)))));
+
+                ((AlertDialog) alert).getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener((View.OnClickListener) view -> {
+                    try {
+                        Intent appStoreIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.dialer"));
+                        appStoreIntent.setPackage("com.android.vending");
+                        startActivity(appStoreIntent);
+                    } catch (ActivityNotFoundException exception) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.dialer")));
+                    }
+                });
+            });
+
+            alert.show();
+        } else if (!checkIsPhenotypeDBInstalled()) {
+            Log.e(TAG, "onCreate: phenotype db not exists ");
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            builder.setMessage(getString(R.string.phenotype_db_doesnt_exist_error))
+                    .setCancelable(false)
+                    .setNeutralButton(R.string.github, null)
+                    .setPositiveButton(android.R.string.ok, (dialog, which) -> finishAffinity());
+
+            AlertDialog alert = builder.create();
+
+            alert.setOnShowListener(dialogInterface -> {
+                ((AlertDialog) alert).getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener((View.OnClickListener) view ->
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_link)))));
+            });
+
             alert.show();
         } else {
             copyAssets();

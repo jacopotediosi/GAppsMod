@@ -1,6 +1,7 @@
 package com.jacopomii.googledialermod;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -17,6 +18,21 @@ public class Utils {
 
     public static boolean checkIsDeviceRooted() {
         return runSuWithCmd("echo 1").getInputStreamLog().equals("1");
+    }
+
+    public static boolean checkIsDialerInstalled(Context context) {
+        try {
+            context.getPackageManager().getApplicationInfo("com.google.android.dialer", 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean checkIsPhenotypeDBInstalled() {
+        if (runSuWithCmd("test -f /data/data/com.google.android.gms/databases/phenotype.db; echo $?").getInputStreamLog().equals("0"))
+            return true;
+        return false;
     }
 
     public static void copyFile(InputStream inputStream, OutputStream outputStream) throws IOException {

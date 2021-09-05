@@ -12,4 +12,7 @@
     <string name="enabled_only">Solo abilitati</string>
     <string name="disabled_only">Solo disabilitati</string>
     <string name="silence_call_recording_alerts">Silenzia gli audio degli avvisi di registrazione chiamata</string>
+    <string name="informations">Informazioni</string>
+    <string name="dialer_not_installed_error">Sembra che Google Dialer non sia installato. Installa l\'ultima beta dal Play Store e riprova.\n\nSe invece Google Dialer è già installato e questo errore continua ad apparire, per favore apri una issue su Github.</string>
+    <string name="phenotype_db_doesnt_exist_error">Sembra che non esista il Phenotype DB.\n\nSe hai già installato Google Play Services ma questo errore continua ad apparire, per favore apri una issue su Github.</string>
 </resources>
