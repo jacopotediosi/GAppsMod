@@ -11,4 +11,5 @@
     <string name="all">All</string>
     <string name="enabled_only">Enabled only</string>
     <string name="disabled_only">Disabled only</string>
+    <string name="silence_call_recording_alerts">Silence call recording alerts</string>
 </resources>

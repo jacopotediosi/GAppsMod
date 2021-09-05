@@ -125,6 +125,18 @@ public class MainActivity extends AppCompatActivity {
             }
 
             runSuWithCmd("chmod 755 " + dataDir + "/sqlite3");
+
+            outputFile = new File(dataDir, "silent_wav.wav");
+            if (!outputFile.exists()) {
+                Log.v(TAG, "copyAssets: copying silent_wav to data directory");
+                try {
+                    inputStream = getResources().openRawResource(R.raw.silent_wav);
+                    outputStream = new FileOutputStream(outputFile);
+                    copyFile(inputStream, outputStream);
+                } catch (IOException e) {
+                    Log.e(TAG, "copyAssets: failed to copy asset file: silent_wav", e);
+                }
+            }
         } else {
             Log.e(TAG, "copyAssets: CPU arch not supported");
 

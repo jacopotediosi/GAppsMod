@@ -1,5 +1,7 @@
 package com.jacopomii.googledialermod;
 
+import static com.jacopomii.googledialermod.Utils.revertAllMods;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -143,7 +145,7 @@ public class AllSwitchesFragment extends Fragment {
                     .setNegativeButton(getString(android.R.string.cancel), (dialog, which) -> {
                     })
                     .setPositiveButton(getString(android.R.string.ok), (dialog, which) -> {
-                        DBFlagsSingleton.getInstance(getContext()).deleteAllFlagOverrides();
+                        revertAllMods(getContext());
                         refreshAdapter();
                     });
             AlertDialog alert = builder.create();

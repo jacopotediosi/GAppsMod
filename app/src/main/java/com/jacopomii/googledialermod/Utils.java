@@ -52,6 +52,15 @@ public class Utils {
         runSuWithCmd("am kill all com.google.android.dialer; rm -r /data/data/com.google.android.dialer/files/phenotype");
     }
 
+    public static void deleteCallrecordingpromptFolder() {
+        runSuWithCmd("rm -r /data/data/com.google.android.dialer/files/callrecordingprompt");
+    }
+
+    public static void revertAllMods(Context context) {
+        DBFlagsSingleton.getInstance(context).deleteAllFlagOverrides();
+        deleteCallrecordingpromptFolder();
+    }
+
     public static StreamLogs runSuWithCmd(String cmd) {
         DataOutputStream outputStream;
         InputStream inputStream;
