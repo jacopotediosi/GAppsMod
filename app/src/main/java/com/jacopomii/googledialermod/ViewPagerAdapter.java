@@ -2,40 +2,25 @@ package com.jacopomii.googledialermod;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
+public class ViewPagerAdapter extends FragmentStateAdapter {
 
-public class ViewPagerAdapter extends FragmentPagerAdapter {
-
-    private final List<Fragment> mLstFragment = new ArrayList<>();
-    private final List<String> mLstTitles = new ArrayList<>();
-
-
-    public ViewPagerAdapter(FragmentManager fm) {
-        super(fm);
+    public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
+        super(fragmentActivity);
     }
 
     @Override
-    public int getCount() {
-        return mLstFragment.size();
+    public int getItemCount() {
+        return 2;
     }
 
     @NonNull
     @Override
-    public Fragment getItem(int position) {
-        return mLstFragment.get(position);
-    }
-
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return mLstTitles.get(position);
-    }
-
-    public void AddFragment(Fragment fragment, String title) {
-        mLstFragment.add(fragment);
-        mLstTitles.add(title);
+    public Fragment createFragment(int position) {
+        if (position == 1)
+            return new AllSwitchesFragment();
+        return new SuggestedModsFragment();
     }
 }

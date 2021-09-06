@@ -18,9 +18,10 @@ import android.widget.RadioGroup;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
     private TabLayout mTabLayout;
-    private ViewPager mViewPager;
+    private ViewPager2 mViewPager;
     private ViewPagerAdapter mViewPagerAdapter;
 
     @Override
@@ -116,23 +117,11 @@ public class MainActivity extends AppCompatActivity {
 
             setSupportActionBar(mToolbar);
 
-            mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-
-            SuggestedModsFragment suggestedModsFragment = new SuggestedModsFragment();
-            AllSwitchesFragment allSwitchesFragment = new AllSwitchesFragment();
-
-            mViewPagerAdapter.AddFragment(suggestedModsFragment, getString(R.string.suggested_mods));
-            mViewPagerAdapter.AddFragment(allSwitchesFragment, getString(R.string.all_switches));
+            mViewPagerAdapter = new ViewPagerAdapter(this);
 
             mViewPager.setAdapter(mViewPagerAdapter);
 
-            mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
-
-                @Override
-                public void onPageScrollStateChanged(int state) {}
-
+            mViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
                 @Override
                 public void onPageSelected(int position) {
                     RadioGroup radioGroupSearch = findViewById(R.id.radiogroup_search);
@@ -141,15 +130,26 @@ public class MainActivity extends AppCompatActivity {
 
                     switch (position) {
                         case 0:
-                            suggestedModsFragment.refreshSwitchesStatus();
+                            SuggestedModsFragment suggestedModsFragment = (SuggestedModsFragment) getSupportFragmentManager().findFragmentByTag("f" + position);
+                            if (suggestedModsFragment != null)
+                                suggestedModsFragment.refreshSwitchesStatus();
                             break;
                         case 1:
-                            allSwitchesFragment.refreshAdapter();
+                            AllSwitchesFragment allSwitchesFragment = (AllSwitchesFragment)getSupportFragmentManager().findFragmentByTag("f" + position);
+                            if (allSwitchesFragment != null)
+                                allSwitchesFragment.refreshAdapter();
+                            break;
                     }
                 }
             });
 
-            mTabLayout.setupWithViewPager(mViewPager);
+            new TabLayoutMediator(mTabLayout, mViewPager, (tab, position) -> {
+                if (position == 1) {
+                    tab.setText(R.string.all_switches);
+                } else {
+                    tab.setText(R.string.suggested_mods);
+                }
+            }).attach();
         }
     }
 

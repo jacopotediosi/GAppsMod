@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -44,6 +45,8 @@ public class SuggestedModsFragment extends Fragment {
             "CallRecording__call_recording_countries",
             "CallRecording__crosby_countries"
     };
+    private CompoundButton.OnCheckedChangeListener mForceEnableCallRecordingSwitchOnCheckedChangeListener;
+    private CompoundButton.OnCheckedChangeListener mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener;
 
     public SuggestedModsFragment() {}
 
@@ -62,15 +65,14 @@ public class SuggestedModsFragment extends Fragment {
         mForceEnableCallRecordingSwitch = mView.findViewById(R.id.force_enable_call_recording_switch);
         mSilenceCallRecordingAlertsSwitch = mView.findViewById(R.id.silence_call_recording_alerts_switch);
 
-        refreshSwitchesStatus();
-
-        mForceEnableCallRecordingSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        mForceEnableCallRecordingSwitchOnCheckedChangeListener = (buttonView, isChecked) -> {
             for (String flag : ENABLE_CALL_RECORDING_FLAGS) {
                 mDBFlagsSingleton.updateDBFlag(flag, isChecked);
             }
-        });
+        };
+        mForceEnableCallRecordingSwitch.setOnCheckedChangeListener(mForceEnableCallRecordingSwitchOnCheckedChangeListener);
 
-        mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener = (buttonView, isChecked) -> {
             if (isChecked) {
                 for (String flag : SILENCE_CALL_RECORDING_ALERTS_FLAGS) {
                     mDBFlagsSingleton.updateDBFlag(flag, "");
@@ -92,7 +94,10 @@ public class SuggestedModsFragment extends Fragment {
                 mDBFlagsSingleton.deleteFlagOverrides(SILENCE_CALL_RECORDING_ALERTS_FLAGS);
                 runSuWithCmd("rm -r /data/data/com.google.android.dialer/files/callrecordingprompt");
             }
-        });
+        };
+        mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener);
+
+        refreshSwitchesStatus();
 
         return mView;
     }
@@ -139,10 +144,14 @@ public class SuggestedModsFragment extends Fragment {
     }
 
     public void refreshSwitchesStatus() {
+        // mForceEnableCallRecordingSwitch
+        mForceEnableCallRecordingSwitch.setOnCheckedChangeListener(null);
         mForceEnableCallRecordingSwitch.setChecked(
                 mDBFlagsSingleton.areAllBooleanFlagsTrue(ENABLE_CALL_RECORDING_FLAGS)
         );
+        mForceEnableCallRecordingSwitch.setOnCheckedChangeListener(mForceEnableCallRecordingSwitchOnCheckedChangeListener);
 
+        // mSilenceCallRecordingAlertsSwitch
         int startingVoiceSize = -1;
         try {
             startingVoiceSize = Integer.parseInt(runSuWithCmd("stat -c%s /data/data/com.google.android.dialer/files/callrecordingprompt/starting_voice-en_US.wav").getInputStreamLog());
@@ -152,9 +161,11 @@ public class SuggestedModsFragment extends Fragment {
                 startingVoiceSize = Integer.parseInt(runSuWithCmd("ls -lS starting_voice-en_US.wav | awk '{print $5}'").getInputStreamLog());
             } catch (NumberFormatException ignored) {}
         }
+        mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(null);
         mSilenceCallRecordingAlertsSwitch.setChecked(
                 mDBFlagsSingleton.areAllStringFlagsEmpty(SILENCE_CALL_RECORDING_ALERTS_FLAGS) &&
                 startingVoiceSize > 0 && startingVoiceSize <= 100
         );
+        mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener);
     }
 }
