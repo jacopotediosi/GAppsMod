@@ -34,7 +34,7 @@ public class AllSwitchesFragment extends Fragment {
     View mView;
     private RecyclerView mRecyclerView;
     private AllSwitchesRecyclerViewAdapter mAllSwitchesRecyclerViewAdapter;
-    private List<SwitchRowItem> mLstSwitch = new ArrayList<>();
+    private final List<SwitchRowItem> mLstSwitch = new ArrayList<>();
 
     public AllSwitchesFragment() {}
 
@@ -59,7 +59,7 @@ public class AllSwitchesFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.all_switches_menu, menu);
 
-        FragmentActivity parentActivity = getActivity();
+        FragmentActivity parentActivity = requireActivity();
         RadioGroup radioGroupSearch = parentActivity.findViewById(R.id.radiogroup_search);
 
         MenuItem infoIcon = menu.findItem(R.id.menu_info_icon);
@@ -104,7 +104,7 @@ public class AllSwitchesFragment extends Fragment {
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 radioGroupSearch.check(R.id.radiobutton_all);
                 radioGroupSearch.setVisibility(View.GONE);
-                getActivity().invalidateOptionsMenu();
+                requireActivity().invalidateOptionsMenu();
                 return true;
             }
         });
@@ -151,8 +151,12 @@ public class AllSwitchesFragment extends Fragment {
             alert.show();
 
             // Links aren't clickable workaround
-            ((TextView) alert.findViewById(R.id.what_is_it_explanation)).setMovementMethod(LinkMovementMethod.getInstance());
-            ((TextView) alert.findViewById(R.id.made_with_love_by_jacopo_tediosi)).setMovementMethod(LinkMovementMethod.getInstance());
+            TextView whatIsItExplanation = alert.findViewById(R.id.what_is_it_explanation);
+            if (whatIsItExplanation != null)
+                whatIsItExplanation.setMovementMethod(LinkMovementMethod.getInstance());
+            TextView madeWithLove = alert.findViewById(R.id.made_with_love_by_jacopo_tediosi);
+            if (madeWithLove != null)
+                madeWithLove.setMovementMethod(LinkMovementMethod.getInstance());
 
             return true;
         } else if (item.getItemId() == R.id.menu_delete_icon) {
@@ -161,7 +165,7 @@ public class AllSwitchesFragment extends Fragment {
                     .setNegativeButton(getString(android.R.string.cancel), (dialog, which) -> {
                     })
                     .setPositiveButton(getString(android.R.string.ok), (dialog, which) -> {
-                        revertAllMods(getContext());
+                        revertAllMods(requireContext());
                         refreshAdapter();
                     });
             AlertDialog alert = builder.create();

@@ -27,12 +27,13 @@
                 android:text="@string/force_enable_disable_call_recording"
                 tools:ignore="RtlHardcoded" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/force_enable_call_recording_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:minHeight="0dp"
                 tools:ignore="RtlHardcoded,TouchTargetSizeCheck" />
         </RelativeLayout>
 
@@ -53,12 +54,13 @@
                 android:text="@string/silence_call_recording_alerts"
                 tools:ignore="RtlHardcoded" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/silence_call_recording_alerts_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:minHeight="0dp"
                 tools:ignore="RtlHardcoded,TouchTargetSizeCheck" />
         </RelativeLayout>
 

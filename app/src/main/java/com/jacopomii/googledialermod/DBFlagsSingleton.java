@@ -15,13 +15,13 @@ import java.util.TreeMap;
 
 public class DBFlagsSingleton {
     private static DBFlagsSingleton mUniqueInstance = null;
-    private Map<String, Boolean> mDBBooleanFlags = new TreeMap<>();
-    private Map<String, String> mDBStringFlags = new TreeMap<>();
-    ArrayList<String> mDBUsers = new ArrayList<>();
-    private Context mContext;
+    private final Map<String, Boolean> mDBBooleanFlags = new TreeMap<>();
+    private final Map<String, String> mDBStringFlags = new TreeMap<>();
+    private final ArrayList<String> mDBUsers = new ArrayList<>();
+    private final Context mContext;
 
     private DBFlagsSingleton(Context context) {
-        mContext = context;
+        mContext = context.getApplicationContext();
         reloadDB();
     }
 

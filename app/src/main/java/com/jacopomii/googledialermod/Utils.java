@@ -30,9 +30,7 @@ public class Utils {
     }
 
     public static boolean checkIsPhenotypeDBInstalled() {
-        if (runSuWithCmd("test -f /data/data/com.google.android.gms/databases/phenotype.db; echo $?").getInputStreamLog().equals("0"))
-            return true;
-        return false;
+        return runSuWithCmd("test -f /data/data/com.google.android.gms/databases/phenotype.db; echo $?").getInputStreamLog().equals("0");
     }
 
     public static void copyFile(InputStream inputStream, OutputStream outputStream) throws IOException {

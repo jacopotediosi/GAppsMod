@@ -96,10 +96,13 @@ public class MainActivity extends AppCompatActivity {
 
             AlertDialog alert = builder.create();
 
-            alert.setOnShowListener(dialogInterface -> {
-                ((AlertDialog) alert).getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener((View.OnClickListener) view ->
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_link)))));
-            });
+            alert.setOnShowListener(dialogInterface -> ((AlertDialog) alert).getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(
+                    (View.OnClickListener) view ->
+                            startActivity(
+                                    new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_link)))
+                            )
+                    )
+            );
 
             alert.show();
         } else {

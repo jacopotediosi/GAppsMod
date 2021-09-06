@@ -12,17 +12,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
 public class SuggestedModsFragment extends Fragment {
     private View mView;
-    private Switch mForceEnableCallRecordingSwitch;
-    private Switch mSilenceCallRecordingAlertsSwitch;
+    private SwitchCompat mForceEnableCallRecordingSwitch;
+    private SwitchCompat mSilenceCallRecordingAlertsSwitch;
     private DBFlagsSingleton mDBFlagsSingleton;
     private final String[] ENABLE_CALL_RECORDING_FLAGS = {
             // The following flags decide if call recording is permitted (however applying country-related restrictions)
@@ -76,8 +76,8 @@ public class SuggestedModsFragment extends Fragment {
                     mDBFlagsSingleton.updateDBFlag(flag, "");
                 }
                 try {
-                    final String dataDir = getActivity().getApplicationInfo().dataDir;
-                    final int uid = getContext().getPackageManager().getApplicationInfo("com.google.android.dialer", 0).uid;
+                    final String dataDir = requireActivity().getApplicationInfo().dataDir;
+                    final int uid = requireActivity().getPackageManager().getApplicationInfo("com.google.android.dialer", 0).uid;
                     runSuWithCmd("rm -r /data/data/com.google.android.dialer/files/callrecordingprompt; " +
                             "mkdir /data/data/com.google.android.dialer/files/callrecordingprompt; " +
                             "cp " + dataDir + "/silent_wav.wav /data/data/com.google.android.dialer/files/callrecordingprompt/starting_voice-en_US.wav; " +
@@ -113,8 +113,12 @@ public class SuggestedModsFragment extends Fragment {
             alert.show();
 
             // Links aren't clickable workaround
-            ((TextView) alert.findViewById(R.id.what_is_it_explanation)).setMovementMethod(LinkMovementMethod.getInstance());
-            ((TextView) alert.findViewById(R.id.made_with_love_by_jacopo_tediosi)).setMovementMethod(LinkMovementMethod.getInstance());
+            TextView whatIsItExplanation = alert.findViewById(R.id.what_is_it_explanation);
+            if (whatIsItExplanation != null)
+                whatIsItExplanation.setMovementMethod(LinkMovementMethod.getInstance());
+            TextView madeWithLove = alert.findViewById(R.id.made_with_love_by_jacopo_tediosi);
+            if (madeWithLove != null)
+                madeWithLove.setMovementMethod(LinkMovementMethod.getInstance());
 
             return true;
         } else if (item.getItemId() == R.id.menu_delete_icon) {
@@ -123,7 +127,7 @@ public class SuggestedModsFragment extends Fragment {
                     .setNegativeButton(getString(android.R.string.cancel), (dialog, which) -> {
                     })
                     .setPositiveButton(getString(android.R.string.ok), (dialog, which) -> {
-                        revertAllMods(getContext());
+                        revertAllMods(requireContext());
                         refreshSwitchesStatus();
                     });
             AlertDialog alert = builder.create();
@@ -142,11 +146,11 @@ public class SuggestedModsFragment extends Fragment {
         int startingVoiceSize = -1;
         try {
             startingVoiceSize = Integer.parseInt(runSuWithCmd("stat -c%s /data/data/com.google.android.dialer/files/callrecordingprompt/starting_voice-en_US.wav").getInputStreamLog());
-        } catch (NumberFormatException e1) {
+        } catch (NumberFormatException e) {
             try {
                 // Fallback if stat is not a command
                 startingVoiceSize = Integer.parseInt(runSuWithCmd("ls -lS starting_voice-en_US.wav | awk '{print $5}'").getInputStreamLog());
-            } catch (NumberFormatException e2) {}
+            } catch (NumberFormatException ignored) {}
         }
         mSilenceCallRecordingAlertsSwitch.setChecked(
                 mDBFlagsSingleton.areAllStringFlagsEmpty(SILENCE_CALL_RECORDING_ALERTS_FLAGS) &&

@@ -7,10 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONException;
@@ -20,9 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AllSwitchesRecyclerViewAdapter extends RecyclerView.Adapter<AllSwitchesRecyclerViewAdapter.AllSwitchesViewHolder> implements Filterable {
-    Context mContext;
-    List<SwitchRowItem> mData;
-    List<SwitchRowItem> mDataFiltered;
+    private final Context mContext;
+    private final List<SwitchRowItem> mData;
+    private List<SwitchRowItem> mDataFiltered;
 
     public AllSwitchesRecyclerViewAdapter(Context context, List<SwitchRowItem> data) {
         mContext = context;
@@ -87,6 +87,7 @@ public class AllSwitchesRecyclerViewAdapter extends RecyclerView.Adapter<AllSwit
 
 
 
+            @SuppressWarnings("unchecked")
             @SuppressLint("NotifyDataSetChanged")
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
@@ -98,7 +99,7 @@ public class AllSwitchesRecyclerViewAdapter extends RecyclerView.Adapter<AllSwit
 
     public static class AllSwitchesViewHolder extends RecyclerView.ViewHolder {
         private final TextView mT;
-        private final Switch mS;
+        private final SwitchCompat mS;
 
         public AllSwitchesViewHolder(View itemView) {
             super(itemView);
