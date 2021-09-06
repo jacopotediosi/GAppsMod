@@ -5,6 +5,7 @@ import static com.jacopomii.googledialermod.Utils.runSuWithCmd;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -103,8 +105,20 @@ public class SuggestedModsFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.delete_icon) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        if (item.getItemId() == R.id.menu_info_icon) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+            builder.setPositiveButton(android.R.string.ok, null)
+                    .setView(R.layout.information_dialog);
+            AlertDialog alert = builder.create();
+            alert.show();
+
+            // Links aren't clickable workaround
+            ((TextView) alert.findViewById(R.id.what_is_it_explanation)).setMovementMethod(LinkMovementMethod.getInstance());
+            ((TextView) alert.findViewById(R.id.made_with_love_by_jacopo_tediosi)).setMovementMethod(LinkMovementMethod.getInstance());
+
+            return true;
+        } else if (item.getItemId() == R.id.menu_delete_icon) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
             builder.setMessage(R.string.delete_all_mods_alert)
                     .setNegativeButton(getString(android.R.string.cancel), (dialog, which) -> {
                     })

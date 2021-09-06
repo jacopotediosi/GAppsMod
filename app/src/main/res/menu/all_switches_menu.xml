@@ -2,13 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/search_icon"
+        android:id="@+id/menu_info_icon"
+        android:title="@string/informations"
+        android:icon="@drawable/ic_baseline_info_24"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_search_icon"
         android:title="@string/search"
         android:icon="@drawable/ic_baseline_search_24"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView" />
     <item
-        android:id="@+id/delete_icon"
+        android:id="@+id/menu_delete_icon"
         android:title="@string/delete_all_applied_mods"
         android:icon="@drawable/ic_baseline_delete_24"
         app:showAsAction="ifRoom" />

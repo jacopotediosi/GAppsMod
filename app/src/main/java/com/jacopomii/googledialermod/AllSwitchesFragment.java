@@ -3,6 +3,7 @@ package com.jacopomii.googledialermod;
 import static com.jacopomii.googledialermod.Utils.revertAllMods;
 
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -60,8 +62,9 @@ public class AllSwitchesFragment extends Fragment {
         FragmentActivity parentActivity = getActivity();
         RadioGroup radioGroupSearch = parentActivity.findViewById(R.id.radiogroup_search);
 
-        MenuItem deleteIcon = menu.findItem(R.id.delete_icon);
-        MenuItem searchIcon = menu.findItem(R.id.search_icon);
+        MenuItem infoIcon = menu.findItem(R.id.menu_info_icon);
+        MenuItem deleteIcon = menu.findItem(R.id.menu_delete_icon);
+        MenuItem searchIcon = menu.findItem(R.id.menu_search_icon);
 
         SearchView searchView = (SearchView) searchIcon.getActionView();
 
@@ -91,6 +94,7 @@ public class AllSwitchesFragment extends Fragment {
         searchIcon.setOnActionExpandListener(new  MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
+                infoIcon.setVisible(false);
                 deleteIcon.setVisible(false);
                 radioGroupSearch.setVisibility(View.VISIBLE);
                 return true;
@@ -139,8 +143,20 @@ public class AllSwitchesFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.delete_icon) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        if (item.getItemId() == R.id.menu_info_icon) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+            builder.setPositiveButton(android.R.string.ok, null)
+                    .setView(R.layout.information_dialog);
+            AlertDialog alert = builder.create();
+            alert.show();
+
+            // Links aren't clickable workaround
+            ((TextView) alert.findViewById(R.id.what_is_it_explanation)).setMovementMethod(LinkMovementMethod.getInstance());
+            ((TextView) alert.findViewById(R.id.made_with_love_by_jacopo_tediosi)).setMovementMethod(LinkMovementMethod.getInstance());
+
+            return true;
+        } else if (item.getItemId() == R.id.menu_delete_icon) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
             builder.setMessage(R.string.delete_all_mods_alert)
                     .setNegativeButton(getString(android.R.string.cancel), (dialog, which) -> {
                     })

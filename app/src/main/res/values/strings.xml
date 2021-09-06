@@ -18,4 +18,11 @@
     <string name="informations">Informations</string>
     <string name="dialer_not_installed_error">It appears that Google Dialer is not installed. Install the latest beta from the Play Store and try again.\n\nIf instead Google Dialer is already installed and this error keeps appearing, please open an issue on Github.</string>
     <string name="phenotype_db_doesnt_exist_error">Phenotype DB does not appear to exist.\n\nIf you have already installed Google Play Services but this error keeps appearing, please open an issue on Github.</string>
+    <string name="if_bug_found_open_github_issue">If you think you\'ve found any bugs please open an issue on Github</string>
+    <string name="made_with_love_by_jacopo_tediosi">Made with ❤ by <a href="https://github.com/jacopotediosi">Jacopo Tediosi</a></string>
+    <string name="credits">Credits</string>
+    <string name="how_it_works">How it works</string>
+    <string name="what_is_it">What is it</string>
+    <string name="what_is_it_explanation">GoogleDialerMod is an app that allows, using root privileges, to modify the values contained in the Google Play Services "Phenotype" database, thus altering the behavior of the Google Dialer app to unlock experimental or blocked features in some countries.\n\nAlways make sure you are using the <a href="https://play.google.com/store/apps/details?id=com.google.android.dialer">latest Dialer beta version available on the Play Store</a>, to take advantage of the latest features.</string>
+    <string name="how_it_works_explanation">The patches applied by GoogleDialerMod resist Google Dialer updates over time, even after uninstalling the app.\nMods are therefore to be considered permanent, but they can be easily reverted by pressing the trash can icon in the top right menu.\nThere is no need to keep this app installed after applying the desired changes.\n\nAfter applying changes, you may need to forcibly reopen and close the Dialer app a couple of times before they take effect.</string>
 </resources>
