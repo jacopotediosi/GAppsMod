@@ -2,6 +2,7 @@ package com.jacopomii.googledialermod;
 
 import static com.jacopomii.googledialermod.Utils.checkIsDeviceRooted;
 import static com.jacopomii.googledialermod.Utils.checkIsDialerInstalled;
+import static com.jacopomii.googledialermod.Utils.checkIsLatestGithubVersion;
 import static com.jacopomii.googledialermod.Utils.checkIsPhenotypeDBInstalled;
 import static com.jacopomii.googledialermod.Utils.copyFile;
 import static com.jacopomii.googledialermod.Utils.runSuWithCmd;
@@ -28,10 +29,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-// TODO: dialog explaining how it works (restart the app a couple of times etc)
-// TODO: dialog to remember to kill app a couple of times when exiting
-// TODO: Magisk module as https://forum.xda-developers.com/t/module-detach3-detach-market-links.3447494/
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -108,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
             alert.show();
         } else {
             copyAssets();
+
+            checkIsLatestGithubVersion(this);
 
             setContentView(R.layout.activity_main);
 

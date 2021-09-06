@@ -1,8 +1,18 @@
 package com.jacopomii.googledialermod;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.util.Log;
+import android.view.View;
+
+import androidx.appcompat.app.AlertDialog;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -121,5 +131,45 @@ public class Utils {
             baos.write(buffer, 0, length);
         }
         return baos.toString("UTF-8");
+    }
+
+    public static void checkIsLatestGithubVersion(Context context) {
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(
+            new JsonObjectRequest(
+                Request.Method.GET,
+                context.getString(R.string.github_api_link) + "/releases/latest",
+                null,
+                response -> {
+                    try {
+                        Version actualVersion = new Version(BuildConfig.VERSION_NAME);
+                        Version fetchedVersion = new Version(response.getString("tag_name").substring(1));
+
+                        if (actualVersion.compareTo(fetchedVersion) < 0) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+                            builder.setMessage(R.string.new_version_alert)
+                                    .setNeutralButton(R.string.github, null)
+                                    .setPositiveButton(android.R.string.ok, null);
+
+                            AlertDialog alert = builder.create();
+
+                            alert.setOnShowListener(dialogInterface -> ((AlertDialog) alert).getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(
+                                    (View.OnClickListener) view ->
+                                            context.startActivity(
+                                                    new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.github_link)))
+                                            )
+                                    )
+                            );
+
+                            alert.show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> Log.e("Utils", "checkIsLatestGithubVersion: HTTP request failed")
+            )
+        );
     }
 }
