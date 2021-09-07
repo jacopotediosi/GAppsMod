@@ -32,14 +32,14 @@ android {
     defaultConfig {
         applicationId "com.jacopomii.googledialermod"
         minSdk 21
-        targetSdk 30
-        versionCode 2
-        versionName "1.1"
+        targetSdk 29 // Target >= Android 11 give Scoped Storage problems
+        versionCode 3
+        versionName "1.2"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.util.Log;
-import android.view.View;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -154,8 +153,8 @@ public class Utils {
 
                             AlertDialog alert = builder.create();
 
-                            alert.setOnShowListener(dialogInterface -> ((AlertDialog) alert).getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(
-                                    (View.OnClickListener) view ->
+                            alert.setOnShowListener(dialogInterface -> alert.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(
+                                    view ->
                                             context.startActivity(
                                                     new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.github_link)))
                                             )

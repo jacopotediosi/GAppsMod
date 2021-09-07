@@ -67,10 +67,10 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog alert = builder.create();
 
             alert.setOnShowListener(dialogInterface -> {
-                ((AlertDialog) alert).getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener((View.OnClickListener) view ->
+                alert.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(view ->
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_link)))));
 
-                ((AlertDialog) alert).getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener((View.OnClickListener) view -> {
+                alert.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(view -> {
                     try {
                         Intent appStoreIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.dialer"));
                         appStoreIntent.setPackage("com.android.vending");
@@ -94,8 +94,8 @@ public class MainActivity extends AppCompatActivity {
 
             AlertDialog alert = builder.create();
 
-            alert.setOnShowListener(dialogInterface -> ((AlertDialog) alert).getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(
-                    (View.OnClickListener) view ->
+            alert.setOnShowListener(dialogInterface -> alert.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(
+                    view ->
                             startActivity(
                                     new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_link)))
                             )
