@@ -33,8 +33,8 @@ android {
         applicationId "com.jacopomii.googledialermod"
         minSdk 21
         targetSdk 29 // Target >= Android 11 give Scoped Storage problems
-        versionCode 3
-        versionName "1.2"
+        versionCode 103
+        versionName "1.03"
     }
 
     buildTypes {
