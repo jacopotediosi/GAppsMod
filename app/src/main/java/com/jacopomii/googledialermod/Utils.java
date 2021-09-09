@@ -115,9 +115,7 @@ public class Utils {
             e.printStackTrace();
         }
 
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "runSuWithCmd: " + streamLogs.getStreamLogsWithLabels());
-        }
+        Log.d(TAG, "runSuWithCmd: " + streamLogs.getStreamLogsWithLabels());
 
         return streamLogs;
     }
