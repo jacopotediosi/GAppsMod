@@ -7,4 +7,6 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="app_icon_bg">#1973E8</color>
+    <color name="app_icon_fg">@android:color/white</color>
 </resources>
