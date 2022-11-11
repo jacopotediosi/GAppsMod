@@ -2,11 +2,12 @@ plugins {
     id 'com.android.application'
 }
 
-// Remember to config your keystore settings in local.properties
-def keyfile = ''
-def keystorePSW = ''
-def keystoreAlias = ''
-def keystoreAliasPSW = ''
+// Remember to config your keystore settings in local.properties or in the below lines
+def keyfile = file('C:/keystore.jks')
+def keystorePSW = 'CHANGEME'
+def keystoreAlias = 'CHANGEME'
+def keystoreAliasPSW = 'CHANGEME'
+
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 def keystoreFilepath = properties.getProperty("keystore.path")
@@ -47,6 +48,7 @@ android {
     buildFeatures {
         viewBinding true
     }
+    namespace 'com.jacopomii.googledialermod'
 }
 
 dependencies {
