@@ -6,7 +6,7 @@
     <string name="cpu_arch_not_supported">L\'architettura della tua CPU non è supportata</string>
     <string name="search">Cerca</string>
     <string name="delete_all_applied_mods">Elimina tutte le mod applicate</string>
-    <string name="delete_all_mods_alert">Vuoi davvero eliminare tutte le mod applicate da questa app al DB Phenotype?</string>
+    <string name="delete_all_mods_alert">Vuoi davvero eliminare tutte le mod applicate da GoogleDialerMod?</string>
     <string name="force_enable_disable_call_recording">Abilita / disabilita forzatamente la registrazione chiamate</string>
     <string name="all">Tutti</string>
     <string name="enabled_only">Solo abilitati</string>

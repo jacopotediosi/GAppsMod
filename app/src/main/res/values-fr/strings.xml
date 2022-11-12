@@ -6,7 +6,7 @@
     <string name="cpu_arch_not_supported">L\’architecture de votre CPU n\’est pas supportée</string>
     <string name="search">Rechercher</string>
     <string name="delete_all_applied_mods">Supprimer toutes les modifications</string>
-    <string name="delete_all_mods_alert">Voulez vous vraiment supprimer toutes les modifications applications par cette application à la base de donnée de l\’application téléphone?</string>
+    <string name="delete_all_mods_alert">Voulez vous vraiment supprimer toutes les modifications apportées par GoogleDialerMod?</string>
     <string name="force_enable_disable_call_recording">Forcer l\’activation / la désactivation de l\’enregistrement des appels</string>
     <string name="all">Tout</string>
     <string name="enabled_only">Activer uniquement</string>
