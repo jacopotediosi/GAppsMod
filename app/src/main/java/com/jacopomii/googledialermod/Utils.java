@@ -35,7 +35,7 @@ public class Utils {
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }
-        return true;
+        return runSuWithCmd("test -d /data/data/com.google.android.dialer; echo $?").getInputStreamLog().equals("0");
     }
 
     public static boolean checkIsPhenotypeDBInstalled() {
@@ -93,7 +93,7 @@ public class Utils {
         streamLogs.setOutputStreamLog(cmd);
 
         try {
-            Process su = Runtime.getRuntime().exec("su");
+            Process su = Runtime.getRuntime().exec("su --mount-master");
             outputStream = new DataOutputStream(su.getOutputStream());
             inputStream = su.getInputStream();
             errorStream = su.getErrorStream();

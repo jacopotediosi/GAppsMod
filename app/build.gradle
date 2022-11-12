@@ -28,12 +28,12 @@ android {
             keyPassword keystoreAliasPSW
         }
     }
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.jacopomii.googledialermod"
         minSdk 21
-        targetSdk 29 // Target >= Android 11 give Scoped Storage problems
+        targetSdk 33
         versionCode 103
         versionName "1.03"
     }
