@@ -154,7 +154,7 @@ public class Utils {
                             alert.setOnShowListener(dialogInterface -> alert.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(
                                     view ->
                                             context.startActivity(
-                                                    new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.github_link)))
+                                                    new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.github_link)+"/releases"))
                                             )
                                     )
                             );
