@@ -1,7 +1,7 @@
 package com.jacopomii.googledialermod;
 
+import static com.jacopomii.googledialermod.Utils.deleteCallrecordingpromptFolder;
 import static com.jacopomii.googledialermod.Utils.revertAllMods;
-import static com.jacopomii.googledialermod.Utils.runSuWithCmd;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -19,6 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
+
+import com.topjohnwu.superuser.Shell;
 
 public class SuggestedModsFragment extends Fragment {
     private View mView;
@@ -80,19 +82,19 @@ public class SuggestedModsFragment extends Fragment {
                 try {
                     final String dataDir = requireActivity().getApplicationInfo().dataDir;
                     final int uid = requireActivity().getPackageManager().getApplicationInfo("com.google.android.dialer", 0).uid;
-                    runSuWithCmd("rm -r /data/data/com.google.android.dialer/files/callrecordingprompt; " +
+                    Shell.cmd("rm -r /data/data/com.google.android.dialer/files/callrecordingprompt; " +
                             "mkdir /data/data/com.google.android.dialer/files/callrecordingprompt; " +
                             "cp " + dataDir + "/silent_wav.wav /data/data/com.google.android.dialer/files/callrecordingprompt/starting_voice-en_US.wav; " +
                             "cp " + dataDir + "/silent_wav.wav /data/data/com.google.android.dialer/files/callrecordingprompt/ending_voice-en_US.wav; " +
                             "chown -R " + uid + ":" + uid + " /data/data/com.google.android.dialer/files/callrecordingprompt; " +
                             "chmod -R 777 /data/data/com.google.android.dialer/files/callrecordingprompt; " +
-                            "restorecon -R /data/data/com.google.android.dialer/files/callrecordingprompt");
+                            "restorecon -R /data/data/com.google.android.dialer/files/callrecordingprompt").exec();
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
             } else {
                 mDBFlagsSingleton.deleteFlagOverrides(SILENCE_CALL_RECORDING_ALERTS_FLAGS);
-                runSuWithCmd("rm -r /data/data/com.google.android.dialer/files/callrecordingprompt");
+                deleteCallrecordingpromptFolder();
             }
         };
         mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener);
@@ -154,11 +156,11 @@ public class SuggestedModsFragment extends Fragment {
         // mSilenceCallRecordingAlertsSwitch
         int startingVoiceSize = -1;
         try {
-            startingVoiceSize = Integer.parseInt(runSuWithCmd("stat -c%s /data/data/com.google.android.dialer/files/callrecordingprompt/starting_voice-en_US.wav").getInputStreamLog());
+            startingVoiceSize = Integer.parseInt(Shell.cmd("stat -c%s /data/data/com.google.android.dialer/files/callrecordingprompt/starting_voice-en_US.wav").exec().getOut().get(0));
         } catch (NumberFormatException e) {
             try {
                 // Fallback if stat is not a command
-                startingVoiceSize = Integer.parseInt(runSuWithCmd("ls -lS starting_voice-en_US.wav | awk '{print $5}'").getInputStreamLog());
+                startingVoiceSize = Integer.parseInt(Shell.cmd("ls -lS starting_voice-en_US.wav | awk '{print $5}'").exec().getOut().get(0));
             } catch (NumberFormatException ignored) {}
         }
         mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(null);

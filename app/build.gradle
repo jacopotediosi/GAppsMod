@@ -28,6 +28,12 @@ android {
             keyPassword keystoreAliasPSW
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     compileSdk 33
 
     defaultConfig {
@@ -59,4 +65,5 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.android.volley:volley:1.2.1'
+    implementation "com.github.topjohnwu.libsu:core:5.0.3"
 }

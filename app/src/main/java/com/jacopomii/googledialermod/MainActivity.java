@@ -1,11 +1,9 @@
 package com.jacopomii.googledialermod;
 
-import static com.jacopomii.googledialermod.Utils.checkIsDeviceRooted;
 import static com.jacopomii.googledialermod.Utils.checkIsDialerInstalled;
 import static com.jacopomii.googledialermod.Utils.checkIsLatestGithubVersion;
 import static com.jacopomii.googledialermod.Utils.checkIsPhenotypeDBInstalled;
 import static com.jacopomii.googledialermod.Utils.copyFile;
-import static com.jacopomii.googledialermod.Utils.runSuWithCmd;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -23,6 +21,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.topjohnwu.superuser.Shell;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -38,11 +37,20 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager2 mViewPager;
     private ViewPagerAdapter mViewPagerAdapter;
 
+    static {
+        // Set Libsu settings before the main shell can be created
+        Shell.enableVerboseLogging = true;
+        Shell.setDefaultBuilder(Shell.Builder.create()
+                .setFlags(Shell.FLAG_MOUNT_MASTER)
+                .setTimeout(10)
+        );
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!checkIsDeviceRooted()) {
+        if (!Shell.getShell().isRoot()) {
             Log.e(TAG, "onCreate: cannot obtain root permissions");
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -178,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "copyAssets: failed to copy asset file: sqlite3", e);
             }
 
-            runSuWithCmd("chmod 755 " + dataDir + "/sqlite3");
+            Shell.cmd("chmod 755 " + dataDir + "/sqlite3").exec();
 
             outputFile = new File(dataDir, "silent_wav.wav");
             if (!outputFile.exists()) {

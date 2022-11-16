@@ -12,12 +12,11 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.topjohnwu.superuser.Shell;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -25,21 +24,17 @@ import java.io.OutputStream;
 public class Utils {
     private static final String TAG = "Utils";
 
-    public static boolean checkIsDeviceRooted() {
-        return runSuWithCmd("echo 1").getInputStreamLog().equals("1");
-    }
-
     public static boolean checkIsDialerInstalled(Context context) {
         try {
             context.getPackageManager().getApplicationInfo("com.google.android.dialer", 0);
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }
-        return runSuWithCmd("test -d /data/data/com.google.android.dialer; echo $?").getInputStreamLog().equals("0");
+        return Shell.cmd("test -d /data/data/com.google.android.dialer").exec().isSuccess();
     }
 
     public static boolean checkIsPhenotypeDBInstalled() {
-        return runSuWithCmd("test -f /data/data/com.google.android.gms/databases/phenotype.db; echo $?").getInputStreamLog().equals("0");
+        return Shell.cmd("test -f /data/data/com.google.android.gms/databases/phenotype.db").exec().isSuccess();
     }
 
     public static void copyFile(InputStream inputStream, OutputStream outputStream) throws IOException {
@@ -56,10 +51,10 @@ public class Utils {
     public static JSONArray execPhenotypeQuery(Context context, String query) {
         JSONArray result = null;
         try {
-            String query_result = runSuWithCmd(
+            String query_result = String.join("", Shell.cmd(
                     context.getApplicationInfo().dataDir +
                             "/sqlite3 -batch -json /data/data/com.google.android.gms/databases/phenotype.db " +
-                            "\"" + query + ";\"").getInputStreamLog();
+                            "\"" + query + ";\"").exec().getOut());
             if (query_result.equals("")) {
                 result = new JSONArray("[]");
             } else {
@@ -72,62 +67,16 @@ public class Utils {
     }
 
     public static void killDialerAndDeletePhenotypeCache() {
-        runSuWithCmd("am kill all com.google.android.dialer; rm -r /data/data/com.google.android.dialer/files/phenotype");
+        Shell.cmd("am kill all com.google.android.dialer; rm -rf /data/data/com.google.android.dialer/files/phenotype").exec();
     }
 
     public static void deleteCallrecordingpromptFolder() {
-        runSuWithCmd("rm -r /data/data/com.google.android.dialer/files/callrecordingprompt");
+        Shell.cmd("rm -rf /data/data/com.google.android.dialer/files/callrecordingprompt").exec();
     }
 
     public static void revertAllMods(Context context) {
         DBFlagsSingleton.getInstance(context).deleteAllFlagOverrides();
         deleteCallrecordingpromptFolder();
-    }
-
-    public static StreamLogs runSuWithCmd(String cmd) {
-        DataOutputStream outputStream;
-        InputStream inputStream;
-        InputStream errorStream;
-
-        StreamLogs streamLogs = new StreamLogs();
-        streamLogs.setOutputStreamLog(cmd);
-
-        try {
-            Process su = Runtime.getRuntime().exec("su --mount-master");
-            outputStream = new DataOutputStream(su.getOutputStream());
-            inputStream = su.getInputStream();
-            errorStream = su.getErrorStream();
-            outputStream.writeBytes(cmd + "\n");
-            outputStream.flush();
-
-            outputStream.writeBytes("exit\n");
-            outputStream.flush();
-
-            try {
-                su.waitFor();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            streamLogs.setInputStreamLog(readFully(inputStream));
-            streamLogs.setErrorStreamLog(readFully(errorStream));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Log.d(TAG, "runSuWithCmd: " + streamLogs.getStreamLogsWithLabels());
-
-        return streamLogs;
-    }
-
-    public static String readFully(InputStream is) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
-        int length;
-        while ((length = is.read(buffer)) != -1) {
-            baos.write(buffer, 0, length);
-        }
-        return baos.toString("UTF-8");
     }
 
     public static void checkIsLatestGithubVersion(Context context) {
