@@ -87,7 +87,8 @@ public class SuggestedModsFragment extends Fragment {
                             "cp " + dataDir + "/silent_wav.wav /data/data/com.google.android.dialer/files/callrecordingprompt/starting_voice-en_US.wav; " +
                             "cp " + dataDir + "/silent_wav.wav /data/data/com.google.android.dialer/files/callrecordingprompt/ending_voice-en_US.wav; " +
                             "chown -R " + uid + ":" + uid + " /data/data/com.google.android.dialer/files/callrecordingprompt; " +
-                            "chmod -R 777 /data/data/com.google.android.dialer/files/callrecordingprompt; " +
+                            "chmod -R 755 /data/data/com.google.android.dialer/files/callrecordingprompt; " +
+                            "chmod 444 /data/data/com.google.android.dialer/files/callrecordingprompt/*; " +
                             "restorecon -R /data/data/com.google.android.dialer/files/callrecordingprompt").exec();
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
