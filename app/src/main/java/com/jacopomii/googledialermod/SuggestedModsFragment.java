@@ -28,13 +28,16 @@ public class SuggestedModsFragment extends Fragment {
     private SwitchCompat mSilenceCallRecordingAlertsSwitch;
     private DBFlagsSingleton mDBFlagsSingleton;
     private final String[] ENABLE_CALL_RECORDING_FLAGS = {
-            // The following flags decide if call recording is permitted (however applying country-related restrictions)
+            // Enable Call Recording feature
             "G__enable_call_recording",
+            "enable_call_recording_System_feature",
             "CallRecording__enable_call_recording_for_fi",
-            // The following flags decide whether to bypass country-related restrictions
+            // Bypass country-related restrictions
             "G__force_within_call_recording_geofence_value",
             "G__use_call_recording_geofence_overrides",
-            "G__force_within_crosby_geofence_value"
+            "G__force_within_crosby_geofence_value",
+            // Show call recording button
+            "enable_tidepods_call_recording"
     };
     private final String[] SILENCE_CALL_RECORDING_ALERTS_FLAGS = {
             // The following flags contain a serialized and base64 encoded list of countries in which the use of embedded audio or audio generated with TTS is forced
