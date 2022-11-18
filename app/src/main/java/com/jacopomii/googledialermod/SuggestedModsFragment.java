@@ -156,14 +156,13 @@ public class SuggestedModsFragment extends Fragment {
 
         // mSilenceCallRecordingAlertsSwitch
         int startingVoiceSize = -1;
+        Shell.Result result;
         try {
-            startingVoiceSize = Integer.parseInt(Shell.cmd("stat -c%s /data/data/com.google.android.dialer/files/callrecordingprompt/starting_voice-en_US.wav").exec().getOut().get(0));
-        } catch (NumberFormatException e) {
-            try {
-                // Fallback if stat is not a command
-                startingVoiceSize = Integer.parseInt(Shell.cmd("ls -lS starting_voice-en_US.wav | awk '{print $5}'").exec().getOut().get(0));
-            } catch (NumberFormatException ignored) {}
-        }
+            result = Shell.cmd("stat -c%s /data/data/com.google.android.dialer/files/callrecordingprompt/starting_voice-en_US.wav").exec();
+            if (!result.isSuccess()) // Fallback if stat is not a command
+                result = Shell.cmd("ls -lS starting_voice-en_US.wav | awk '{print $5}'").exec();
+            startingVoiceSize = Integer.parseInt(result.getOut().get(0));
+        } catch (Exception ignored) {}
         mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(null);
         mSilenceCallRecordingAlertsSwitch.setChecked(
                 mDBFlagsSingleton.areAllStringFlagsEmpty(SILENCE_CALL_RECORDING_ALERTS_FLAGS) &&
