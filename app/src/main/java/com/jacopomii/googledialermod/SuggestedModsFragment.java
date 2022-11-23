@@ -41,13 +41,13 @@ public class SuggestedModsFragment extends Fragment {
             "enable_tidepods_call_recording"
     };
     private final String[] SILENCE_CALL_RECORDING_ALERTS_FLAGS = {
-            // The following flags contain a serialized and base64 encoded list of countries in which the use of embedded audio or audio generated with TTS is forced
-            // If their hashsets are all empty, dialer will use by default the TTS to generate audio call recording alerts
+            // Following flags contain a serialized and base64 encoded list of countries in which the use of embedded audio or audio generated with TTS is forced
+            // If their hashsets are all empty, dialer will use by default the TTS to generate audio call recording announcements
             "CallRecording__call_recording_countries_with_built_in_audio_file",
             "CallRecording__call_recording_force_enable_built_in_audio_file_countries",
             "CallRecording__call_recording_force_enable_tts_countries",
-            // The following flags contain a serialized and base64 hashset encoded with country-language matches to be used to generate audio call recording alerts via TTS
-            // If their hashsets are empty, TTS will use the default language (hardcoded in the dialer source) en_US
+            // Following flags contain a serialized and base64 encoded hashset with country-language matches, used by Dialer to generate call recording audio announcements via TTS
+            // If their hashsets are empty, TTS will always fallback to en_US
             "CallRecording__call_recording_countries",
             "CallRecording__crosby_countries"
     };
