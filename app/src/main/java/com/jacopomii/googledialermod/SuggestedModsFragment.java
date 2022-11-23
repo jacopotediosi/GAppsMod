@@ -30,7 +30,8 @@ public class SuggestedModsFragment extends Fragment {
     private final String[] ENABLE_CALL_RECORDING_FLAGS = {
             // Enable Call Recording feature
             "G__enable_call_recording",
-            "enable_call_recording_System_feature",
+            "enable_call_recording_system_feature",
+            // Enable Call Recording also for Google Fi / Fides (e2e calls, etc)
             "CallRecording__enable_call_recording_for_fi",
             // Bypass country-related restrictions
             "G__force_within_call_recording_geofence_value",
