@@ -26,6 +26,7 @@ public class SuggestedModsFragment extends Fragment {
     private View mView;
     private SwitchCompat mForceEnableCallRecordingSwitch;
     private SwitchCompat mSilenceCallRecordingAlertsSwitch;
+    private SwitchCompat mForceEnableCallScreenSwitch;
     private DBFlagsSingleton mDBFlagsSingleton;
     private final String[] ENABLE_CALL_RECORDING_FLAGS = {
             // Enable Call Recording feature
@@ -51,8 +52,36 @@ public class SuggestedModsFragment extends Fragment {
             "CallRecording__call_recording_countries",
             "CallRecording__crosby_countries"
     };
+    private final String[] ENABLE_CALL_SCREEN_FLAGS = {
+            // Enable Call Screen feature for both calls and video-calls
+            "G__speak_easy_enabled",
+            "enable_video_calling_screen",
+            // Bypass Call Screen locale restrictions
+            "G__speak_easy_bypass_locale_check",
+            // Enable translations for additional locales
+            "enable_call_screen_i18n_tidepods",
+            // Enable the "listen in" button, which is located at the bottom right during screening
+            "G__speak_easy_enable_listen_in_button",
+            // Enable the Call Screen Demo page in Dialer settings
+            "enable_call_screen_demo",
+            // Enable the "See transcript" button in call history, which allows to read call screen transcripts and listen to recordings
+            "G__enable_speakeasy_details",
+            // Enable Revelio,an advanced version of the Call Screen which allows to automatically filter calls
+            "G__enable_revelio",
+            "G__enable_revelio_on_bluetooth",
+            "G__enable_revelio_on_wired_headset",
+            // Bypass Revelio locale restrictions
+            "G__bypass_revelio_roaming_check",
+            // Enable translations for additional locales also for Revelio
+            "G__enable_tidepods_revelio",
+            // Enable the Dialer settings option to save screened call audio (it does not depend on the Call Recording feature, but depends on Revelio)
+            "G__enable_call_screen_saving_audio",
+            // Enable the saving of the transcript also for Revelio
+            "enable_revelio_transcript"
+    };
     private CompoundButton.OnCheckedChangeListener mForceEnableCallRecordingSwitchOnCheckedChangeListener;
     private CompoundButton.OnCheckedChangeListener mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener;
+    private CompoundButton.OnCheckedChangeListener mForceEnableCallScreenSwitchOnCheckedChangeListener;
 
     public SuggestedModsFragment() {}
 
@@ -70,6 +99,7 @@ public class SuggestedModsFragment extends Fragment {
 
         mForceEnableCallRecordingSwitch = mView.findViewById(R.id.force_enable_call_recording_switch);
         mSilenceCallRecordingAlertsSwitch = mView.findViewById(R.id.silence_call_recording_alerts_switch);
+        mForceEnableCallScreenSwitch = mView.findViewById(R.id.force_enable_call_screen_switch);
 
         mForceEnableCallRecordingSwitchOnCheckedChangeListener = (buttonView, isChecked) -> {
             for (String flag : ENABLE_CALL_RECORDING_FLAGS) {
@@ -86,6 +116,7 @@ public class SuggestedModsFragment extends Fragment {
                 try {
                     final String dataDir = requireActivity().getApplicationInfo().dataDir;
                     final int uid = requireActivity().getPackageManager().getApplicationInfo("com.google.android.dialer", 0).uid;
+                    //TODO: eventualmente splittare in più comandi?
                     Shell.cmd("rm -r /data/data/com.google.android.dialer/files/callrecordingprompt; " +
                             "mkdir /data/data/com.google.android.dialer/files/callrecordingprompt; " +
                             "cp " + dataDir + "/silent_wav.wav /data/data/com.google.android.dialer/files/callrecordingprompt/starting_voice-en_US.wav; " +
@@ -103,6 +134,13 @@ public class SuggestedModsFragment extends Fragment {
             }
         };
         mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener);
+
+        mForceEnableCallScreenSwitchOnCheckedChangeListener = (buttonView, isChecked) -> {
+            for (String flag : ENABLE_CALL_SCREEN_FLAGS) {
+                mDBFlagsSingleton.updateDBFlag(flag, isChecked);
+            }
+        };
+        mForceEnableCallScreenSwitch.setOnCheckedChangeListener(mForceEnableCallScreenSwitchOnCheckedChangeListener);
 
         refreshSwitchesStatus();
 
@@ -173,5 +211,12 @@ public class SuggestedModsFragment extends Fragment {
                 startingVoiceSize > 0 && startingVoiceSize <= 100
         );
         mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener);
+
+        // mForceEnableCallScreenSwitch
+        mForceEnableCallScreenSwitch.setOnCheckedChangeListener(null);
+        mForceEnableCallScreenSwitch.setChecked(
+                mDBFlagsSingleton.areAllBooleanFlagsTrue(ENABLE_CALL_SCREEN_FLAGS)
+        );
+        mForceEnableCallScreenSwitch.setOnCheckedChangeListener(mForceEnableCallScreenSwitchOnCheckedChangeListener);
     }
 }

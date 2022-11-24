@@ -34,7 +34,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:minHeight="0dp"
-                tools:ignore="RtlHardcoded,TouchTargetSizeCheck" />
+                tools:ignore="RtlHardcoded,TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -56,6 +56,33 @@
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/silence_call_recording_alerts_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:minHeight="0dp"
+                tools:ignore="RtlHardcoded,TouchTargetSizeCheck" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <TextView
+                android:id="@+id/force_enable_call_screen_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/force_enable_call_screen_switch"
+                android:layout_marginRight="6dp"
+                android:text="@string/force_enable_call_screen"
+                tools:ignore="RtlHardcoded" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/force_enable_call_screen_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
