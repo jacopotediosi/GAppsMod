@@ -1,32 +1,40 @@
 # GoogleDialerMod
-The ultimate All-In-One Utility to tweak Google Dialer behaviour.
+The ultimate All-In-One Utility to tweak Google Dialer.
 
-# How do I use it?
-Allow root access, choose what you want, open / force close Google Dialer app a couple of times, and then forget about it :)
-Always make sure you are using the latest Google Dialer beta from the Play Store to enjoy the latest features.
-There is no need to keep GoogleDialerMod installed after applying the desired changes, because they (should) survive Google Dialer updates / reinstalls over time.
 
-# How does it work?
-This app uses SQLite commands to override some flags related to Google Dialer into the Google Play Services. 
-Google Play Services control a lot of features inside Google Dialer. Some of them are core functionality of Google Dialer, some of them are upcoming feature that are simply not yet released.
-What this app does is making some SQLite queries in order to alter some features of Google Dialer.
+## Downloads:
+ - Please visit the [GoogleDialerMod Release Page](https://github.com/jacopotediosi/GoogleDialerMod/releases)
 
-# Current features:
-- Supports arm / arm64 / x86 / x86_64 devices
-- Enable / disable hidden features for all users when "multiple users" Android mode in enabled
-- Force enable call recording feature even with unsupported devices or in unsupported countries
-- Silence annoying call recording "registration has started / ended" sounds
+
+## How do I use it?
+- Always make sure you are using the latest Google Dialer beta from the Play Store to enjoy the latest features
+- Allow root access to GoogleDialerMod, apply the tweaks you want, then force close Google Dialer app and reopen it a couple of times for them to take effect
+- There is no need to keep GoogleDialerMod installed after applying the desired mods, because they (should) survive Google Dialer updates / reinstalls over time
+
+
+## How does it work?
+In every Android device there is a database, called Phenotype.db, managed by Google Play Services, containing special flags that affect the behavior of all Google applications installed.
+
+Some of those flags concern Google Dialer core functionalities, while others are about hidden or upcoming features not yet released.
+
+What this app does is execute SQLite queries on that database and overwrite Google Dialer configuration files to enable or alter its features at will.
+
+
+## Current features:
+- Supports arm / arm64 / x86 / x86_64 devices and (hopefully) all Android versions
+- Enable / disable hidden features for all users at once when Android "multiple users" mode is in use
+- Force enable call recording feature even on unsupported devices or in unsupported countries
+- Silence the annoying "registration has started / ended" call recording sounds
+- Force enable call screening and revelio (advanced automatic call screening)
 
 And much more coming soon :)
 
-# Troubleshooting:
-- After enabling / disabling any switch, please force close and reopen the Google Dialer app via Android settings a couple of times.<br>You may also need to reboot for the changes to take effect.
+
+## Troubleshooting:
+- After enabling / disabling any switch, please force close and reopen the Google Dialer app a couple of times. You may also need to reboot for the changes to take effect.
 - Before to report an issue try to delete Google Dialer app data, to reboot your phone and to try again what didn't work
-- If the app really doesn't seem to work for you, please try the [Magisk module](https://github.com/jacopotediosi/GoogleDialerMod-Magisk/releases) as well
 
-# Downloads:
- - ## [GoogleDialerMod](https://github.com/jacopotediosi/GoogleDialerMod/releases)
- - ## [GoogleDialerMod-Magisk](https://github.com/jacopotediosi/GoogleDialerMod-Magisk/releases) (Alternative to this app when it really doesn't seem to work)
 
-# Credits:
-[Gabriele Rizzo aka shmykelsa](https://github.com/shmykelsa), [Jen94](https://github.com/jen94) and [SAAX by agentdr8](https://gitlab.com/agentdr8/saax) for the AA-Tweaker app which inspired me making GoogleDialerMod
+## Credits:
+- Thanks to [Gabriele Rizzo aka shmykelsa](https://github.com/shmykelsa), [Jen94](https://github.com/jen94) and [SAAX by agentdr8](https://gitlab.com/agentdr8/saax) for their [AA-Tweaker](https://github.com/shmykelsa/AA-Tweaker) app, which inspired me making GoogleDialerMod
+- [Libsu](https://github.com/topjohnwu/libsu) by [topjohnwu](https://github.com/topjohnwu)
