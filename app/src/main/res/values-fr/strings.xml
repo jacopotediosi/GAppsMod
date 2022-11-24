@@ -13,7 +13,7 @@
     <string name="disabled_only">Désactiver uniquement</string>
     <string name="silence_call_recording_alerts">Mettre sous silence les alertes d\’enregistrement des appels</string>
     <string name="informations">Informations</string>
-    <string name="dialer_not_installed_error">Il semblerait que l'application Téléphone de Google ne soit pas installée. Installer la dernière version bêta depuis le magasin Google play store et essayez à nouveau. Si cette erreur survient à nouveau, veuillez ouvrir un ticket sur Github.</string>
+    <string name="dialer_not_installed_error">Il semblerait que l\'application Téléphone de Google ne soit pas installée. Installer la dernière version bêta depuis le magasin Google play store et essayez à nouveau. Si cette erreur survient à nouveau, veuillez ouvrir un ticket sur Github.</string>
     <string name="phenotype_db_doesnt_exist_error">La base de données de l\’application téléphone n\’existe pas.\n\nSi vous avez déjà l\’application Services Google Play installée mais que cette erreur continue d\’apparaitre, veuillez ouvrir un ticket sur Github.</string>
     <string name="if_bug_found_open_github_issue">Si vous pensez avoir trouver un bug, veuillez ouvrir un ticket sur Github.</string>
     <string name="made_with_love_by_jacopo_tediosi">Fait avec ❤ par <a href="https://github.com/jacopotediosi">Jacopo Tediosi</a></string>
