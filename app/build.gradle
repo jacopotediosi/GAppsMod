@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.protobuf'
 }
 
 // Remember to config your keystore settings in local.properties or in the below lines
@@ -66,4 +67,20 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.android.volley:volley:1.2.1'
     implementation "com.github.topjohnwu.libsu:core:5.0.3"
+    implementation 'com.google.protobuf:protobuf-javalite:3.8.0'
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.8.0'
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                java {
+                    option "lite"
+                }
+            }
+        }
+    }
 }

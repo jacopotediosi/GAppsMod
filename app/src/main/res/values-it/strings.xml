@@ -24,4 +24,5 @@
     <string name="how_it_works_explanation">Le patch applicate da GoogleDialerMod resistono nel tempo agli aggiornamenti del Google Dialer, anche dopo la disinstallazione dell\'app.\nTali modifiche sono da considerarsi quindi permanenti, ma si possono facilmente annullare premendo l\'icona del cestino nel menù in alto a destra.\nNon è necessario tenere installata questa app dopo aver applicato le mod desiderate.\n\nDopo aver applicato modifiche, potrebbe essere necessario riaprire e chiudere forzatamente un paio di volte l\'app Dialer prima che abbiano effetto.</string>
     <string name="new_version_alert">E\' disponibile una nuova versione di GoogleDialerMod.\n\nPuoi scaricarla dalla pagina Releases di Github.</string>
     <string name="force_enable_call_screen">Abilita / disabilita forzatamente il filtro chiamate (call screen)</string>
+    <string name="choose_a_language">Scegli una lingua</string>
 </resources>

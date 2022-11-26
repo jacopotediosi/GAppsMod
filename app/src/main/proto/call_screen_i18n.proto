@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package com.jacopomii.googledialermod.protos;
+
+option java_multiple_files = true;
+option java_package = "com.jacopomii.googledialermod.protos";
+option java_outer_classname = "CallScreenI18nProtos";
+
+/*
+  Reversed from Dialer. Hex 0a140a026974120e0a0c0a0569742d495412030a0102 corresponds to the following JSON.
+  {
+    "countryConfigs":[{
+      "country": "it",
+      "languageConfig": {
+        "languages":[{
+          "languageCode":"it-IT",
+          "A6":{
+            "A7":2
+          }
+        }]
+      }
+    }]
+  }
+ */
+
+message Call_screen_i18n_config {
+  message A6 {
+    bytes a7 = 1;
+  }
+
+  message Language {
+    string languageCode = 1;
+    A6 a6 = 2;
+  }
+
+  message LanguageConfig {
+    repeated Language languages = 1;
+  }
+
+  message CountryConfig {
+    string country = 1;
+    LanguageConfig languageConfig = 2;
+  }
+
+  repeated CountryConfig countryConfigs = 1;
+}

@@ -20,6 +20,7 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Formatter;
 
 public class Utils {
     private static final String TAG = "Utils";
@@ -46,6 +47,13 @@ public class Utils {
         inputStream.close();
         outputStream.flush();
         outputStream.close();
+    }
+
+    public static String byteArrayToHexString(byte[] byteArray) {
+        Formatter formatter = new Formatter();
+        for (byte b : byteArray)
+            formatter.format("%02x", b);
+        return formatter.toString();
     }
 
     public static JSONArray execPhenotypeQuery(Context context, String query) {

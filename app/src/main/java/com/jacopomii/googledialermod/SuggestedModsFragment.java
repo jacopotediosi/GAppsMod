@@ -3,8 +3,10 @@ package com.jacopomii.googledialermod;
 import static com.jacopomii.googledialermod.Utils.deleteCallrecordingpromptFolder;
 import static com.jacopomii.googledialermod.Utils.revertAllMods;
 
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,6 +22,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.protobuf.ByteString;
+import com.jacopomii.googledialermod.protos.Call_screen_i18n_config;
 import com.topjohnwu.superuser.Shell;
 
 public class SuggestedModsFragment extends Fragment {
@@ -79,6 +83,7 @@ public class SuggestedModsFragment extends Fragment {
             // Enable the saving of the transcript also for Revelio
             "enable_revelio_transcript"
     };
+    private final String CALL_SCREEN_I18N_CONFIG_FLAG = "CallScreenI18n__call_screen_i18n_config";
     private CompoundButton.OnCheckedChangeListener mForceEnableCallRecordingSwitchOnCheckedChangeListener;
     private CompoundButton.OnCheckedChangeListener mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener;
     private CompoundButton.OnCheckedChangeListener mForceEnableCallScreenSwitchOnCheckedChangeListener;
@@ -136,8 +141,46 @@ public class SuggestedModsFragment extends Fragment {
         mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener);
 
         mForceEnableCallScreenSwitchOnCheckedChangeListener = (buttonView, isChecked) -> {
-            for (String flag : ENABLE_CALL_SCREEN_FLAGS) {
-                mDBFlagsSingleton.updateDBFlag(flag, isChecked);
+            if (isChecked) {
+                // Ask the user what language the Call Screen feature should use
+                String[] supportedLanguages = {"en", "en-AU", "en-GB", "en-IN", "ja-JP", "fr-FR", "hi-IN", "de-DE", "it-IT", "es-ES"};
+                new AlertDialog.Builder(requireContext())
+                        .setTitle(R.string.choose_a_language)
+                        .setItems(supportedLanguages, (dialog, choice) -> {
+                            // Update boolean flags
+                            for (String flag : ENABLE_CALL_SCREEN_FLAGS)
+                                mDBFlagsSingleton.updateDBFlag(flag, true);
+
+                            // Override the call screen i18n config flag with the user desired language
+                            TelephonyManager telephonyManager = (TelephonyManager) requireActivity().getSystemService(Context.TELEPHONY_SERVICE);
+                            String simCountryIso = telephonyManager.getSimCountryIso();
+
+                            String chosenLanguage = supportedLanguages[choice];
+
+                            Call_screen_i18n_config call_screen_i18n_config = Call_screen_i18n_config.newBuilder()
+                                    .addCountryConfigs(
+                                            Call_screen_i18n_config.CountryConfig.newBuilder()
+                                                    .setCountry(simCountryIso)
+                                                    .setLanguageConfig(
+                                                            Call_screen_i18n_config.LanguageConfig.newBuilder()
+                                                                    .addLanguages(
+                                                                            Call_screen_i18n_config.Language.newBuilder()
+                                                                                    .setLanguageCode(chosenLanguage)
+                                                                                    .setA6(
+                                                                                            Call_screen_i18n_config.A6.newBuilder()
+                                                                                                    .setA7(ByteString.copyFrom(new byte[]{2}))
+                                                                                    )
+                                                                    )
+                                                    )
+                                    ).build();
+                            mDBFlagsSingleton.updateDBFlag(CALL_SCREEN_I18N_CONFIG_FLAG, call_screen_i18n_config.toByteArray());
+                        }).create().show();
+            } else {
+                // Update boolean flags
+                for (String flag : ENABLE_CALL_SCREEN_FLAGS)
+                    mDBFlagsSingleton.updateDBFlag(flag, false);
+                // Remove the call screen i18n config flag overrides
+                mDBFlagsSingleton.deleteFlagOverrides("CallScreenI18n__call_screen_i18n_config");
             }
         };
         mForceEnableCallScreenSwitch.setOnCheckedChangeListener(mForceEnableCallScreenSwitchOnCheckedChangeListener);
@@ -215,7 +258,7 @@ public class SuggestedModsFragment extends Fragment {
         // mForceEnableCallScreenSwitch
         mForceEnableCallScreenSwitch.setOnCheckedChangeListener(null);
         mForceEnableCallScreenSwitch.setChecked(
-                mDBFlagsSingleton.areAllBooleanFlagsTrue(ENABLE_CALL_SCREEN_FLAGS)
+                mDBFlagsSingleton.areAllBooleanFlagsTrue(ENABLE_CALL_SCREEN_FLAGS) && mDBFlagsSingleton.areAllFlagsOverridden(CALL_SCREEN_I18N_CONFIG_FLAG)
         );
         mForceEnableCallScreenSwitch.setOnCheckedChangeListener(mForceEnableCallScreenSwitchOnCheckedChangeListener);
     }

@@ -24,4 +24,5 @@
     <string name="how_it_works_explanation">Le correctif appliqué par GoogleDialerMod aux mises à jours du téléphone de Google au fil du temps, même après avoir désinstallé l\application.\nLes correctifs sont donc considérés comme étants permanents, mais ils peuvent être facilement annulables en appuyant sur l\’icône de la corbeille dans le menu situé dans le coin suppérieur droit.\nIl n\’y a pas de nécessitée à conserver cette application installée après avoir appliqué les changements désirés.\n\nAprès avoir appliqué les changements, il est tout à fait possible que vous soyez forcer de réouvrir et fermer l\’application téléphone à plusieures reprises avant que ceux-ci ne prennent effet.</string>
     <string name="new_version_alert">Une nouvelle version du GoogleDialerMod est disponible.\n\nVous pouvez la télécharger depuis la pages des versions sur Github.</string>
     <string name="force_enable_call_screen">Forcer l\'activation / la désactivation du filtrage d\'appels</string>
+    <string name="choose_a_language">Choisissez une langue</string>
 </resources>
