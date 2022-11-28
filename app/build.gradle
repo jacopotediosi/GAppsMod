@@ -4,13 +4,13 @@ plugins {
 }
 
 // Remember to config your keystore settings in local.properties or in the below lines
-def keyfile = file('C:/keystore.jks')
+def keyfile = file('./keystore.jks')
 def keystorePSW = 'CHANGEME'
 def keystoreAlias = 'CHANGEME'
 def keystoreAliasPSW = 'CHANGEME'
 
 Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
+properties.load(project.rootProject.file('gradle.properties').newDataInputStream())
 def keystoreFilepath = properties.getProperty("keystore.path")
 
 if (keystoreFilepath) {
