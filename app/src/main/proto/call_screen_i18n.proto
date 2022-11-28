@@ -14,8 +14,8 @@ option java_outer_classname = "CallScreenI18nProtos";
       "languageConfig": {
         "languages":[{
           "languageCode":"it-IT",
-          "A6":{
-            "A7":2
+          "a6":{
+            "a7":2
           }
         }]
       }
