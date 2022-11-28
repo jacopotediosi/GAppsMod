@@ -7,7 +7,6 @@ plugins {
 def keyfile = file('./keystore.jks')
 def keystorePSW = 'CHANGEME'
 def keystoreAlias = 'CHANGEME'
-def keystoreAliasPSW = 'CHANGEME'
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('gradle.properties').newDataInputStream())
