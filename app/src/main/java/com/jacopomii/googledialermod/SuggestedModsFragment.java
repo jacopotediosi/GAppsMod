@@ -81,7 +81,9 @@ public class SuggestedModsFragment extends Fragment {
             // Enable the Dialer settings option to save screened call audio (it does not depend on the Call Recording feature, but depends on Revelio)
             "G__enable_call_screen_saving_audio",
             // Enable the saving of the transcript also for Revelio
-            "enable_revelio_transcript"
+            "enable_revelio_transcript",
+            // Enable Change Greeting Voice feature
+            "G__voicemail_change_greeting_enabled"
     };
     private final String CALL_SCREEN_I18N_CONFIG_FLAG = "CallScreenI18n__call_screen_i18n_config";
     private CompoundButton.OnCheckedChangeListener mForceEnableCallRecordingSwitchOnCheckedChangeListener;
