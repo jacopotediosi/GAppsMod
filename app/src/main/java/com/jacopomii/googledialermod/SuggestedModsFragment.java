@@ -32,30 +32,39 @@ public class SuggestedModsFragment extends Fragment {
     private SwitchCompat mSilenceCallRecordingAlertsSwitch;
     private SwitchCompat mForceEnableCallScreenSwitch;
     private DBFlagsSingleton mDBFlagsSingleton;
+
+    // The following boolean flags force enable or disable Call Recording features
     private final String[] ENABLE_CALL_RECORDING_FLAGS = {
             // Enable Call Recording feature
             "G__enable_call_recording",
             "enable_call_recording_system_feature",
             // Enable Call Recording also for Google Fi / Fides (e2e calls, etc)
             "CallRecording__enable_call_recording_for_fi",
-            // Bypass country-related restrictions
+            // Bypass country-related restrictions for call recording feature
             "G__force_within_call_recording_geofence_value",
-            "G__use_call_recording_geofence_overrides",
+            // Bypass country-related restrictions for automatic call recording ("always record") feature
             "G__force_within_crosby_geofence_value",
+            // Allow the usage of the above two "force geofence" flags
+            "G__use_call_recording_geofence_overrides",
             // Show call recording button
             "enable_tidepods_call_recording"
     };
+
+    // The following extensionVal flags concern the announcement audio played when a call recording starts or ends
     private final String[] SILENCE_CALL_RECORDING_ALERTS_FLAGS = {
-            // Following flags contain a serialized and base64 encoded list of countries in which the use of embedded audio or audio generated with TTS is forced
-            // If their hashsets are all empty, dialer will use by default the TTS to generate audio call recording announcements
+            // The following flag contains a protobuf list of countries where the use of embedded audio is enforced.
+            // If its value is blank, the Dialer will by default use TTS to generate audio call recording alerts.
             "CallRecording__call_recording_countries_with_built_in_audio_file",
+            // The following flags are no longer used in recent versions of the Dialer and remain here for backwards compatibility.
+            // They were used to contain a protobuf list of countries where the use of embedded or TTS audio was enforced.
             "CallRecording__call_recording_force_enable_built_in_audio_file_countries",
             "CallRecording__call_recording_force_enable_tts_countries",
-            // Following flags contain a serialized and base64 encoded hashset with country-language matches, used by Dialer to generate call recording audio announcements via TTS
-            // If their hashsets are empty, TTS will always fallback to en_US
-            "CallRecording__call_recording_countries",
-            "CallRecording__crosby_countries"
+            // The following flag contains a protobuf hashset with country-language matches, used by Dialer to generate call recording audio alerts via TTS
+            // in the right language. If its value is empty, TTS will always fall back to en_US (hardcoded in the Dialer sources).
+            "CallRecording__call_recording_countries"
     };
+
+    // The following boolean flags enable or disable Call Screen / Revelio features
     private final String[] ENABLE_CALL_SCREEN_FLAGS = {
             // Enable Call Screen feature for both calls and video-calls
             "G__speak_easy_enabled",
@@ -83,7 +92,11 @@ public class SuggestedModsFragment extends Fragment {
             // Enable the saving of the transcript also for Revelio
             "enable_revelio_transcript"
     };
+
+    // The following extensionVal flag contains a protobuf (see call_screen_i18n.proto for its definition)
+    // which matches the languages to be used for the Call Screen feature to the supported countries
     private final String CALL_SCREEN_I18N_CONFIG_FLAG = "CallScreenI18n__call_screen_i18n_config";
+
     private CompoundButton.OnCheckedChangeListener mForceEnableCallRecordingSwitchOnCheckedChangeListener;
     private CompoundButton.OnCheckedChangeListener mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener;
     private CompoundButton.OnCheckedChangeListener mForceEnableCallScreenSwitchOnCheckedChangeListener;
