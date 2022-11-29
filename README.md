@@ -24,6 +24,7 @@ What this app does is execute SQLite queries on that database and overwrite Goog
 - Supports arm / arm64 / x86 / x86_64 devices and (hopefully) all Android versions
 - Enable / disable hidden features for all users at once when Android "multiple users" mode is in use
 - Force enable call recording feature even on unsupported devices or in unsupported countries
+    - Enable also automatic call recording feature based on caller (otherwise only available in India)
 - Silence the annoying "registration has started / ended" call recording sounds
 - Force enable call screening and revelio (advanced automatic call screening) even on unsupported devices or in unsupported countries
 
