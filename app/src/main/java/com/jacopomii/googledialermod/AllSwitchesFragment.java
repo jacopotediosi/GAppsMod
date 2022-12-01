@@ -1,9 +1,6 @@
 package com.jacopomii.googledialermod;
 
-import static com.jacopomii.googledialermod.Utils.revertAllMods;
-
 import android.os.Bundle;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,11 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -41,7 +36,6 @@ public class AllSwitchesFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        refreshAdapter();
         setHasOptionsMenu(true);
     }
 
@@ -62,8 +56,6 @@ public class AllSwitchesFragment extends Fragment {
         FragmentActivity parentActivity = requireActivity();
         RadioGroup radioGroupSearch = parentActivity.findViewById(R.id.radiogroup_search);
 
-        MenuItem infoIcon = menu.findItem(R.id.menu_info_icon);
-        MenuItem deleteIcon = menu.findItem(R.id.menu_delete_icon);
         MenuItem searchIcon = menu.findItem(R.id.menu_search_icon);
 
         SearchView searchView = (SearchView) searchIcon.getActionView();
@@ -94,8 +86,11 @@ public class AllSwitchesFragment extends Fragment {
         searchIcon.setOnActionExpandListener(new  MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
-                infoIcon.setVisible(false);
-                deleteIcon.setVisible(false);
+                for (int i=0; i<menu.size(); i++) {
+                    MenuItem itemToHide = menu.getItem(i);
+                    if (itemToHide.getItemId() != R.id.menu_search_icon)
+                        itemToHide.setVisible(false);
+                }
                 radioGroupSearch.setVisibility(View.VISIBLE);
                 return true;
             }
@@ -142,38 +137,9 @@ public class AllSwitchesFragment extends Fragment {
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.menu_info_icon) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-            builder.setPositiveButton(android.R.string.ok, null)
-                    .setView(R.layout.information_dialog);
-            AlertDialog alert = builder.create();
-            alert.show();
-
-            // Links aren't clickable workaround
-            TextView whatIsItExplanation = alert.findViewById(R.id.what_is_it_explanation);
-            if (whatIsItExplanation != null)
-                whatIsItExplanation.setMovementMethod(LinkMovementMethod.getInstance());
-            TextView madeWithLove = alert.findViewById(R.id.made_with_love_by_jacopo_tediosi);
-            if (madeWithLove != null)
-                madeWithLove.setMovementMethod(LinkMovementMethod.getInstance());
-
-            return true;
-        } else if (item.getItemId() == R.id.menu_delete_icon) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-            builder.setMessage(R.string.delete_all_mods_alert)
-                    .setNegativeButton(getString(android.R.string.cancel), (dialog, which) -> {
-                    })
-                    .setPositiveButton(getString(android.R.string.ok), (dialog, which) -> {
-                        revertAllMods(requireContext());
-                        refreshAdapter();
-                    });
-            AlertDialog alert = builder.create();
-            alert.show();
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
+    public void onResume() {
+        super.onResume();
+        refreshAdapter();
     }
 
     public void refreshAdapter() {

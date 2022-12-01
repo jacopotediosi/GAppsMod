@@ -106,7 +106,6 @@ public class SuggestedModsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -198,50 +197,14 @@ public class SuggestedModsFragment extends Fragment {
         };
         mForceEnableCallScreenSwitch.setOnCheckedChangeListener(mForceEnableCallScreenSwitchOnCheckedChangeListener);
 
-        refreshSwitchesStatus();
 
         return mView;
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.suggested_mods_menu, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.menu_info_icon) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-            builder.setPositiveButton(android.R.string.ok, null)
-                    .setView(R.layout.information_dialog);
-            AlertDialog alert = builder.create();
-            alert.show();
-
-            // Links aren't clickable workaround
-            TextView whatIsItExplanation = alert.findViewById(R.id.what_is_it_explanation);
-            if (whatIsItExplanation != null)
-                whatIsItExplanation.setMovementMethod(LinkMovementMethod.getInstance());
-            TextView madeWithLove = alert.findViewById(R.id.made_with_love_by_jacopo_tediosi);
-            if (madeWithLove != null)
-                madeWithLove.setMovementMethod(LinkMovementMethod.getInstance());
-
-            return true;
-        } else if (item.getItemId() == R.id.menu_delete_icon) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-            builder.setMessage(R.string.delete_all_mods_alert)
-                    .setNegativeButton(getString(android.R.string.cancel), (dialog, which) -> {
-                    })
-                    .setPositiveButton(getString(android.R.string.ok), (dialog, which) -> {
-                        revertAllMods(requireContext());
-                        refreshSwitchesStatus();
-                    });
-            AlertDialog alert = builder.create();
-            alert.show();
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
+    public void onResume() {
+        super.onResume();
+        refreshSwitchesStatus();
     }
 
     public void refreshSwitchesStatus() {

@@ -4,11 +4,13 @@
     <item
         android:id="@+id/menu_info_icon"
         android:title="@string/informations"
+        android:orderInCategory="400"
         android:icon="@drawable/ic_baseline_info_24"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_delete_icon"
         android:title="@string/delete_all_applied_mods"
+        android:orderInCategory="500"
         android:icon="@drawable/ic_baseline_delete_24"
         app:showAsAction="ifRoom" />
 </menu>
