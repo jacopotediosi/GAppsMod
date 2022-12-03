@@ -1,4 +1,4 @@
-package com.jacopomii.googledialermod;
+package com.pa.safetyhubmod;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

@@ -1,4 +1,4 @@
-package com.jacopomii.googledialermod;
+package com.pa.safetyhubmod;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

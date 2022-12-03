@@ -1,6 +1,6 @@
-package com.jacopomii.googledialermod;
+package com.pa.safetyhubmod;
 
-import static com.jacopomii.googledialermod.Utils.revertAllMods;
+import static com.pa.safetyhubmod.Utils.revertAllMods;
 
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;

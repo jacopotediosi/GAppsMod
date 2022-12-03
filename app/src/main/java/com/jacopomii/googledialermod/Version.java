@@ -1,4 +1,4 @@
-package com.jacopomii.googledialermod;
+package com.pa.safetyhubmod;
 
 public class Version implements Comparable<Version> {
     private final String mVersion;

@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package com.jacopomii.googledialermod.protos;
+package com.pa.safetyhubmod.protos;
 
 option java_multiple_files = true;
-option java_package = "com.jacopomii.googledialermod.protos";
+option java_package = "com.pa.safetyhubmod.protos";
 option java_outer_classname = "CallScreenI18nProtos";
 
 /*

@@ -1,4 +1,4 @@
-package com.jacopomii.googledialermod;
+package com.pa.safetyhubmod;
 
 import android.content.Context;
 import android.content.Intent;
@@ -27,11 +27,11 @@ public class Utils {
 
     public static boolean checkIsDialerInstalled(Context context) {
         try {
-            context.getPackageManager().getApplicationInfo("com.google.android.dialer", 0);
+            context.getPackageManager().getApplicationInfo("com.google.android.apps.safetyhub", 0);
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }
-        return Shell.cmd("test -d /data/data/com.google.android.dialer").exec().isSuccess();
+        return Shell.cmd("test -d /data/data/com.google.android.apps.safetyhub").exec().isSuccess();
     }
 
     public static boolean checkIsPhenotypeDBInstalled() {
@@ -75,11 +75,11 @@ public class Utils {
     }
 
     public static void killDialerAndDeletePhenotypeCache() {
-        Shell.cmd("am kill all com.google.android.dialer; rm -rf /data/data/com.google.android.dialer/files/phenotype").exec();
+        Shell.cmd("am kill all com.google.android.apps.safetyhub; rm -rf /data/data/com.google.android.apps.safetyhub/files/phenotype").exec();
     }
 
     public static void deleteCallrecordingpromptFolder() {
-        Shell.cmd("rm -rf /data/data/com.google.android.dialer/files/callrecordingprompt").exec();
+        Shell.cmd("rm -rf /data/data/com.google.android.apps.safetyhub/files/callrecordingprompt").exec();
     }
 
     public static void revertAllMods(Context context) {

@@ -1,9 +1,9 @@
-package com.jacopomii.googledialermod;
+package com.pa.safetyhubmod;
 
-import static com.jacopomii.googledialermod.Utils.checkIsDialerInstalled;
-import static com.jacopomii.googledialermod.Utils.checkIsLatestGithubVersion;
-import static com.jacopomii.googledialermod.Utils.checkIsPhenotypeDBInstalled;
-import static com.jacopomii.googledialermod.Utils.copyFile;
+import static com.pa.safetyhubmod.Utils.checkIsDialerInstalled;
+import static com.pa.safetyhubmod.Utils.checkIsLatestGithubVersion;
+import static com.pa.safetyhubmod.Utils.checkIsPhenotypeDBInstalled;
+import static com.pa.safetyhubmod.Utils.copyFile;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -80,11 +80,11 @@ public class MainActivity extends AppCompatActivity {
 
                 alert.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(view -> {
                     try {
-                        Intent appStoreIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.dialer"));
+                        Intent appStoreIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.safetyhub"));
                         appStoreIntent.setPackage("com.android.vending");
                         startActivity(appStoreIntent);
                     } catch (ActivityNotFoundException exception) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.dialer")));
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.safetyhub")));
                     }
                 });
             });

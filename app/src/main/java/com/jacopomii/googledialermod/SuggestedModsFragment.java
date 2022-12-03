@@ -1,7 +1,7 @@
-package com.jacopomii.googledialermod;
+package com.pa.safetyhubmod;
 
-import static com.jacopomii.googledialermod.Utils.deleteCallrecordingpromptFolder;
-import static com.jacopomii.googledialermod.Utils.revertAllMods;
+import static com.pa.safetyhubmod.Utils.deleteCallrecordingpromptFolder;
+import static com.pa.safetyhubmod.Utils.revertAllMods;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -23,7 +23,7 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.protobuf.ByteString;
-import com.jacopomii.googledialermod.protos.Call_screen_i18n_config;
+import com.pa.safetyhubmod.protos.Call_screen_i18n_config;
 import com.topjohnwu.superuser.Shell;
 
 public class SuggestedModsFragment extends Fragment {
@@ -122,16 +122,16 @@ public class SuggestedModsFragment extends Fragment {
                 }
                 try {
                     final String dataDir = requireActivity().getApplicationInfo().dataDir;
-                    final int uid = requireActivity().getPackageManager().getApplicationInfo("com.google.android.dialer", 0).uid;
+                    final int uid = requireActivity().getPackageManager().getApplicationInfo("com.google.android.apps.safetyhub", 0).uid;
                     //TODO: eventualmente splittare in più comandi?
-                    Shell.cmd("rm -r /data/data/com.google.android.dialer/files/callrecordingprompt; " +
-                            "mkdir /data/data/com.google.android.dialer/files/callrecordingprompt; " +
-                            "cp " + dataDir + "/silent_wav.wav /data/data/com.google.android.dialer/files/callrecordingprompt/starting_voice-en_US.wav; " +
-                            "cp " + dataDir + "/silent_wav.wav /data/data/com.google.android.dialer/files/callrecordingprompt/ending_voice-en_US.wav; " +
-                            "chown -R " + uid + ":" + uid + " /data/data/com.google.android.dialer/files/callrecordingprompt; " +
-                            "chmod -R 755 /data/data/com.google.android.dialer/files/callrecordingprompt; " +
-                            "chmod 444 /data/data/com.google.android.dialer/files/callrecordingprompt/*; " +
-                            "restorecon -R /data/data/com.google.android.dialer/files/callrecordingprompt").exec();
+                    Shell.cmd("rm -r /data/data/com.google.android.apps.safetyhub/files/callrecordingprompt; " +
+                            "mkdir /data/data/com.google.android.apps.safetyhub/files/callrecordingprompt; " +
+                            "cp " + dataDir + "/silent_wav.wav /data/data/com.google.android.apps.safetyhub/files/callrecordingprompt/starting_voice-en_US.wav; " +
+                            "cp " + dataDir + "/silent_wav.wav /data/data/com.google.android.apps.safetyhub/files/callrecordingprompt/ending_voice-en_US.wav; " +
+                            "chown -R " + uid + ":" + uid + " /data/data/com.google.android.apps.safetyhub/files/callrecordingprompt; " +
+                            "chmod -R 755 /data/data/com.google.android.apps.safetyhub/files/callrecordingprompt; " +
+                            "chmod 444 /data/data/com.google.android.apps.safetyhub/files/callrecordingprompt/*; " +
+                            "restorecon -R /data/data/com.google.android.apps.safetyhub/files/callrecordingprompt").exec();
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -245,7 +245,7 @@ public class SuggestedModsFragment extends Fragment {
         int startingVoiceSize = -1;
         Shell.Result result;
         try {
-            result = Shell.cmd("stat -c%s /data/data/com.google.android.dialer/files/callrecordingprompt/starting_voice-en_US.wav").exec();
+            result = Shell.cmd("stat -c%s /data/data/com.google.android.apps.safetyhub/files/callrecordingprompt/starting_voice-en_US.wav").exec();
             if (!result.isSuccess()) // Fallback if stat is not a command
                 result = Shell.cmd("ls -lS starting_voice-en_US.wav | awk '{print $5}'").exec();
             startingVoiceSize = Integer.parseInt(result.getOut().get(0));
