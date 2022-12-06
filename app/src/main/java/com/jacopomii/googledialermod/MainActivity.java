@@ -1,7 +1,7 @@
 package com.jacopomii.googledialermod;
 
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.jacopomii.googledialermod.Constants.DIALER_GOOGLE_PLAY_LINK;
+import static com.jacopomii.googledialermod.Constants.VENDING_PACKAGE_NAME;
 import static com.jacopomii.googledialermod.Utils.checkIsDialerInstalled;
 import static com.jacopomii.googledialermod.Utils.checkIsLatestGithubVersion;
 import static com.jacopomii.googledialermod.Utils.checkIsPhenotypeDBInstalled;
@@ -88,11 +88,11 @@ public class MainActivity extends AppCompatActivity {
 
                 alert.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(view -> {
                     try {
-                        Intent appStoreIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.dialer"));
-                        appStoreIntent.setPackage("com.android.vending");
+                        Intent appStoreIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(DIALER_GOOGLE_PLAY_LINK));
+                        appStoreIntent.setPackage(VENDING_PACKAGE_NAME);
                         startActivity(appStoreIntent);
                     } catch (ActivityNotFoundException exception) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.dialer")));
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(DIALER_GOOGLE_PLAY_LINK)));
                     }
                 });
             });

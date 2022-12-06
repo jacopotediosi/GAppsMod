@@ -1,5 +1,11 @@
 package com.jacopomii.googledialermod;
 
+import static com.jacopomii.googledialermod.Constants.DIALER_CALLRECORDINGPROMPT;
+import static com.jacopomii.googledialermod.Constants.DIALER_DATA_DATA;
+import static com.jacopomii.googledialermod.Constants.DIALER_PACKAGE_NAME;
+import static com.jacopomii.googledialermod.Constants.DIALER_PHENOTYPE_CACHE;
+import static com.jacopomii.googledialermod.Constants.PHENOTYPE_DB;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -27,15 +33,15 @@ public class Utils {
 
     public static boolean checkIsDialerInstalled(Context context) {
         try {
-            context.getPackageManager().getApplicationInfo("com.google.android.dialer", 0);
+            context.getPackageManager().getApplicationInfo(DIALER_PACKAGE_NAME, 0);
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }
-        return Shell.cmd("test -d /data/data/com.google.android.dialer").exec().isSuccess();
+        return Shell.cmd(String.format("test -d %s", DIALER_DATA_DATA)).exec().isSuccess();
     }
 
     public static boolean checkIsPhenotypeDBInstalled() {
-        return Shell.cmd("test -f /data/data/com.google.android.gms/databases/phenotype.db").exec().isSuccess();
+        return Shell.cmd(String.format("test -f %s", PHENOTYPE_DB)).exec().isSuccess();
     }
 
     public static void copyFile(InputStream inputStream, OutputStream outputStream) throws IOException {
@@ -60,9 +66,13 @@ public class Utils {
         JSONArray result = null;
         try {
             String query_result = String.join("", Shell.cmd(
-                    context.getApplicationInfo().dataDir +
-                            "/sqlite3 -batch -json /data/data/com.google.android.gms/databases/phenotype.db " +
-                            "\"" + query + ";\"").exec().getOut());
+                    String.format(
+                            "%s/sqlite3 -batch -json %s \"%s;\"",
+                            context.getApplicationInfo().dataDir,
+                            PHENOTYPE_DB,
+                            query
+                    )
+            ).exec().getOut());
             if (query_result.equals("")) {
                 result = new JSONArray("[]");
             } else {
@@ -75,11 +85,21 @@ public class Utils {
     }
 
     public static void killDialerAndDeletePhenotypeCache() {
-        Shell.cmd("am kill all com.google.android.dialer; rm -rf /data/data/com.google.android.dialer/files/phenotype").exec();
+        Shell.cmd(
+                String.format(
+                        "am kill all com.google.android.dialer; rm -rf %s",
+                        DIALER_PHENOTYPE_CACHE
+                )
+        ).exec();
     }
 
     public static void deleteCallrecordingpromptFolder() {
-        Shell.cmd("rm -rf /data/data/com.google.android.dialer/files/callrecordingprompt").exec();
+        Shell.cmd(
+                String.format(
+                        "rm -rf %s",
+                        DIALER_CALLRECORDINGPROMPT
+                )
+        ).exec();
     }
 
     public static void revertAllMods(Context context) {

@@ -1,7 +1,8 @@
 package com.jacopomii.googledialermod;
 
+import static com.jacopomii.googledialermod.Constants.DIALER_CALLRECORDINGPROMPT;
+import static com.jacopomii.googledialermod.Constants.DIALER_PACKAGE_NAME;
 import static com.jacopomii.googledialermod.Utils.copyFile;
-import static com.jacopomii.googledialermod.Utils.deleteCallrecordingpromptFolder;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -65,7 +66,6 @@ public class SuggestedModsFragment extends Fragment {
             // in the right language. If its value is empty, TTS will always fall back to en_US (hardcoded in the Dialer sources).
             "CallRecording__call_recording_countries"
     };
-    private final String CALLRECORDINGPROMPT = "/data/data/com.google.android.dialer/files/callrecordingprompt";
     private final String CALLRECORDINGPROMPT_STARTING_VOICE_US = "starting_voice-en_US.wav";
     private final String CALLRECORDINGPROMPT_ENDING_VOICE_US = "ending_voice-en_US.wav";
 
@@ -139,7 +139,7 @@ public class SuggestedModsFragment extends Fragment {
                 }
                 try {
                     // Create CALLRECORDINGPROMPT folder
-                    ExtendedFile callRecordingPromptDir = fileSystemManager.getFile(CALLRECORDINGPROMPT);
+                    ExtendedFile callRecordingPromptDir = fileSystemManager.getFile(DIALER_CALLRECORDINGPROMPT);
                     if ( callRecordingPromptDir.mkdir() || (callRecordingPromptDir.exists() && callRecordingPromptDir.isDirectory()) ) {
                         // Overwrite the two alert files with an empty audio
                         ExtendedFile startingVoice = fileSystemManager.getFile(callRecordingPromptDir, CALLRECORDINGPROMPT_STARTING_VOICE_US);
@@ -148,12 +148,12 @@ public class SuggestedModsFragment extends Fragment {
                         copyFile(getResources().openRawResource(R.raw.silent_wav), endingVoice.newOutputStream());
 
                         // Set the right permissions to files and folders
-                        final int uid = requireActivity().getPackageManager().getApplicationInfo("com.google.android.dialer", 0).uid;
+                        final int uid = requireActivity().getPackageManager().getApplicationInfo(DIALER_PACKAGE_NAME, 0).uid;
                         Shell.cmd(
-                                String.format("chown -R %s:%s %s", uid, uid, CALLRECORDINGPROMPT),
-                                String.format("chmod 755 %s", CALLRECORDINGPROMPT),
-                                String.format("chmod 444 %s/*", CALLRECORDINGPROMPT),
-                                String.format("restorecon -R %s", CALLRECORDINGPROMPT)
+                                String.format("chown -R %s:%s %s", uid, uid, DIALER_CALLRECORDINGPROMPT),
+                                String.format("chmod 755 %s", DIALER_CALLRECORDINGPROMPT),
+                                String.format("chmod 444 %s/*", DIALER_CALLRECORDINGPROMPT),
+                                String.format("restorecon -R %s", DIALER_CALLRECORDINGPROMPT)
                         ).exec();
                     }
                 } catch (PackageManager.NameNotFoundException | IOException e) {
@@ -161,7 +161,7 @@ public class SuggestedModsFragment extends Fragment {
                 }
             } else {
                 mDBFlagsSingleton.deleteFlagOverrides(SILENCE_CALL_RECORDING_ALERTS_FLAGS);
-                Shell.cmd(String.format("rm -rf %s", CALLRECORDINGPROMPT)).exec();
+                Shell.cmd(String.format("rm -rf %s", DIALER_CALLRECORDINGPROMPT)).exec();
             }
         };
         mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener);
@@ -243,8 +243,8 @@ public class SuggestedModsFragment extends Fragment {
         long startingVoiceSize = -1;
         long endingVoiceSize = -1;
         if (fileSystemManager!=null) {
-            startingVoiceSize = fileSystemManager.getFile(CALLRECORDINGPROMPT, CALLRECORDINGPROMPT_STARTING_VOICE_US).length();
-            endingVoiceSize = fileSystemManager.getFile(CALLRECORDINGPROMPT, CALLRECORDINGPROMPT_ENDING_VOICE_US).length();
+            startingVoiceSize = fileSystemManager.getFile(DIALER_CALLRECORDINGPROMPT, CALLRECORDINGPROMPT_STARTING_VOICE_US).length();
+            endingVoiceSize = fileSystemManager.getFile(DIALER_CALLRECORDINGPROMPT, CALLRECORDINGPROMPT_ENDING_VOICE_US).length();
         }
         mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(null);
         mSilenceCallRecordingAlertsSwitch.setChecked(
