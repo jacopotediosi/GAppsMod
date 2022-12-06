@@ -1,23 +1,20 @@
 package com.jacopomii.googledialermod;
 
+import static com.jacopomii.googledialermod.Utils.copyFile;
 import static com.jacopomii.googledialermod.Utils.deleteCallrecordingpromptFolder;
-import static com.jacopomii.googledialermod.Utils.revertAllMods;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.telephony.TelephonyManager;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
@@ -25,6 +22,11 @@ import androidx.fragment.app.Fragment;
 import com.google.protobuf.ByteString;
 import com.jacopomii.googledialermod.protos.Call_screen_i18n_config;
 import com.topjohnwu.superuser.Shell;
+import com.topjohnwu.superuser.ipc.RootService;
+import com.topjohnwu.superuser.nio.ExtendedFile;
+import com.topjohnwu.superuser.nio.FileSystemManager;
+
+import java.io.IOException;
 
 public class SuggestedModsFragment extends Fragment {
     private View mView;
@@ -63,6 +65,9 @@ public class SuggestedModsFragment extends Fragment {
             // in the right language. If its value is empty, TTS will always fall back to en_US (hardcoded in the Dialer sources).
             "CallRecording__call_recording_countries"
     };
+    private final String CALLRECORDINGPROMPT = "/data/data/com.google.android.dialer/files/callrecordingprompt";
+    private final String CALLRECORDINGPROMPT_STARTING_VOICE_US = "starting_voice-en_US.wav";
+    private final String CALLRECORDINGPROMPT_ENDING_VOICE_US = "ending_voice-en_US.wav";
 
     // The following boolean flags enable or disable Call Screen / Revelio features
     private final String[] ENABLE_CALL_SCREEN_FLAGS = {
@@ -101,6 +106,8 @@ public class SuggestedModsFragment extends Fragment {
     private CompoundButton.OnCheckedChangeListener mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener;
     private CompoundButton.OnCheckedChangeListener mForceEnableCallScreenSwitchOnCheckedChangeListener;
 
+    private FileSystemManager fileSystemManager;
+
     public SuggestedModsFragment() {}
 
     @Override
@@ -131,23 +138,30 @@ public class SuggestedModsFragment extends Fragment {
                     mDBFlagsSingleton.updateDBFlag(flag, "");
                 }
                 try {
-                    final String dataDir = requireActivity().getApplicationInfo().dataDir;
-                    final int uid = requireActivity().getPackageManager().getApplicationInfo("com.google.android.dialer", 0).uid;
-                    //TODO: eventualmente splittare in più comandi?
-                    Shell.cmd("rm -r /data/data/com.google.android.dialer/files/callrecordingprompt; " +
-                            "mkdir /data/data/com.google.android.dialer/files/callrecordingprompt; " +
-                            "cp " + dataDir + "/silent_wav.wav /data/data/com.google.android.dialer/files/callrecordingprompt/starting_voice-en_US.wav; " +
-                            "cp " + dataDir + "/silent_wav.wav /data/data/com.google.android.dialer/files/callrecordingprompt/ending_voice-en_US.wav; " +
-                            "chown -R " + uid + ":" + uid + " /data/data/com.google.android.dialer/files/callrecordingprompt; " +
-                            "chmod -R 755 /data/data/com.google.android.dialer/files/callrecordingprompt; " +
-                            "chmod 444 /data/data/com.google.android.dialer/files/callrecordingprompt/*; " +
-                            "restorecon -R /data/data/com.google.android.dialer/files/callrecordingprompt").exec();
-                } catch (PackageManager.NameNotFoundException e) {
+                    // Create CALLRECORDINGPROMPT folder
+                    ExtendedFile callRecordingPromptDir = fileSystemManager.getFile(CALLRECORDINGPROMPT);
+                    if ( callRecordingPromptDir.mkdir() || (callRecordingPromptDir.exists() && callRecordingPromptDir.isDirectory()) ) {
+                        // Overwrite the two alert files with an empty audio
+                        ExtendedFile startingVoice = fileSystemManager.getFile(callRecordingPromptDir, CALLRECORDINGPROMPT_STARTING_VOICE_US);
+                        ExtendedFile endingVoice = fileSystemManager.getFile(callRecordingPromptDir, CALLRECORDINGPROMPT_ENDING_VOICE_US);
+                        copyFile(getResources().openRawResource(R.raw.silent_wav), startingVoice.newOutputStream());
+                        copyFile(getResources().openRawResource(R.raw.silent_wav), endingVoice.newOutputStream());
+
+                        // Set the right permissions to files and folders
+                        final int uid = requireActivity().getPackageManager().getApplicationInfo("com.google.android.dialer", 0).uid;
+                        Shell.cmd(
+                                String.format("chown -R %s:%s %s", uid, uid, CALLRECORDINGPROMPT),
+                                String.format("chmod 755 %s", CALLRECORDINGPROMPT),
+                                String.format("chmod 444 %s/*", CALLRECORDINGPROMPT),
+                                String.format("restorecon -R %s", CALLRECORDINGPROMPT)
+                        ).exec();
+                    }
+                } catch (PackageManager.NameNotFoundException | IOException e) {
                     e.printStackTrace();
                 }
             } else {
                 mDBFlagsSingleton.deleteFlagOverrides(SILENCE_CALL_RECORDING_ALERTS_FLAGS);
-                deleteCallrecordingpromptFolder();
+                Shell.cmd(String.format("rm -rf %s", CALLRECORDINGPROMPT)).exec();
             }
         };
         mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener);
@@ -192,11 +206,21 @@ public class SuggestedModsFragment extends Fragment {
                 for (String flag : ENABLE_CALL_SCREEN_FLAGS)
                     mDBFlagsSingleton.updateDBFlag(flag, false);
                 // Remove the call screen i18n config flag overrides
-                mDBFlagsSingleton.deleteFlagOverrides("CallScreenI18n__call_screen_i18n_config");
+                mDBFlagsSingleton.deleteFlagOverrides(CALL_SCREEN_I18N_CONFIG_FLAG);
             }
         };
         mForceEnableCallScreenSwitch.setOnCheckedChangeListener(mForceEnableCallScreenSwitchOnCheckedChangeListener);
 
+        RootServiceConnection rootServiceConnection = new RootServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                super.onServiceConnected(name, service);
+                fileSystemManager = this.getRemoteFS();
+                refreshSwitchesStatus();
+            }
+        };
+        Intent intent = new Intent(requireContext(), RootFileSystemService.class);
+        RootService.bind(intent, rootServiceConnection);
 
         return mView;
     }
@@ -216,18 +240,17 @@ public class SuggestedModsFragment extends Fragment {
         mForceEnableCallRecordingSwitch.setOnCheckedChangeListener(mForceEnableCallRecordingSwitchOnCheckedChangeListener);
 
         // mSilenceCallRecordingAlertsSwitch
-        int startingVoiceSize = -1;
-        Shell.Result result;
-        try {
-            result = Shell.cmd("stat -c%s /data/data/com.google.android.dialer/files/callrecordingprompt/starting_voice-en_US.wav").exec();
-            if (!result.isSuccess()) // Fallback if stat is not a command
-                result = Shell.cmd("ls -lS starting_voice-en_US.wav | awk '{print $5}'").exec();
-            startingVoiceSize = Integer.parseInt(result.getOut().get(0));
-        } catch (Exception ignored) {}
+        long startingVoiceSize = -1;
+        long endingVoiceSize = -1;
+        if (fileSystemManager!=null) {
+            startingVoiceSize = fileSystemManager.getFile(CALLRECORDINGPROMPT, CALLRECORDINGPROMPT_STARTING_VOICE_US).length();
+            endingVoiceSize = fileSystemManager.getFile(CALLRECORDINGPROMPT, CALLRECORDINGPROMPT_ENDING_VOICE_US).length();
+        }
         mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(null);
         mSilenceCallRecordingAlertsSwitch.setChecked(
                 mDBFlagsSingleton.areAllStringFlagsEmpty(SILENCE_CALL_RECORDING_ALERTS_FLAGS) &&
-                startingVoiceSize > 0 && startingVoiceSize <= 100
+                        startingVoiceSize > 0 && startingVoiceSize <= 100 &&
+                        endingVoiceSize > 0 && endingVoiceSize <= 100
         );
         mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener);
 
