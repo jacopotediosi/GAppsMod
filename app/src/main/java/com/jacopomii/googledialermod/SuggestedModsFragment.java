@@ -239,7 +239,8 @@ public class SuggestedModsFragment extends Fragment {
             // Ask the user what language the Call Screen feature should use
             String[] supportedLanguages = {"en", "en-AU", "en-GB", "en-IN", "ja-JP", "fr-FR", "hi-IN", "de-DE", "it-IT", "es-ES"};
             new AlertDialog.Builder(requireContext())
-                    .setTitle(R.string.choose_a_language)
+                    .setTitle(R.string.choose_a_language_for_call_screen)
+                    .setCancelable(false)
                     .setItems(supportedLanguages, (dialog, choice) -> {
                         // Update boolean flags
                         for (String flag : ENABLE_CALL_SCREEN_FLAGS)
