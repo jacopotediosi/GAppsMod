@@ -126,88 +126,17 @@ public class SuggestedModsFragment extends Fragment {
         mForceEnableCallScreenSwitch = mView.findViewById(R.id.force_enable_call_screen_switch);
 
         mForceEnableCallRecordingSwitchOnCheckedChangeListener = (buttonView, isChecked) -> {
-            for (String flag : ENABLE_CALL_RECORDING_FLAGS) {
-                mDBFlagsSingleton.updateDBFlag(flag, isChecked);
-            }
+            forceEnableCallRecording(isChecked);
         };
         mForceEnableCallRecordingSwitch.setOnCheckedChangeListener(mForceEnableCallRecordingSwitchOnCheckedChangeListener);
 
         mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener = (buttonView, isChecked) -> {
-            if (isChecked) {
-                for (String flag : SILENCE_CALL_RECORDING_ALERTS_FLAGS) {
-                    mDBFlagsSingleton.updateDBFlag(flag, "");
-                }
-                try {
-                    // Create CALLRECORDINGPROMPT folder
-                    ExtendedFile callRecordingPromptDir = fileSystemManager.getFile(DIALER_CALLRECORDINGPROMPT);
-                    if ( callRecordingPromptDir.mkdir() || (callRecordingPromptDir.exists() && callRecordingPromptDir.isDirectory()) ) {
-                        // Overwrite the two alert files with an empty audio
-                        ExtendedFile startingVoice = fileSystemManager.getFile(callRecordingPromptDir, CALLRECORDINGPROMPT_STARTING_VOICE_US);
-                        ExtendedFile endingVoice = fileSystemManager.getFile(callRecordingPromptDir, CALLRECORDINGPROMPT_ENDING_VOICE_US);
-                        copyFile(getResources().openRawResource(R.raw.silent_wav), startingVoice.newOutputStream());
-                        copyFile(getResources().openRawResource(R.raw.silent_wav), endingVoice.newOutputStream());
-
-                        // Set the right permissions to files and folders
-                        final int uid = requireActivity().getPackageManager().getApplicationInfo(DIALER_PACKAGE_NAME, 0).uid;
-                        Shell.cmd(
-                                String.format("chown -R %s:%s %s", uid, uid, DIALER_CALLRECORDINGPROMPT),
-                                String.format("chmod 755 %s", DIALER_CALLRECORDINGPROMPT),
-                                String.format("chmod 444 %s/*", DIALER_CALLRECORDINGPROMPT),
-                                String.format("restorecon -R %s", DIALER_CALLRECORDINGPROMPT)
-                        ).exec();
-                    }
-                } catch (PackageManager.NameNotFoundException | IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                mDBFlagsSingleton.deleteFlagOverrides(SILENCE_CALL_RECORDING_ALERTS_FLAGS);
-                Shell.cmd(String.format("rm -rf %s", DIALER_CALLRECORDINGPROMPT)).exec();
-            }
+            silenceCallRecordingAlerts(isChecked);
         };
         mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener);
 
         mForceEnableCallScreenSwitchOnCheckedChangeListener = (buttonView, isChecked) -> {
-            if (isChecked) {
-                // Ask the user what language the Call Screen feature should use
-                String[] supportedLanguages = {"en", "en-AU", "en-GB", "en-IN", "ja-JP", "fr-FR", "hi-IN", "de-DE", "it-IT", "es-ES"};
-                new AlertDialog.Builder(requireContext())
-                        .setTitle(R.string.choose_a_language)
-                        .setItems(supportedLanguages, (dialog, choice) -> {
-                            // Update boolean flags
-                            for (String flag : ENABLE_CALL_SCREEN_FLAGS)
-                                mDBFlagsSingleton.updateDBFlag(flag, true);
-
-                            // Override the call screen i18n config flag with the user desired language
-                            TelephonyManager telephonyManager = (TelephonyManager) requireActivity().getSystemService(Context.TELEPHONY_SERVICE);
-                            String simCountryIso = telephonyManager.getSimCountryIso();
-
-                            String chosenLanguage = supportedLanguages[choice];
-
-                            Call_screen_i18n_config call_screen_i18n_config = Call_screen_i18n_config.newBuilder()
-                                    .addCountryConfigs(
-                                            Call_screen_i18n_config.CountryConfig.newBuilder()
-                                                    .setCountry(simCountryIso)
-                                                    .setLanguageConfig(
-                                                            Call_screen_i18n_config.LanguageConfig.newBuilder()
-                                                                    .addLanguages(
-                                                                            Call_screen_i18n_config.Language.newBuilder()
-                                                                                    .setLanguageCode(chosenLanguage)
-                                                                                    .setA6(
-                                                                                            Call_screen_i18n_config.A6.newBuilder()
-                                                                                                    .setA7(ByteString.copyFrom(new byte[]{2}))
-                                                                                    )
-                                                                    )
-                                                    )
-                                    ).build();
-                            mDBFlagsSingleton.updateDBFlag(CALL_SCREEN_I18N_CONFIG_FLAG, call_screen_i18n_config.toByteArray());
-                        }).create().show();
-            } else {
-                // Update boolean flags
-                for (String flag : ENABLE_CALL_SCREEN_FLAGS)
-                    mDBFlagsSingleton.updateDBFlag(flag, false);
-                // Remove the call screen i18n config flag overrides
-                mDBFlagsSingleton.deleteFlagOverrides(CALL_SCREEN_I18N_CONFIG_FLAG);
-            }
+            forceEnableCallScreen(isChecked);
         };
         mForceEnableCallScreenSwitch.setOnCheckedChangeListener(mForceEnableCallScreenSwitchOnCheckedChangeListener);
 
@@ -260,5 +189,90 @@ public class SuggestedModsFragment extends Fragment {
                 mDBFlagsSingleton.areAllBooleanFlagsTrue(ENABLE_CALL_SCREEN_FLAGS) && mDBFlagsSingleton.areAllFlagsOverridden(CALL_SCREEN_I18N_CONFIG_FLAG)
         );
         mForceEnableCallScreenSwitch.setOnCheckedChangeListener(mForceEnableCallScreenSwitchOnCheckedChangeListener);
+    }
+
+    private void forceEnableCallRecording(boolean enable) {
+        if (enable) {
+            for (String flag : ENABLE_CALL_RECORDING_FLAGS) {
+                mDBFlagsSingleton.updateDBFlag(flag, true);
+            }
+        } else {
+            mDBFlagsSingleton.deleteFlagOverrides(ENABLE_CALL_RECORDING_FLAGS);
+        }
+    }
+
+    private void silenceCallRecordingAlerts(boolean silence) {
+        if (silence) {
+            for (String flag : SILENCE_CALL_RECORDING_ALERTS_FLAGS) {
+                mDBFlagsSingleton.updateDBFlag(flag, "");
+            }
+            try {
+                // Create CALLRECORDINGPROMPT folder
+                ExtendedFile callRecordingPromptDir = fileSystemManager.getFile(DIALER_CALLRECORDINGPROMPT);
+                if ( callRecordingPromptDir.mkdir() || (callRecordingPromptDir.exists() && callRecordingPromptDir.isDirectory()) ) {
+                    // Overwrite the two alert files with an empty audio
+                    ExtendedFile startingVoice = fileSystemManager.getFile(callRecordingPromptDir, CALLRECORDINGPROMPT_STARTING_VOICE_US);
+                    ExtendedFile endingVoice = fileSystemManager.getFile(callRecordingPromptDir, CALLRECORDINGPROMPT_ENDING_VOICE_US);
+                    copyFile(getResources().openRawResource(R.raw.silent_wav), startingVoice.newOutputStream());
+                    copyFile(getResources().openRawResource(R.raw.silent_wav), endingVoice.newOutputStream());
+
+                    // Set the right permissions to files and folders
+                    final int uid = requireActivity().getPackageManager().getApplicationInfo(DIALER_PACKAGE_NAME, 0).uid;
+                    Shell.cmd(
+                            String.format("chown -R %s:%s %s", uid, uid, DIALER_CALLRECORDINGPROMPT),
+                            String.format("chmod 755 %s", DIALER_CALLRECORDINGPROMPT),
+                            String.format("chmod 444 %s/*", DIALER_CALLRECORDINGPROMPT),
+                            String.format("restorecon -R %s", DIALER_CALLRECORDINGPROMPT)
+                    ).exec();
+                }
+            } catch (PackageManager.NameNotFoundException | IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            mDBFlagsSingleton.deleteFlagOverrides(SILENCE_CALL_RECORDING_ALERTS_FLAGS);
+            Shell.cmd(String.format("rm -rf %s", DIALER_CALLRECORDINGPROMPT)).exec();
+        }
+    }
+
+    private void forceEnableCallScreen(boolean enable) {
+        if (enable) {
+            // Ask the user what language the Call Screen feature should use
+            String[] supportedLanguages = {"en", "en-AU", "en-GB", "en-IN", "ja-JP", "fr-FR", "hi-IN", "de-DE", "it-IT", "es-ES"};
+            new AlertDialog.Builder(requireContext())
+                    .setTitle(R.string.choose_a_language)
+                    .setItems(supportedLanguages, (dialog, choice) -> {
+                        // Update boolean flags
+                        for (String flag : ENABLE_CALL_SCREEN_FLAGS)
+                            mDBFlagsSingleton.updateDBFlag(flag, true);
+
+                        // Override the call screen i18n config flag with the user desired language
+                        TelephonyManager telephonyManager = (TelephonyManager) requireActivity().getSystemService(Context.TELEPHONY_SERVICE);
+                        String simCountryIso = telephonyManager.getSimCountryIso();
+
+                        String chosenLanguage = supportedLanguages[choice];
+
+                        Call_screen_i18n_config call_screen_i18n_config = Call_screen_i18n_config.newBuilder()
+                                .addCountryConfigs(
+                                        Call_screen_i18n_config.CountryConfig.newBuilder()
+                                                .setCountry(simCountryIso)
+                                                .setLanguageConfig(
+                                                        Call_screen_i18n_config.LanguageConfig.newBuilder()
+                                                                .addLanguages(
+                                                                        Call_screen_i18n_config.Language.newBuilder()
+                                                                                .setLanguageCode(chosenLanguage)
+                                                                                .setA6(
+                                                                                        Call_screen_i18n_config.A6.newBuilder()
+                                                                                                .setA7(ByteString.copyFrom(new byte[]{2}))
+                                                                                )
+                                                                )
+                                                )
+                                ).build();
+                        mDBFlagsSingleton.updateDBFlag(CALL_SCREEN_I18N_CONFIG_FLAG, call_screen_i18n_config.toByteArray());
+                    }).create().show();
+        } else {
+            // Remove flag overrides
+            mDBFlagsSingleton.deleteFlagOverrides(ENABLE_CALL_SCREEN_FLAGS);
+            mDBFlagsSingleton.deleteFlagOverrides(CALL_SCREEN_I18N_CONFIG_FLAG);
+        }
     }
 }

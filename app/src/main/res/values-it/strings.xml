@@ -7,7 +7,7 @@
     <string name="search">Cerca</string>
     <string name="delete_all_applied_mods">Elimina tutte le mod applicate</string>
     <string name="delete_all_mods_alert">Vuoi davvero eliminare tutte le mod applicate da GoogleDialerMod?</string>
-    <string name="force_enable_disable_call_recording">Abilita / disabilita forzatamente la registrazione chiamate</string>
+    <string name="force_enable_disable_call_recording">Abilita forzatamente la registrazione chiamate</string>
     <string name="all">Tutti</string>
     <string name="enabled_only">Solo abilitati</string>
     <string name="disabled_only">Solo disabilitati</string>
@@ -23,6 +23,6 @@
     <string name="what_is_it_explanation">GoogleDialerMod è una app che permette, sfruttando i privilegi di root, di modificare i valori contenuti nel database "Phenotype" di Google Play Services, alterando così il comportamento dell\'app \"Telefono\" di Google (Google Dialer) per sbloccarne funzionalità sperimentali o bloccate in alcuni stati.\n\nAssicurati sempre di star utilizzando <a href="https://play.google.com/store/apps/details?id=com.google.android.dialer">l\'ultima beta del Dialer disponibile sul Play Store</a>, per usufruire delle più recenti funzioni.</string>
     <string name="how_it_works_explanation">Le patch applicate da GoogleDialerMod resistono nel tempo agli aggiornamenti del Google Dialer, anche dopo la disinstallazione dell\'app.\nTali modifiche sono da considerarsi quindi permanenti, ma si possono facilmente annullare premendo l\'icona del cestino nel menù in alto a destra.\nNon è necessario tenere installata questa app dopo aver applicato le mod desiderate.\n\nDopo aver applicato modifiche, potrebbe essere necessario riaprire e chiudere forzatamente un paio di volte l\'app Dialer prima che abbiano effetto.</string>
     <string name="new_version_alert">E\' disponibile una nuova versione di GoogleDialerMod.\n\nPuoi scaricarla dalla pagina Releases di Github.</string>
-    <string name="force_enable_call_screen">Abilita / disabilita forzatamente il filtro chiamate (call screen)</string>
+    <string name="force_enable_call_screen">Abilita forzatamente il filtro chiamate (call screen)</string>
     <string name="choose_a_language">Scegli una lingua</string>
 </resources>
