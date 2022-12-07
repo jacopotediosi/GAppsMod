@@ -3,7 +3,6 @@ package com.jacopomii.googledialermod;
 import static com.jacopomii.googledialermod.Constants.DIALER_CALLRECORDINGPROMPT;
 import static com.jacopomii.googledialermod.Constants.DIALER_DATA_DATA;
 import static com.jacopomii.googledialermod.Constants.DIALER_PACKAGE_NAME;
-import static com.jacopomii.googledialermod.Constants.DIALER_PHENOTYPE_CACHE;
 import static com.jacopomii.googledialermod.Constants.PHENOTYPE_DB;
 
 import android.content.Context;
@@ -20,7 +19,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.topjohnwu.superuser.Shell;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.IOException;
@@ -62,35 +60,9 @@ public class Utils {
         return formatter.toString();
     }
 
-    public static JSONArray execPhenotypeQuery(Context context, String query) {
-        JSONArray result = null;
-        try {
-            String query_result = String.join("", Shell.cmd(
-                    String.format(
-                            "%s/sqlite3 -batch -json %s \"%s;\"",
-                            context.getApplicationInfo().dataDir,
-                            PHENOTYPE_DB,
-                            query
-                    )
-            ).exec().getOut());
-            if (query_result.equals("")) {
-                result = new JSONArray("[]");
-            } else {
-                result = new JSONArray(query_result);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    public static void killDialerAndDeletePhenotypeCache() {
-        Shell.cmd(
-                String.format(
-                        "am kill all com.google.android.dialer; rm -rf %s",
-                        DIALER_PHENOTYPE_CACHE
-                )
-        ).exec();
+    public static void revertAllMods(Context context) {
+        DBFlagsSingleton.getInstance(context).deleteAllFlagOverrides();
+        deleteCallrecordingpromptFolder();
     }
 
     public static void deleteCallrecordingpromptFolder() {
@@ -100,11 +72,6 @@ public class Utils {
                         DIALER_CALLRECORDINGPROMPT
                 )
         ).exec();
-    }
-
-    public static void revertAllMods(Context context) {
-        DBFlagsSingleton.getInstance(context).deleteAllFlagOverrides();
-        deleteCallrecordingpromptFolder();
     }
 
     public static void checkIsLatestGithubVersion(Context context) {

@@ -1,11 +1,13 @@
 package com.jacopomii.googledialermod;
 
 import static com.jacopomii.googledialermod.Constants.DIALER_PACKAGE_NAME;
+import static com.jacopomii.googledialermod.Constants.DIALER_PHENOTYPE_CACHE;
+import static com.jacopomii.googledialermod.Constants.PHENOTYPE_DB;
 import static com.jacopomii.googledialermod.Utils.byteArrayToHexString;
-import static com.jacopomii.googledialermod.Utils.execPhenotypeQuery;
-import static com.jacopomii.googledialermod.Utils.killDialerAndDeletePhenotypeCache;
 
 import android.content.Context;
+
+import com.topjohnwu.superuser.Shell;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -74,48 +76,52 @@ public class DBFlagsSingleton {
         }
     }
 
-    public void reloadDBBooleanFlags() {
+    private void reloadDBBooleanFlags() {
         mDBBooleanFlags.clear();
-        String[] tables = {"Flags", "FlagOverrides"};
-        for (String table : tables) {
-            JSONArray queryResult = execPhenotypeQuery(
-                    mContext,
-                    String.format(
-                            "SELECT DISTINCT name, boolVal FROM %s WHERE packageName = '%s' AND user = '' AND boolVal != 'NULL'",
-                            table,
-                            DIALER_PACKAGE_NAME
-                    )
-            );
-            for (int i=0; i < queryResult.length(); i++) {
-                try {
-                    JSONObject flag = queryResult.getJSONObject(i);
-                    mDBBooleanFlags.put(flag.getString("name"), flag.getInt("boolVal")!=0);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+        JSONArray queryResult = execPhenotypeQuery(
+                mContext,
+                String.format(
+                        "SELECT DISTINCT name, boolVal " +
+                                "FROM Flags " +
+                                "WHERE packageName = '%s' AND user = '' AND boolVal != 'NULL' AND name NOT IN (SELECT name FROM FlagOverrides) " +
+                                "UNION ALL " +
+                                "SELECT DISTINCT name, boolVal FROM FlagOverrides " +
+                                "WHERE packageName = '%s' AND user = '' AND boolVal != 'NULL'",
+                        DIALER_PACKAGE_NAME,
+                        DIALER_PACKAGE_NAME
+                )
+        );
+        for (int i=0; i < queryResult.length(); i++) {
+            try {
+                JSONObject flag = queryResult.getJSONObject(i);
+                mDBBooleanFlags.put(flag.getString("name"), flag.getInt("boolVal")!=0);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
     }
 
-    public void reloadDBStringFlags() {
+    private void reloadDBStringFlags() {
         mDBStringFlags.clear();
-        String[] tables = {"Flags", "FlagOverrides"};
-        for (String table : tables) {
-            JSONArray queryResult = execPhenotypeQuery(
-                    mContext,
-                    String.format(
-                            "SELECT DISTINCT name, stringVal FROM %s WHERE packageName = '%s' AND user = '' AND stringVal != 'NULL'",
-                            table,
-                            DIALER_PACKAGE_NAME
-                    )
-            );
-            for (int i=0; i < queryResult.length(); i++) {
-                try {
-                    JSONObject flag = queryResult.getJSONObject(i);
-                    mDBStringFlags.put(flag.getString("name"), flag.getString("stringVal"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+        JSONArray queryResult = execPhenotypeQuery(
+                mContext,
+                String.format(
+                        "SELECT DISTINCT name, stringVal " +
+                                "FROM Flags " +
+                                "WHERE packageName = '%s' AND user = '' AND stringVal != 'NULL' AND name NOT IN (SELECT name FROM FlagOverrides) " +
+                                "UNION ALL " +
+                                "SELECT DISTINCT name, stringVal FROM FlagOverrides " +
+                                "WHERE packageName = '%s' AND user = '' AND stringVal != 'NULL'",
+                        DIALER_PACKAGE_NAME,
+                        DIALER_PACKAGE_NAME
+                )
+        );
+        for (int i=0; i < queryResult.length(); i++) {
+            try {
+                JSONObject flag = queryResult.getJSONObject(i);
+                mDBStringFlags.put(flag.getString("name"), flag.getString("stringVal"));
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -131,17 +137,22 @@ public class DBFlagsSingleton {
                         flag.replace("'", "\\'")
                 )
         );
+
+        ArrayList<String> queryValues = new ArrayList<>();
         for (String user : mDBUsers)
-            execPhenotypeQuery(
-                    mContext,
+            queryValues.add(
                     String.format(
-                            "INSERT OR REPLACE INTO FlagOverrides (packageName, flagType, name, user, boolVal, committed) VALUES ('%s', 0, '%s', '%s', '%s', 0)",
+                            "('%s', 0, '%s', '%s', '%s', 0)",
                             DIALER_PACKAGE_NAME,
                             flag.replace("'", "\\'"),
                             user.replace("'", "\\'"),
                             (value ? '1' : '0')
                     )
             );
+        execPhenotypeQuery(
+                mContext,
+                "INSERT OR REPLACE INTO FlagOverrides (packageName, flagType, name, user, boolVal, committed) VALUES " + String.join(",", queryValues)
+        );
     }
 
     public void updateDBFlag(String flag, String value) {
@@ -151,20 +162,26 @@ public class DBFlagsSingleton {
                 mContext,
                 String.format(
                         "DELETE FROM FlagOverrides WHERE packageName = '%s' AND name = '%s'",
-                        DIALER_PACKAGE_NAME,flag.replace("'", "\\'")
+                        DIALER_PACKAGE_NAME,
+                        flag.replace("'", "\\'")
                 )
         );
+
+        ArrayList<String> queryValues = new ArrayList<>();
         for (String user : mDBUsers)
-            execPhenotypeQuery(
-                    mContext,
+            queryValues.add(
                     String.format(
-                            "INSERT OR REPLACE INTO FlagOverrides (packageName, flagType, name, user, stringVal, committed) VALUES ('%s', 0, '%s', '%s', '%s', 0)",
+                            "('%s', 0, '%s', '%s', '%s', 0)",
                             DIALER_PACKAGE_NAME,
                             flag.replace("'", "\\'"),
                             user.replace("'", "\\'"),
                             value.replace("'", "\\'")
                     )
             );
+        execPhenotypeQuery(
+                mContext,
+                "INSERT OR REPLACE INTO FlagOverrides (packageName, flagType, name, user, stringVal, committed) VALUES " + String.join(",", queryValues)
+        );
     }
 
     public void updateDBFlag(String flag, byte[] value) {
@@ -178,49 +195,58 @@ public class DBFlagsSingleton {
                         flag.replace("'", "\\'")
                 )
         );
+
+        ArrayList<String> queryValues = new ArrayList<>();
         for (String user : mDBUsers)
-            execPhenotypeQuery(
-                    mContext,
+            queryValues.add(
                     String.format(
-                            "INSERT OR REPLACE INTO FlagOverrides (packageName, flagType, name, user, extensionVal, committed) VALUES ('%s', 0, '%s', '%s', X'%s', 0)",
+                            "('%s', 0, '%s', '%s', '%s', 0)",
                             DIALER_PACKAGE_NAME,
                             flag.replace("'", "\\'"),
                             user.replace("'", "\\'"),
                             byteArrayToHexString(value)
                     )
             );
+        execPhenotypeQuery(
+                mContext,
+                "INSERT OR REPLACE INTO FlagOverrides (packageName, flagType, name, user, extensionVal, committed) VALUES " + String.join(",", queryValues)
+        );
     }
 
     public void deleteFlagOverrides(String... flags) {
-        for (String flag : flags) {
-            execPhenotypeQuery(
-                    mContext,
-                    String.format(
-                            "DELETE FROM FlagOverrides WHERE packageName = '%s' AND name = '%s'",
-                            DIALER_PACKAGE_NAME,
-                            flag.replace("'", "\\'")
-                    )
-            );
-            // Updating internal singleton cached flags
-            try {
-                JSONArray queryResult = execPhenotypeQuery(
-                        mContext,
-                        String.format(
-                                "SELECT boolVal, stringVal FROM Flags WHERE packageName = '%s' AND user = '' AND name = '%s'",
-                                DIALER_PACKAGE_NAME,
-                                flag.replace("'", "\\'")
-                        )
-                );
-                if (queryResult.length() > 0) {
-                    JSONObject flagValues = queryResult.getJSONObject(0);
-                    if (!flagValues.isNull("boolVal"))
-                        mDBBooleanFlags.put(flag, flagValues.getBoolean(flag));
-                    else if (!flagValues.isNull("stringVal"))
-                        mDBStringFlags.put(flag, flagValues.getString(flag));
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
+        killDialerAndDeletePhenotypeCache();
+
+        ArrayList<String> queryValues = new ArrayList<>();
+        for (String flag : flags)
+            queryValues.add("'" + flag.replace("'", "\\'") + "'");
+
+        execPhenotypeQuery(
+                mContext,
+                String.format(
+                        "DELETE FROM FlagOverrides WHERE packageName = '%s' AND name IN (%s)",
+                        DIALER_PACKAGE_NAME,
+                        String.join(",", queryValues)
+                )
+        );
+
+        JSONArray queryResult = execPhenotypeQuery(
+                mContext,
+                String.format(
+                        "SELECT name, boolVal, stringVal FROM Flags WHERE packageName = '%s' AND user = '' AND name IN (%s)",
+                        DIALER_PACKAGE_NAME,
+                        String.join(",", queryValues)
+                )
+        );
+        try {
+            for (int i=0; i<queryResult.length(); i++) {
+                JSONObject flagValues = queryResult.getJSONObject(i);
+                if (!flagValues.isNull("boolVal"))
+                    mDBBooleanFlags.put(flagValues.getString("name"), flagValues.getInt("boolVal")==1);
+                else if (!flagValues.isNull("stringVal"))
+                    mDBStringFlags.put(flagValues.getString("name"), flagValues.getString("stringVal"));
             }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
@@ -255,18 +281,51 @@ public class DBFlagsSingleton {
     }
 
     public boolean areAllFlagsOverridden(String... flags) {
-        for (String flag : flags) {
-            JSONArray queryResult = execPhenotypeQuery(
-                    mContext,
+        ArrayList<String> queryValues = new ArrayList<>();
+        for (String flag : flags)
+            queryValues.add("'" + flag.replace("'", "\\'") + "'");
+
+        JSONArray queryResult = execPhenotypeQuery(
+                mContext,
+                String.format(
+                        "SELECT DISTINCT name FROM Flags WHERE packageName = '%s' AND name IN (%s)",
+                        DIALER_PACKAGE_NAME,
+                        String.join(",", queryValues)
+                )
+        );
+
+        return queryResult.length() == flags.length;
+    }
+
+    private JSONArray execPhenotypeQuery(Context context, String query) {
+        JSONArray result = null;
+        try {
+            String query_result = String.join("", Shell.cmd(
                     String.format(
-                            "SELECT name FROM FlagOverrides WHERE packageName = '%s' AND name = '%s'",
-                            DIALER_PACKAGE_NAME,
-                            flag.replace("'", "\\'")
+                            "%s/sqlite3 -batch -json %s \"%s;\"",
+                            context.getApplicationInfo().dataDir,
+                            PHENOTYPE_DB,
+                            query
                     )
-            );
-            if (queryResult.length() < 1)
-                return false;
+            ).exec().getOut());
+            if (query_result.equals("")) {
+                result = new JSONArray("[]");
+            } else {
+                result = new JSONArray(query_result);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return true;
+        return result;
+    }
+
+    private void killDialerAndDeletePhenotypeCache() {
+        Shell.cmd(
+                String.format(
+                        "am kill all %s; rm -rf %s",
+                        DIALER_PACKAGE_NAME,
+                        DIALER_PHENOTYPE_CACHE
+                )
+        ).exec();
     }
 }
