@@ -17,7 +17,7 @@
             android:layout_height="match_parent" />
 
         <RadioGroup
-            android:id="@+id/radiogroup_search"
+            android:id="@+id/radio_group_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
@@ -55,7 +55,7 @@
         </RadioGroup>
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tablayout"
+            android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:ignore="SpeakableTextPresentCheck" />

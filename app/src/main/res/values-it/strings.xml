@@ -3,13 +3,15 @@
     <string name="all_switches">Tutti gli switch</string>
     <string name="app_name">GoogleDialerMod</string>
     <string name="choose_a_language_for_call_screen">Scegli una lingua per il call screen</string>
+    <string name="continue_anyway">Continua comunque</string>
     <string name="cpu_arch_not_supported">L\'architettura della tua CPU non è supportata</string>
     <string name="credits">Crediti</string>
     <string name="delete_all_applied_mods">Elimina tutte le mod applicate</string>
     <string name="delete_all_mods_alert">Vuoi davvero eliminare tutte le mod applicate da GoogleDialerMod?</string>
-    <string name="dialer_not_installed_error">Sembra che Google Dialer non sia installato. Installa l\'ultima beta dal Play Store e riprova.\n\nSe invece Google Dialer è già installato e questo errore continua ad apparire, per favore apri una issue su Github.</string>
+    <string name="dialer_not_installed_error">Sembra che Google Dialer non sia installato.\n\nInstalla l\'ultima beta da Google Play e riprova.</string>
     <string name="disabled_only">Solo disabilitati</string>
     <string name="enabled_only">Solo abilitati</string>
+    <string name="exit">Esci</string>
     <string name="force_enable_call_screen">Abilita forzatamente il filtro chiamate (call screen)</string>
     <string name="force_enable_disable_call_recording">Abilita forzatamente la registrazione chiamate</string>
     <string name="how_it_works">Come funziona</string>
@@ -18,10 +20,16 @@
     <string name="information">Informazioni</string>
     <string name="made_with_love_by_jacopo_tediosi">Creato con ❤ da <a href="https://github.com/jacopotediosi">Jacopo Tediosi</a></string>
     <string name="new_version_alert">E\' disponibile una nuova versione di GoogleDialerMod.\n\nPuoi scaricarla dalla pagina Releases di Github.</string>
-    <string name="phenotype_db_doesnt_exist_error">Sembra che non esista il Phenotype DB.\n\nSe hai già installato Google Play Services ma questo errore continua ad apparire, per favore apri una issue su Github.</string>
+    <string name="phenotype_db_does_not_exist">Sembra che non esista il Phenotype DB.\n\nInstalla Google Play Services da Google Play e riprova.</string>
     <string name="root_access_denied">Impossibile ottenere i permessi di root. Per favore consenti l\'accesso root.</string>
     <string name="search">Cerca</string>
     <string name="silence_call_recording_alerts">Silenzia gli audio degli avvisi di registrazione chiamata</string>
+    <string name="splash_screen_copy_assets">Copiando le risorse dell\'applicazione…</string>
+    <string name="splash_screen_copy_assets_error">Si è verificato un errore inaspettato copiando in memoria le risorse dell\'applicazione.\n\nSe vuoi, apri una issue su Github.</string>
+    <string name="splash_screen_dialer">Controllando l\'installazione del Dialer…</string>
+    <string name="splash_screen_phenotype">Controllando il Phenotype DB…</string>
+    <string name="splash_screen_root">Controllando i permessi di root…</string>
+    <string name="splash_screen_updates">Controllando gli aggiornamenti…</string>
     <string name="suggested_mods">Mod suggerite</string>
     <string name="what_is_it">Che cos\'è</string>
     <string name="what_is_it_explanation">GoogleDialerMod è una app che permette, sfruttando i privilegi di root, di modificare i valori contenuti nel database "Phenotype" di Google Play Services, alterando così il comportamento dell\'app \"Telefono\" di Google (Google Dialer) per sbloccarne funzionalità sperimentali o bloccate in alcuni stati.\n\nAssicurati sempre di star utilizzando <a href="https://play.google.com/store/apps/details?id=com.google.android.dialer">l\'ultima beta del Dialer disponibile sul Play Store</a>, per usufruire delle più recenti funzioni.</string>

@@ -1,25 +1,21 @@
 package com.jacopomii.googledialermod;
 
 import static com.jacopomii.googledialermod.Constants.DIALER_CALLRECORDINGPROMPT;
-import static com.jacopomii.googledialermod.Constants.DIALER_DATA_DATA;
-import static com.jacopomii.googledialermod.Constants.DIALER_PACKAGE_NAME;
-import static com.jacopomii.googledialermod.Constants.PHENOTYPE_DB;
+import static com.jacopomii.googledialermod.Constants.VENDING_PACKAGE_NAME;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.util.Log;
-
-import androidx.appcompat.app.AlertDialog;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 import com.topjohnwu.superuser.Shell;
 
-import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,21 +23,6 @@ import java.io.OutputStream;
 import java.util.Formatter;
 
 public class Utils {
-    private static final String TAG = "Utils";
-
-    public static boolean checkIsDialerInstalled(Context context) {
-        try {
-            context.getPackageManager().getApplicationInfo(DIALER_PACKAGE_NAME, 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
-        }
-        return Shell.cmd(String.format("test -d %s", DIALER_DATA_DATA)).exec().isSuccess();
-    }
-
-    public static boolean checkIsPhenotypeDBInstalled() {
-        return Shell.cmd(String.format("test -f %s", PHENOTYPE_DB)).exec().isSuccess();
-    }
-
     public static void copyFile(InputStream inputStream, OutputStream outputStream) throws IOException {
         byte[] buffer = new byte[1024];
         int read;
@@ -60,6 +41,16 @@ public class Utils {
         return formatter.toString();
     }
 
+    public static void openGooglePlay(Context context, String googlePlayLink) {
+        try {
+            Intent appStoreIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(googlePlayLink));
+            appStoreIntent.setPackage(VENDING_PACKAGE_NAME);
+            context.startActivity(appStoreIntent);
+        } catch (ActivityNotFoundException exception) {
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(googlePlayLink)));
+        }
+    }
+
     public static void revertAllMods(Context context) {
         DBFlagsSingleton.getInstance(context).deleteAllFlagOverrides();
         deleteCallrecordingpromptFolder();
@@ -74,43 +65,30 @@ public class Utils {
         ).exec();
     }
 
-    public static void checkIsLatestGithubVersion(Context context) {
+    public static boolean checkUpdateAvailable(Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
+        RequestFuture<JSONObject> future = RequestFuture.newFuture();
+
         requestQueue.add(
-            new JsonObjectRequest(
-                Request.Method.GET,
-                context.getString(R.string.github_api_link) + "/releases/latest",
-                null,
-                response -> {
-                    try {
-                        Version actualVersion = new Version(BuildConfig.VERSION_NAME);
-                        Version fetchedVersion = new Version(response.getString("tag_name").substring(1));
-
-                        if (actualVersion.compareTo(fetchedVersion) < 0) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-                            builder.setMessage(R.string.new_version_alert)
-                                    .setNeutralButton(R.string.github, null)
-                                    .setPositiveButton(android.R.string.ok, null);
-
-                            AlertDialog alert = builder.create();
-
-                            alert.setOnShowListener(dialogInterface -> alert.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(
-                                    view ->
-                                            context.startActivity(
-                                                    new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.github_link)+"/releases"))
-                                            )
-                                    )
-                            );
-
-                            alert.show();
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                },
-                error -> Log.e("Utils", "checkIsLatestGithubVersion: HTTP request failed")
-            )
+                new JsonObjectRequest(
+                        Request.Method.GET,
+                        context.getString(R.string.github_api_link) + "/releases/latest",
+                        null,
+                        future,
+                        future
+                )
         );
+
+        try {
+            JSONObject response = future.get();
+            Version actualVersion = new Version(BuildConfig.VERSION_NAME);
+            Version fetchedVersion = new Version(response.getString("tag_name").substring(1));
+            if (actualVersion.compareTo(fetchedVersion) < 0)
+                return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }

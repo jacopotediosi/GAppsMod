@@ -54,7 +54,7 @@ public class AllSwitchesFragment extends Fragment {
         inflater.inflate(R.menu.all_switches_menu, menu);
 
         FragmentActivity parentActivity = requireActivity();
-        RadioGroup radioGroupSearch = parentActivity.findViewById(R.id.radiogroup_search);
+        RadioGroup radioGroupSearch = parentActivity.findViewById(R.id.radio_group_search);
 
         MenuItem searchIcon = menu.findItem(R.id.menu_search_icon);
 

@@ -125,19 +125,13 @@ public class SuggestedModsFragment extends Fragment {
         mSilenceCallRecordingAlertsSwitch = mView.findViewById(R.id.silence_call_recording_alerts_switch);
         mForceEnableCallScreenSwitch = mView.findViewById(R.id.force_enable_call_screen_switch);
 
-        mForceEnableCallRecordingSwitchOnCheckedChangeListener = (buttonView, isChecked) -> {
-            forceEnableCallRecording(isChecked);
-        };
+        mForceEnableCallRecordingSwitchOnCheckedChangeListener = (buttonView, isChecked) -> forceEnableCallRecording(isChecked);
         mForceEnableCallRecordingSwitch.setOnCheckedChangeListener(mForceEnableCallRecordingSwitchOnCheckedChangeListener);
 
-        mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener = (buttonView, isChecked) -> {
-            silenceCallRecordingAlerts(isChecked);
-        };
+        mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener = (buttonView, isChecked) -> silenceCallRecordingAlerts(isChecked);
         mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener);
 
-        mForceEnableCallScreenSwitchOnCheckedChangeListener = (buttonView, isChecked) -> {
-            forceEnableCallScreen(isChecked);
-        };
+        mForceEnableCallScreenSwitchOnCheckedChangeListener = (buttonView, isChecked) -> forceEnableCallScreen(isChecked);
         mForceEnableCallScreenSwitch.setOnCheckedChangeListener(mForceEnableCallScreenSwitchOnCheckedChangeListener);
 
         RootServiceConnection rootServiceConnection = new RootServiceConnection() {

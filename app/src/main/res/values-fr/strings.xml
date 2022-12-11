@@ -3,13 +3,15 @@
     <string name="all_switches">Tous les commutateurs</string>
     <string name="app_name">GoogleDialerMod</string>
     <string name="choose_a_language_for_call_screen">Choisissez une langue pour le filtrage d\'appels</string>
+    <string name="continue_anyway">Continuer quand même</string>
     <string name="cpu_arch_not_supported">L\’architecture de votre CPU n\’est pas supportée</string>
     <string name="credits">Crédits</string>
     <string name="delete_all_applied_mods">Supprimer toutes les modifications</string>
     <string name="delete_all_mods_alert">Voulez-vous vraiment supprimer toutes les modifications apportées par GoogleDialerMod?</string>
-    <string name="dialer_not_installed_error">Il semblerait que l\'application Téléphone de Google ne soit pas installée. Installer la dernière version bêta depuis le magasin Google play store et essayez à nouveau. Si cette erreur survient à nouveau, veuillez ouvrir un ticket sur Github.</string>
+    <string name="dialer_not_installed_error">Il semblerait que l\'application Téléphone de Google ne soit pas installée.\n\nInstaller la dernière version bêta depuis le magasin Google Play et réessayez.</string>
     <string name="disabled_only">Désactiver uniquement</string>
     <string name="enabled_only">Activer uniquement</string>
+    <string name="exit">Sortir</string>
     <string name="force_enable_call_screen">Forcer l\'activation du filtrage d\'appels</string>
     <string name="force_enable_disable_call_recording">Forcer l\’activation de l\’enregistrement des appels</string>
     <string name="how_it_works">Comment ça fonctionne</string>
@@ -18,10 +20,16 @@
     <string name="information">Informations</string>
     <string name="made_with_love_by_jacopo_tediosi">Fait avec ❤ par <a href="https://github.com/jacopotediosi">Jacopo Tediosi</a></string>
     <string name="new_version_alert">Une nouvelle version du GoogleDialerMod est disponible.\n\nVous pouvez la télécharger depuis la pages des versions sur Github.</string>
-    <string name="phenotype_db_doesnt_exist_error">La base de données de l\’application téléphone n\’existe pas.\n\nSi vous avez déjà l\’application Services Google Play installée mais que cette erreur continue d\’apparaitre, veuillez ouvrir un ticket sur Github.</string>
+    <string name="phenotype_db_does_not_exist">La base de données Phenotype n\’existe pas.\n\nInstaller Google Play Services depuis le magasin Google Play et réessayez.</string>
     <string name="root_access_denied">Accès à la racine refusé. Merci d\’autoriser l\’accès à la racine.</string>
     <string name="search">Rechercher</string>
     <string name="silence_call_recording_alerts">Mettre sous silence les alertes d\’enregistrement des appels</string>
+    <string name="splash_screen_copy_assets">Copier les ressources de l\'application…</string>
+    <string name="splash_screen_copy_assets_error">Une erreur inattendue s\'est produite lors de la copie des ressources de l\'application dans la mémoire.\n\nSi vous le souhaitez, ouvrez un ticket sur Github.</string>
+    <string name="splash_screen_dialer">Vérification de l\'installation de l\’application téléphone…</string>
+    <string name="splash_screen_phenotype">Vérification de la base de données Phenotype…</string>
+    <string name="splash_screen_root">Vérification des permissions racine…</string>
+    <string name="splash_screen_updates">Vérification des mises à jour…</string>
     <string name="suggested_mods">MODs suggérés</string>
     <string name="what_is_it">Qu\’est ce que c\’est</string>
     <string name="what_is_it_explanation">GoogleDialerMod est une application qui autorise, en utilisant les privilèges d\’accès à la racine, de modifier les valeures présentes dans la base de données du "téléphone" des Services Google Play, modifiant ainsi le comportement de l\’application Google Dialer pour débloquer des fonctionnalités expérimentales ou bloquées dans certains pays.\n\nSoyez sûr d’utiliser le <a href="https://play.google.com/store/apps/details?id=com.google.android.dialer"> dernière version Beta du Téléphone disponible sur le Play Store</a>, pour obtenir les avantages des dernières fonctionnalités.</string>
