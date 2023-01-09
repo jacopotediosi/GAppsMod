@@ -200,7 +200,7 @@ public class DBFlagsSingleton {
         for (String user : mDBUsers)
             queryValues.add(
                     String.format(
-                            "('%s', 0, '%s', '%s', '%s', 0)",
+                            "('%s', 0, '%s', '%s', X'%s', 0)",
                             DIALER_PACKAGE_NAME,
                             flag.replace("'", "\\'"),
                             user.replace("'", "\\'"),
