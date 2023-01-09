@@ -27,7 +27,10 @@ import com.topjohnwu.superuser.ipc.RootService;
 import com.topjohnwu.superuser.nio.ExtendedFile;
 import com.topjohnwu.superuser.nio.FileSystemManager;
 
+import org.apache.commons.io.IOUtils;
+
 import java.io.IOException;
+import java.io.InputStream;
 
 public class SuggestedModsFragment extends Fragment {
     private View mView;
@@ -163,19 +166,31 @@ public class SuggestedModsFragment extends Fragment {
         mForceEnableCallRecordingSwitch.setOnCheckedChangeListener(mForceEnableCallRecordingSwitchOnCheckedChangeListener);
 
         // mSilenceCallRecordingAlertsSwitch
-        long startingVoiceSize = -1;
-        long endingVoiceSize = -1;
-        if (fileSystemManager!=null) {
-            startingVoiceSize = fileSystemManager.getFile(DIALER_CALLRECORDINGPROMPT, CALLRECORDINGPROMPT_STARTING_VOICE_US).length();
-            endingVoiceSize = fileSystemManager.getFile(DIALER_CALLRECORDINGPROMPT, CALLRECORDINGPROMPT_ENDING_VOICE_US).length();
+        if (fileSystemManager != null) {
+            try {
+                InputStream silentVoiceInputStream;
+
+                InputStream startingVoiceInputStream = fileSystemManager.getFile(DIALER_CALLRECORDINGPROMPT, CALLRECORDINGPROMPT_STARTING_VOICE_US).newInputStream();
+                silentVoiceInputStream = getResources().openRawResource(R.raw.silent_wav);
+                boolean isStartingVoiceSilenced = IOUtils.contentEquals(silentVoiceInputStream, startingVoiceInputStream);
+                startingVoiceInputStream.close();
+                silentVoiceInputStream.close();
+
+                InputStream endingVoiceInputStream = fileSystemManager.getFile(DIALER_CALLRECORDINGPROMPT, CALLRECORDINGPROMPT_ENDING_VOICE_US).newInputStream();
+                silentVoiceInputStream = getResources().openRawResource(R.raw.silent_wav);
+                boolean isEndingVoiceSilenced = IOUtils.contentEquals(silentVoiceInputStream, endingVoiceInputStream);
+                endingVoiceInputStream.close();
+                silentVoiceInputStream.close();
+
+                mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(null);
+                mSilenceCallRecordingAlertsSwitch.setChecked(
+                        mDBFlagsSingleton.areAllStringFlagsEmpty(SILENCE_CALL_RECORDING_ALERTS_FLAGS) && isStartingVoiceSilenced && isEndingVoiceSilenced
+                );
+                mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(null);
-        mSilenceCallRecordingAlertsSwitch.setChecked(
-                mDBFlagsSingleton.areAllStringFlagsEmpty(SILENCE_CALL_RECORDING_ALERTS_FLAGS) &&
-                        startingVoiceSize > 0 && startingVoiceSize <= 100 &&
-                        endingVoiceSize > 0 && endingVoiceSize <= 100
-        );
-        mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener);
 
         // mForceEnableCallScreenSwitch
         mForceEnableCallScreenSwitch.setOnCheckedChangeListener(null);
