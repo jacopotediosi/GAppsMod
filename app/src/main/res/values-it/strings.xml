@@ -8,7 +8,7 @@
     <string name="credits">Crediti</string>
     <string name="delete_all_applied_mods">Elimina tutte le mod applicate</string>
     <string name="delete_all_mods_alert">Vuoi davvero eliminare tutte le mod applicate da GoogleDialerMod?</string>
-    <string name="dialer_not_installed_error">Sembra che Google Dialer non sia installato.\n\nInstalla l\'ultima beta da Google Play e riprova.</string>
+    <string name="dialer_not_installed_error">Sembra che Google Dialer non sia installato.\n\nInstalla l\'ultima versione del Google Dialer dal Google Play e riprova.\n\nInoltre, facoltativamente, puoi aderire al programma Beta del Google Dialer tramite il pulsante sottostante.</string>
     <string name="disabled_only">Solo disabilitati</string>
     <string name="enabled_only">Solo abilitati</string>
     <string name="exit">Esci</string>
@@ -18,6 +18,8 @@
     <string name="how_it_works_explanation">Le patch applicate da GoogleDialerMod resistono nel tempo agli aggiornamenti del Google Dialer, anche dopo la disinstallazione dell\'app.\nTali modifiche sono da considerarsi quindi permanenti, ma si possono facilmente annullare premendo l\'icona del cestino nel menù in alto a destra.\nNon è necessario tenere installata questa app dopo aver applicato le mod desiderate.\n\nDopo aver applicato modifiche, potrebbe essere necessario riaprire e chiudere forzatamente un paio di volte l\'app Dialer prima che abbiano effetto.</string>
     <string name="if_bug_found_open_github_issue">Se credi di aver trovato dei bug per favore apri una issue su Github</string>
     <string name="information">Informazioni</string>
+    <string name="install_from_google_play">Installa dal Google Play</string>
+    <string name="join_beta_program">Aderisci al programma Beta</string>
     <string name="made_with_love_by_jacopo_tediosi">Creato con ❤ da <a href="https://github.com/jacopotediosi">Jacopo Tediosi</a></string>
     <string name="new_version_alert">E\' disponibile una nuova versione di GoogleDialerMod.\n\nPuoi scaricarla dalla pagina Releases di Github.</string>
     <string name="phenotype_db_does_not_exist">Sembra che non esista il Phenotype DB.\n\nInstalla Google Play Services da Google Play e riprova.</string>

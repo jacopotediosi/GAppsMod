@@ -11,7 +11,9 @@ public interface Constants {
 
     // Google Play links
     String GOOGLE_PLAY_DETAILS_LINK = "https://play.google.com/store/apps/details?id=";
+    String GOOGLE_PLAY_BETA_LINK = "https://play.google.com/apps/testing/";
     String DIALER_GOOGLE_PLAY_LINK = GOOGLE_PLAY_DETAILS_LINK + DIALER_PACKAGE_NAME;
+    String DIALER_GOOGLE_PLAY_BETA_LINK = GOOGLE_PLAY_BETA_LINK + DIALER_PACKAGE_NAME;
     String GMS_GOOGLE_PLAY_LINK = GOOGLE_PLAY_DETAILS_LINK + GMS_PACKAGE_NAME;
 
     // Data / data folders

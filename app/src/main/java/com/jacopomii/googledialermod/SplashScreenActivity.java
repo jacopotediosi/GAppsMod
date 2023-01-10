@@ -1,6 +1,7 @@
 package com.jacopomii.googledialermod;
 
 import static com.jacopomii.googledialermod.Constants.DIALER_DATA_DATA;
+import static com.jacopomii.googledialermod.Constants.DIALER_GOOGLE_PLAY_BETA_LINK;
 import static com.jacopomii.googledialermod.Constants.DIALER_GOOGLE_PLAY_LINK;
 import static com.jacopomii.googledialermod.Constants.DIALER_PACKAGE_NAME;
 import static com.jacopomii.googledialermod.Constants.GMS_GOOGLE_PLAY_LINK;
@@ -88,8 +89,9 @@ public class SplashScreenActivity extends AppCompatActivity {
                                 new AlertDialog.Builder(splashScreenActivity)
                                     .setCancelable(false)
                                     .setMessage(getString(R.string.dialer_not_installed_error))
-                                    .setNegativeButton(R.string.google_play, (dialogInterface, i) -> openGooglePlay(splashScreenActivity, DIALER_GOOGLE_PLAY_LINK))
-                                    .setPositiveButton(R.string.continue_anyway, (dialogInterface, i) -> dialerCheckPassed.countDown())
+                                    .setPositiveButton(R.string.install_from_google_play, (dialogInterface, i) -> openGooglePlay(splashScreenActivity, DIALER_GOOGLE_PLAY_LINK))
+                                    .setNegativeButton(R.string.join_beta_program, (dialogInterface, i) -> openGooglePlay(splashScreenActivity, DIALER_GOOGLE_PLAY_BETA_LINK))
+                                    .setNeutralButton(R.string.continue_anyway, (dialogInterface, i) -> dialerCheckPassed.countDown())
                                     .show());
                     }
 
@@ -117,7 +119,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                                 new AlertDialog.Builder(splashScreenActivity)
                                     .setCancelable(false)
                                     .setMessage(getString(R.string.phenotype_db_does_not_exist))
-                                    .setNegativeButton(R.string.google_play, (dialogInterface, i) -> openGooglePlay(splashScreenActivity, GMS_GOOGLE_PLAY_LINK))
+                                    .setNegativeButton(R.string.install_from_google_play, (dialogInterface, i) -> openGooglePlay(splashScreenActivity, GMS_GOOGLE_PLAY_LINK))
                                     .setPositiveButton(R.string.exit, (dialog, which) -> finishAffinity())
                                     .show());
                     }

@@ -8,7 +8,7 @@
     <string name="credits">Credits</string>
     <string name="delete_all_applied_mods">Delete all applied mods</string>
     <string name="delete_all_mods_alert">Do you really want to delete all mods applied by GoogleDialerMod?</string>
-    <string name="dialer_not_installed_error">It appears that Google Dialer is not installed.\n\nInstall the latest beta from Google Play and try again.</string>
+    <string name="dialer_not_installed_error">It appears that Google Dialer is not installed.\n\nPlease install the latest version of Google Dialer from Google Play and try again.\n\nYou can also optionally join the Google Dialer Beta program using the button below.</string>
     <string name="disabled_only">Disabled only</string>
     <string name="enabled_only">Enabled only</string>
     <string name="exit">Exit</string>
@@ -17,11 +17,12 @@
     <string name="github" translatable="false">Github</string>
     <string name="github_api_link" translatable="false">https://api.github.com/repos/jacopotediosi/GoogleDialerMod</string>
     <string name="github_link" translatable="false">https://github.com/jacopotediosi/GoogleDialerMod</string>
-    <string name="google_play" translatable="false">Google Play</string>
     <string name="how_it_works">How it works</string>
     <string name="how_it_works_explanation">The patches applied by GoogleDialerMod resist Google Dialer updates over time, even after uninstalling the app.\nMods are therefore to be considered permanent, but they can be easily reverted by pressing the trash can icon in the top right menu.\nThere is no need to keep this app installed after applying the desired changes.\n\nAfter applying changes, you may need to forcibly reopen and close the Dialer app a couple of times before they take effect.</string>
     <string name="if_bug_found_open_github_issue">If you think you\'ve found any bugs please open an issue on Github</string>
     <string name="information">Information</string>
+    <string name="install_from_google_play">Install from Google Play</string>
+    <string name="join_beta_program">Join the Beta program</string>
     <string name="made_with_love_by_jacopo_tediosi">Made with ❤ by <a href="https://github.com/jacopotediosi">Jacopo Tediosi</a></string>
     <string name="new_version_alert">A new version of GoogleDialerMod is available.\n\nYou can download it from Github Releases page.</string>
     <string name="phenotype_db_does_not_exist">Phenotype DB does not appear to exist.\n\nInstall Google Play Services from Google Play and try again.</string>
