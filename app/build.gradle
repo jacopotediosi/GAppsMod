@@ -41,8 +41,8 @@ android {
         applicationId "com.jacopomii.googledialermod"
         minSdk 21
         targetSdk 33
-        versionCode 106
-        versionName "1.06"
+        versionCode 200
+        versionName "2.00"
     }
 
     buildTypes {
