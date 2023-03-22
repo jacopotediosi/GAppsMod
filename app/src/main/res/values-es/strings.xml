@@ -29,9 +29,9 @@
     <string name="root_access_denied">Acceso root denegado. Permita el acceso de root.</string>
     <string name="search">Buscar</string>
     <string name="silence_call_recording_alerts">Silenciar alertas de grabación de llamadas</string>
-    <string name="splash_screen_copy_assets">Copiando recursos de la aplicación...</string>
+    <string name="splash_screen_copy_assets">Copiando recursos de la aplicación…</string>
     <string name="splash_screen_copy_assets_error">Se produjo un error inesperado al copiar los recursos de la aplicación en la memoria.\n\nSi lo desea, abra un ticket en Github.</string>
-    <string name="splash_screen_dialer">Comprobando la instalación del dialer...</string>
+    <string name="splash_screen_dialer">Comprobando la instalación del dialer…</string>
     <string name="splash_screen_phenotype">Comprobando Phenotype DB…</string>
     <string name="splash_screen_root">Comprobando permisos root…</string>
     <string name="splash_screen_updates">Comprobando actualizaciones…</string>
