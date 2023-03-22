@@ -32,6 +32,7 @@ import org.apache.commons.io.IOUtils;
 import java.io.IOException;
 import java.io.InputStream;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class SuggestedModsFragment extends Fragment {
     private View mView;
     private SwitchCompat mForceEnableCallRecordingSwitch;
@@ -71,6 +72,8 @@ public class SuggestedModsFragment extends Fragment {
     };
     private final String CALLRECORDINGPROMPT_STARTING_VOICE_US = "starting_voice-en_US.wav";
     private final String CALLRECORDINGPROMPT_ENDING_VOICE_US = "ending_voice-en_US.wav";
+    // Dialer versionCode 10681248 (94.x) is the last version in which we can silence call recording alerts. In newer versions Google patched our hack.
+    private final int SILENCE_CALL_RECORDING_ALERTS_MAX_VERSION = 10681248;
 
     // The following boolean flags enable or disable Call Screen / Revelio features
     private final String[] ENABLE_CALL_SCREEN_FLAGS = {
@@ -131,8 +134,15 @@ public class SuggestedModsFragment extends Fragment {
         mForceEnableCallRecordingSwitchOnCheckedChangeListener = (buttonView, isChecked) -> forceEnableCallRecording(isChecked);
         mForceEnableCallRecordingSwitch.setOnCheckedChangeListener(mForceEnableCallRecordingSwitchOnCheckedChangeListener);
 
-        mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener = (buttonView, isChecked) -> silenceCallRecordingAlerts(isChecked);
-        mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener);
+        try {
+            if(requireContext().getPackageManager().getPackageInfo(DIALER_PACKAGE_NAME, 0).versionCode <= SILENCE_CALL_RECORDING_ALERTS_MAX_VERSION) {
+                mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener = (buttonView, isChecked) -> silenceCallRecordingAlerts(isChecked);
+                mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener);
+                mSilenceCallRecordingAlertsSwitch.setEnabled(true);
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
 
         mForceEnableCallScreenSwitchOnCheckedChangeListener = (buttonView, isChecked) -> forceEnableCallScreen(isChecked);
         mForceEnableCallScreenSwitch.setOnCheckedChangeListener(mForceEnableCallScreenSwitchOnCheckedChangeListener);

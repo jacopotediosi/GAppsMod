@@ -28,7 +28,7 @@
     <string name="phenotype_db_does_not_exist">Phenotype DB does not appear to exist.\n\nInstall Google Play Services from Google Play and try again.</string>
     <string name="root_access_denied">Root access denied. Please allow root access.</string>
     <string name="search">Search</string>
-    <string name="silence_call_recording_alerts">Silence call recording alerts</string>
+    <string name="silence_call_recording_alerts">Silence call recording alerts (Dialer &lt;= 94.x only)</string>
     <string name="splash_screen_copy_assets">Copying application assets…</string>
     <string name="splash_screen_copy_assets_error">An unexpected error occurred while copying the application assets to memory.\n\nIf you want, please open an issue on Github.</string>
     <string name="splash_screen_dialer">Checking Dialer installation…</string>
