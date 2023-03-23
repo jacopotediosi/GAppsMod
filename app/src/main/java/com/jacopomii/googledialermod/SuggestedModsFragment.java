@@ -134,15 +134,8 @@ public class SuggestedModsFragment extends Fragment {
         mForceEnableCallRecordingSwitchOnCheckedChangeListener = (buttonView, isChecked) -> forceEnableCallRecording(isChecked);
         mForceEnableCallRecordingSwitch.setOnCheckedChangeListener(mForceEnableCallRecordingSwitchOnCheckedChangeListener);
 
-        try {
-            if(requireContext().getPackageManager().getPackageInfo(DIALER_PACKAGE_NAME, 0).versionCode <= SILENCE_CALL_RECORDING_ALERTS_MAX_VERSION) {
-                mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener = (buttonView, isChecked) -> silenceCallRecordingAlerts(isChecked);
-                mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener);
-                mSilenceCallRecordingAlertsSwitch.setEnabled(true);
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+        mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener = (buttonView, isChecked) -> silenceCallRecordingAlerts(isChecked);
+        mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener);
 
         mForceEnableCallScreenSwitchOnCheckedChangeListener = (buttonView, isChecked) -> forceEnableCallScreen(isChecked);
         mForceEnableCallScreenSwitch.setOnCheckedChangeListener(mForceEnableCallScreenSwitchOnCheckedChangeListener);
@@ -177,6 +170,7 @@ public class SuggestedModsFragment extends Fragment {
 
         // mSilenceCallRecordingAlertsSwitch
         if (fileSystemManager != null) {
+            boolean mSilenceCallRecordingAlertsSwitchNewStatus = false;
             try {
                 InputStream silentVoiceInputStream;
 
@@ -192,12 +186,27 @@ public class SuggestedModsFragment extends Fragment {
                 endingVoiceInputStream.close();
                 silentVoiceInputStream.close();
 
-                mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(null);
-                mSilenceCallRecordingAlertsSwitch.setChecked(
-                        mDBFlagsSingleton.areAllStringFlagsEmpty(SILENCE_CALL_RECORDING_ALERTS_FLAGS) && isStartingVoiceSilenced && isEndingVoiceSilenced
-                );
-                mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener);
+                mSilenceCallRecordingAlertsSwitchNewStatus = mDBFlagsSingleton.areAllStringFlagsEmpty(SILENCE_CALL_RECORDING_ALERTS_FLAGS) &&
+                        isStartingVoiceSilenced && isEndingVoiceSilenced;
             } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                // If Dialer version > SILENCE_CALL_RECORDING_ALERTS_MAX_VERSION the mSilenceCallRecordingAlertsSwitch must remain disabled
+                if (requireContext().getPackageManager().getPackageInfo(DIALER_PACKAGE_NAME, 0).versionCode > SILENCE_CALL_RECORDING_ALERTS_MAX_VERSION) {
+                    // If the mSilenceCallRecordingAlertsSwitch was enabled in previous versions of GoogleDialerMod, the silenceCallRecordingAlerts mod must be automatically disabled
+                    if (mSilenceCallRecordingAlertsSwitchNewStatus) {
+                        silenceCallRecordingAlerts(false);
+                    }
+                // Otherwise, the mSilenceCallRecordingAlertsSwitch should be loaded as usual
+                } else {
+                    mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(null);
+                    mSilenceCallRecordingAlertsSwitch.setChecked(mSilenceCallRecordingAlertsSwitchNewStatus);
+                    mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener);
+                    mSilenceCallRecordingAlertsSwitch.setEnabled(true);
+                }
+            } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
         }
