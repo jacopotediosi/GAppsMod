@@ -167,6 +167,7 @@ public class SuggestedModsFragment extends Fragment {
                 mDBFlagsSingleton.areAllBooleanFlagsTrue(ENABLE_CALL_RECORDING_FLAGS)
         );
         mForceEnableCallRecordingSwitch.setOnCheckedChangeListener(mForceEnableCallRecordingSwitchOnCheckedChangeListener);
+        mForceEnableCallRecordingSwitch.setEnabled(true);
 
         // mSilenceCallRecordingAlertsSwitch
         if (fileSystemManager != null) {
@@ -217,6 +218,7 @@ public class SuggestedModsFragment extends Fragment {
                 mDBFlagsSingleton.areAllBooleanFlagsTrue(ENABLE_CALL_SCREEN_FLAGS) && mDBFlagsSingleton.areAllFlagsOverridden(CALL_SCREEN_I18N_CONFIG_FLAG)
         );
         mForceEnableCallScreenSwitch.setOnCheckedChangeListener(mForceEnableCallScreenSwitchOnCheckedChangeListener);
+        mForceEnableCallScreenSwitch.setEnabled(true);
     }
 
     private void forceEnableCallRecording(boolean enable) {
