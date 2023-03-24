@@ -11,11 +11,13 @@ import static com.jacopomii.googledialermod.Utils.copyFile;
 import static com.jacopomii.googledialermod.Utils.openGooglePlay;
 
 import android.annotation.SuppressLint;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -23,6 +25,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.topjohnwu.superuser.Shell;
+import com.topjohnwu.superuser.ipc.RootService;
+import com.topjohnwu.superuser.nio.FileSystemManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -36,10 +40,14 @@ public class SplashScreenActivity extends AppCompatActivity {
     private final SplashScreenActivity splashScreenActivity = this;
 
     private final CountDownLatch rootCheckPassed = new CountDownLatch(1);
+    private final CountDownLatch fileSystemManagerConnected = new CountDownLatch(1);
     private final CountDownLatch dialerCheckPassed = new CountDownLatch(1);
     private final CountDownLatch phenotypeCheckPassed = new CountDownLatch(1);
     private final CountDownLatch copyAssetsFinished = new CountDownLatch(1);
     private final CountDownLatch updateCheckFinished = new CountDownLatch(1);
+
+    private RootServiceConnection rootServiceConnection;
+    private FileSystemManager fileSystemManager;
 
     static {
         // Set Libsu settings before creating the main shell
@@ -51,6 +59,18 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+
+        // Start rootServiceConnection and save the fileSystemManager binder when the service is ready
+        rootServiceConnection = new RootServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                super.onServiceConnected(name, service);
+                fileSystemManager = this.getRemoteFS();
+                fileSystemManagerConnected.countDown();
+            }
+        };
+        Intent intent = new Intent(this, RootFileSystemService.class);
+        RootService.bind(intent, rootServiceConnection);
 
         // Root permission check
         new Thread() {
@@ -80,6 +100,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                 try {
                     // Wait for root check to pass
                     rootCheckPassed.await();
+                    // Wait for fileSystemManager to connect
+                    fileSystemManagerConnected.await();
 
                     // Check the Dialer installation
                     if (checkDialerInstallation()) {
@@ -110,6 +132,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                 try {
                     // Wait for root check to pass
                     rootCheckPassed.await();
+                    // Wait for fileSystemManager to connect
+                    fileSystemManagerConnected.await();
 
                     // Check the Phenotype DB
                     if (checkPhenotypeDB()) {
@@ -204,6 +228,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 try {
                     // Wait for all checks to pass and for all operations to finish
                     rootCheckPassed.await();
+                    fileSystemManagerConnected.await();
                     dialerCheckPassed.await();
                     phenotypeCheckPassed.await();
                     copyAssetsFinished.await();
@@ -233,11 +258,11 @@ public class SplashScreenActivity extends AppCompatActivity {
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }
-        return Shell.cmd(String.format("test -d %s", DIALER_DATA_DATA)).exec().isSuccess();
+        return fileSystemManager.getFile(DIALER_DATA_DATA).exists();
     }
 
     private boolean checkPhenotypeDB() {
-        return Shell.cmd(String.format("test -f %s", PHENOTYPE_DB)).exec().isSuccess();
+        return fileSystemManager.getFile(PHENOTYPE_DB).exists();
     }
 
     private boolean copyAssets() throws IOException {
@@ -274,5 +299,11 @@ public class SplashScreenActivity extends AppCompatActivity {
             doneImage.setImageResource(success ? R.drawable.ic_success_24 : R.drawable.ic_fail_24);
             doneImage.setVisibility(View.VISIBLE);
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RootService.unbind(rootServiceConnection);
     }
 }
