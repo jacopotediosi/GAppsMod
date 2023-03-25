@@ -40,6 +40,9 @@ public class SuggestedModsFragment extends Fragment {
     private SwitchCompat mForceEnableCallScreenSwitch;
     private DBFlagsSingleton mDBFlagsSingleton;
 
+    private RootServiceConnection rootServiceConnection;
+    private FileSystemManager fileSystemManager;
+
     // The following boolean flags force enable or disable Call Recording features
     private final String[] ENABLE_CALL_RECORDING_FLAGS = {
             // Enable Call Recording feature
@@ -112,8 +115,6 @@ public class SuggestedModsFragment extends Fragment {
     private CompoundButton.OnCheckedChangeListener mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener;
     private CompoundButton.OnCheckedChangeListener mForceEnableCallScreenSwitchOnCheckedChangeListener;
 
-    private FileSystemManager fileSystemManager;
-
     public SuggestedModsFragment() {}
 
     @Override
@@ -140,7 +141,7 @@ public class SuggestedModsFragment extends Fragment {
         mForceEnableCallScreenSwitchOnCheckedChangeListener = (buttonView, isChecked) -> forceEnableCallScreen(isChecked);
         mForceEnableCallScreenSwitch.setOnCheckedChangeListener(mForceEnableCallScreenSwitchOnCheckedChangeListener);
 
-        RootServiceConnection rootServiceConnection = new RootServiceConnection() {
+        rootServiceConnection = new RootServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 super.onServiceConnected(name, service);
@@ -305,5 +306,11 @@ public class SuggestedModsFragment extends Fragment {
             mDBFlagsSingleton.deleteFlagOverrides(ENABLE_CALL_SCREEN_FLAGS);
             mDBFlagsSingleton.deleteFlagOverrides(CALL_SCREEN_I18N_CONFIG_FLAG);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RootService.unbind(rootServiceConnection);
     }
 }
