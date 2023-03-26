@@ -64,7 +64,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                             new AlertDialog.Builder(splashScreenActivity)
                                 .setCancelable(false)
                                 .setMessage(R.string.root_access_denied)
-                                .setPositiveButton(R.string.exit, (dialog, i) -> finishAffinity())
+                                .setPositiveButton(R.string.exit, (dialog, i) -> System.exit(0))
                                 .show());
                 }
 
@@ -120,7 +120,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                                     .setCancelable(false)
                                     .setMessage(getString(R.string.phenotype_db_does_not_exist))
                                     .setNegativeButton(R.string.install_from_google_play, (dialogInterface, i) -> openGooglePlay(splashScreenActivity, GMS_GOOGLE_PLAY_LINK))
-                                    .setPositiveButton(R.string.exit, (dialog, which) -> finishAffinity())
+                                    .setPositiveButton(R.string.exit, (dialog, which) -> System.exit(0))
                                     .show());
                     }
 
@@ -149,7 +149,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                                     new AlertDialog.Builder(splashScreenActivity)
                                         .setCancelable(false)
                                         .setMessage(R.string.cpu_arch_not_supported)
-                                        .setPositiveButton(getString(R.string.exit), (dialog, which) -> finishAffinity())
+                                        .setPositiveButton(getString(R.string.exit), (dialog, which) -> System.exit(0))
                                         .show());
                         }
                     } catch (IOException e) {
@@ -160,7 +160,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                                     .setNegativeButton(R.string.github, (dialogInterface, i) ->
                                             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_link))))
                                     )
-                                    .setPositiveButton(getString(R.string.exit), (dialog, which) -> finishAffinity())
+                                    .setPositiveButton(getString(R.string.exit), (dialog, which) -> System.exit(0))
                                     .show());
                     }
 
