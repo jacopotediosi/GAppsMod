@@ -1,7 +1,7 @@
 <resources>
     <string name="all">All</string>
-    <string name="all_switches">All switches</string>
     <string name="app_name">GoogleDialerMod</string>
+    <string name="boolean_mods">Boolean mods</string>
     <string name="choose_a_language_for_call_screen">Choose a language for call screen</string>
     <string name="continue_anyway">Continue anyway</string>
     <string name="cpu_arch_not_supported">Your CPU architecture isn\'t supported</string>

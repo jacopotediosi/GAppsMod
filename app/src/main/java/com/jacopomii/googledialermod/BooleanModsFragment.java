@@ -25,13 +25,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class AllSwitchesFragment extends Fragment {
+public class BooleanModsFragment extends Fragment {
     View mView;
     private RecyclerView mRecyclerView;
-    private AllSwitchesRecyclerViewAdapter mAllSwitchesRecyclerViewAdapter;
+    private BooleanModsRecyclerViewAdapter mBooleanModsRecyclerViewAdapter;
     private final List<SwitchRowItem> mLstSwitch = new ArrayList<>();
 
-    public AllSwitchesFragment() {}
+    public BooleanModsFragment() {}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,17 +41,17 @@ public class AllSwitchesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.all_switches_fragment, container, false);
+        mView = inflater.inflate(R.layout.boolean_mods_fragment, container, false);
         mRecyclerView = mView.findViewById(R.id.recyclerView);
-        mAllSwitchesRecyclerViewAdapter = new AllSwitchesRecyclerViewAdapter(getContext(), mLstSwitch);
+        mBooleanModsRecyclerViewAdapter = new BooleanModsRecyclerViewAdapter(getContext(), mLstSwitch);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setAdapter(mAllSwitchesRecyclerViewAdapter);
+        mRecyclerView.setAdapter(mBooleanModsRecyclerViewAdapter);
         return mView;
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.all_switches_menu, menu);
+        inflater.inflate(R.menu.search_menu, menu);
 
         FragmentActivity parentActivity = requireActivity();
         RadioGroup radioGroupSearch = parentActivity.findViewById(R.id.radio_group_search);
@@ -76,7 +76,7 @@ public class AllSwitchesFragment extends Fragment {
                     else
                         filterConfig.put("mode", "all");
 
-                    mAllSwitchesRecyclerViewAdapter.getFilter().filter(filterConfig.toString());
+                    mBooleanModsRecyclerViewAdapter.getFilter().filter(filterConfig.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -124,7 +124,7 @@ public class AllSwitchesFragment extends Fragment {
                     else
                         filterConfig.put("mode", "all");
 
-                    mAllSwitchesRecyclerViewAdapter.getFilter().filter(filterConfig.toString());
+                    mBooleanModsRecyclerViewAdapter.getFilter().filter(filterConfig.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -149,10 +149,10 @@ public class AllSwitchesFragment extends Fragment {
             mLstSwitch.add(new SwitchRowItem(flag.getKey(), flag.getValue()));
         }
 
-        mAllSwitchesRecyclerViewAdapter = new AllSwitchesRecyclerViewAdapter(getContext(), mLstSwitch);
+        mBooleanModsRecyclerViewAdapter = new BooleanModsRecyclerViewAdapter(getContext(), mLstSwitch);
 
         if (mRecyclerView != null) {
-            mRecyclerView.setAdapter(mAllSwitchesRecyclerViewAdapter);
+            mRecyclerView.setAdapter(mBooleanModsRecyclerViewAdapter);
         }
     }
 }

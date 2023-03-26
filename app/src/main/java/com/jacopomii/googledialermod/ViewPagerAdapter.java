@@ -20,7 +20,7 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         if (position == 1)
-            return new AllSwitchesFragment();
+            return new BooleanModsFragment();
         return new SuggestedModsFragment();
     }
 }

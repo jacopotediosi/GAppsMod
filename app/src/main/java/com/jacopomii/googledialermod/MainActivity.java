@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
         new TabLayoutMediator(mTabLayout, mViewPager, (tab, position) -> {
             if (position == 1) {
-                tab.setText(R.string.all_switches);
+                tab.setText(R.string.boolean_mods);
             } else {
                 tab.setText(R.string.suggested_mods);
             }

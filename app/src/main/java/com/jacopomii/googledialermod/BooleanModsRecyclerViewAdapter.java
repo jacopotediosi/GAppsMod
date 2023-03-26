@@ -19,12 +19,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllSwitchesRecyclerViewAdapter extends RecyclerView.Adapter<AllSwitchesRecyclerViewAdapter.AllSwitchesViewHolder> implements Filterable {
+public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<BooleanModsRecyclerViewAdapter.BooleanModsViewHolder> implements Filterable {
     private final Context mContext;
     private final List<SwitchRowItem> mData;
     private List<SwitchRowItem> mDataFiltered;
 
-    public AllSwitchesRecyclerViewAdapter(Context context, List<SwitchRowItem> data) {
+    public BooleanModsRecyclerViewAdapter(Context context, List<SwitchRowItem> data) {
         mContext = context;
         mData = data;
         mDataFiltered = data;
@@ -32,13 +32,13 @@ public class AllSwitchesRecyclerViewAdapter extends RecyclerView.Adapter<AllSwit
 
     @NonNull
     @Override
-    public AllSwitchesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BooleanModsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(mContext).inflate(R.layout.switch_row_item, parent, false);
-        return new AllSwitchesViewHolder(v);
+        return new BooleanModsViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AllSwitchesViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BooleanModsViewHolder holder, int position) {
         holder.mT.setText(mDataFiltered.get(position).getSwitchText());
 
         holder.mS.setOnCheckedChangeListener(null); // Remove any existing listener from recycled view
@@ -97,11 +97,11 @@ public class AllSwitchesRecyclerViewAdapter extends RecyclerView.Adapter<AllSwit
         };
     }
 
-    public static class AllSwitchesViewHolder extends RecyclerView.ViewHolder {
+    public static class BooleanModsViewHolder extends RecyclerView.ViewHolder {
         private final TextView mT;
         private final SwitchCompat mS;
 
-        public AllSwitchesViewHolder(View itemView) {
+        public BooleanModsViewHolder(View itemView) {
             super(itemView);
             mT = itemView.findViewById(R.id.switch_row_item_textview);
             mS = itemView.findViewById(R.id.switch_row_item_switch);

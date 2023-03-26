@@ -1,7 +1,7 @@
 <resources>
     <string name="all">Todos</string>
-    <string name="all_switches">Todos los interruptores</string>
     <string name="app_name">GoogleDialerMod</string>
+    <string name="boolean_mods">Mods booleanos</string>
     <string name="choose_a_language_for_call_screen">Elija un idioma para la pantalla de llamadas</string>
     <string name="continue_anyway">Continuar de todos modos</string>
     <string name="cpu_arch_not_supported">Su arquitectura de CPU no es compatible</string>

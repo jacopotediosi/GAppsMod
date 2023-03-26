@@ -33,7 +33,7 @@ And much more coming soon :)
 
 
 ## Troubleshooting:
-- After enabling / disabling any switch, please force close and reopen the Google Dialer app a couple of times. You may also need to reboot for the changes to take effect.
+- After enabling / disabling any mod, please force close and reopen the Google Dialer app a couple of times. You may also need to reboot for the changes to take effect.
 - Before to report an issue try to delete Google Dialer app data, to reboot your phone and to try again what didn't work
 
 
