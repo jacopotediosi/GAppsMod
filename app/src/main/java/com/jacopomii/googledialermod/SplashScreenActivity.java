@@ -265,6 +265,11 @@ public class SplashScreenActivity extends AppCompatActivity {
         return fileSystemManager.getFile(PHENOTYPE_DB).exists();
     }
 
+    // TODO: eliminare con conversione a nio di sqlite o quantomeno verificare che faccia update, fare update con nuovo sqlite
+    // Copy to dataDir the right precompiled sqlite3 binary, based on the device supported ABIs.
+    // The sqlite3 binaries included in this project have been statically compiled from the official sqlite sources using the following scripts:
+    // https://github.com/jacopotediosi/sqlite3-android
+    @SuppressWarnings("IOStreamConstructor")
     private boolean copyAssets() throws IOException {
         final String dataDir = getApplicationInfo().dataDir;
         InputStream inputStream = null;
@@ -273,7 +278,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         for (String supportedAbi : Build.SUPPORTED_ABIS) {
             if (supportedAbi.contains("arm")) {
-                inputStream = getResources().openRawResource(R.raw.sqlite3_arm);
+                inputStream = getResources().openRawResource(R.raw.sqlite3_armeabi_v7a);
                 break;
             } else if (supportedAbi.contains("x86")) {
                 inputStream = getResources().openRawResource(R.raw.sqlite3_x86);
