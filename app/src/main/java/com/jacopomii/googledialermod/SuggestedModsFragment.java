@@ -174,22 +174,27 @@ public class SuggestedModsFragment extends Fragment {
         if (fileSystemManager != null) {
             boolean mSilenceCallRecordingAlertsSwitchNewStatus = false;
             try {
-                InputStream silentVoiceInputStream;
+                ExtendedFile startingVoiceFile = fileSystemManager.getFile(DIALER_CALLRECORDINGPROMPT, CALLRECORDINGPROMPT_STARTING_VOICE_US);
+                ExtendedFile endingVoiceFile = fileSystemManager.getFile(DIALER_CALLRECORDINGPROMPT, CALLRECORDINGPROMPT_STARTING_VOICE_US);
 
-                InputStream startingVoiceInputStream = fileSystemManager.getFile(DIALER_CALLRECORDINGPROMPT, CALLRECORDINGPROMPT_STARTING_VOICE_US).newInputStream();
-                silentVoiceInputStream = getResources().openRawResource(R.raw.silent_wav);
-                boolean isStartingVoiceSilenced = IOUtils.contentEquals(silentVoiceInputStream, startingVoiceInputStream);
-                startingVoiceInputStream.close();
-                silentVoiceInputStream.close();
+                if (startingVoiceFile.exists() && endingVoiceFile.exists()) {
+                    InputStream silentVoiceInputStream;
 
-                InputStream endingVoiceInputStream = fileSystemManager.getFile(DIALER_CALLRECORDINGPROMPT, CALLRECORDINGPROMPT_ENDING_VOICE_US).newInputStream();
-                silentVoiceInputStream = getResources().openRawResource(R.raw.silent_wav);
-                boolean isEndingVoiceSilenced = IOUtils.contentEquals(silentVoiceInputStream, endingVoiceInputStream);
-                endingVoiceInputStream.close();
-                silentVoiceInputStream.close();
+                    InputStream startingVoiceInputStream = startingVoiceFile.newInputStream();
+                    silentVoiceInputStream = getResources().openRawResource(R.raw.silent_wav);
+                    boolean isStartingVoiceSilenced = IOUtils.contentEquals(silentVoiceInputStream, startingVoiceInputStream);
+                    startingVoiceInputStream.close();
+                    silentVoiceInputStream.close();
 
-                mSilenceCallRecordingAlertsSwitchNewStatus = mDBFlagsSingleton.areAllStringFlagsEmpty(SILENCE_CALL_RECORDING_ALERTS_FLAGS) &&
-                        isStartingVoiceSilenced && isEndingVoiceSilenced;
+                    InputStream endingVoiceInputStream = endingVoiceFile.newInputStream();
+                    silentVoiceInputStream = getResources().openRawResource(R.raw.silent_wav);
+                    boolean isEndingVoiceSilenced = IOUtils.contentEquals(silentVoiceInputStream, endingVoiceInputStream);
+                    endingVoiceInputStream.close();
+                    silentVoiceInputStream.close();
+
+                    mSilenceCallRecordingAlertsSwitchNewStatus = mDBFlagsSingleton.areAllStringFlagsEmpty(SILENCE_CALL_RECORDING_ALERTS_FLAGS) &&
+                            isStartingVoiceSilenced && isEndingVoiceSilenced;
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
