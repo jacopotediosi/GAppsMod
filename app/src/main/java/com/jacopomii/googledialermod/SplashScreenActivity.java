@@ -7,17 +7,17 @@ import static com.jacopomii.googledialermod.Constants.DIALER_PACKAGE_NAME;
 import static com.jacopomii.googledialermod.Constants.GMS_GOOGLE_PLAY_LINK;
 import static com.jacopomii.googledialermod.Constants.PHENOTYPE_DB;
 import static com.jacopomii.googledialermod.Utils.checkUpdateAvailable;
-import static com.jacopomii.googledialermod.Utils.copyFile;
 import static com.jacopomii.googledialermod.Utils.openGooglePlay;
 
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.RemoteException;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -28,49 +28,59 @@ import com.topjohnwu.superuser.Shell;
 import com.topjohnwu.superuser.ipc.RootService;
 import com.topjohnwu.superuser.nio.FileSystemManager;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.concurrent.CountDownLatch;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashScreenActivity extends AppCompatActivity {
-    private final SplashScreenActivity splashScreenActivity = this;
-
-    private final CountDownLatch rootCheckPassed = new CountDownLatch(1);
-    private final CountDownLatch fileSystemManagerConnected = new CountDownLatch(1);
-    private final CountDownLatch dialerCheckPassed = new CountDownLatch(1);
-    private final CountDownLatch phenotypeCheckPassed = new CountDownLatch(1);
-    private final CountDownLatch copyAssetsFinished = new CountDownLatch(1);
-    private final CountDownLatch updateCheckFinished = new CountDownLatch(1);
-
-    private RootServiceConnection rootServiceConnection;
-    private FileSystemManager fileSystemManager;
-
     static {
         // Set Libsu settings before creating the main shell
         Shell.enableVerboseLogging = BuildConfig.DEBUG;
         Shell.setDefaultBuilder(Shell.Builder.create().setFlags(Shell.FLAG_MOUNT_MASTER));
     }
 
+    private final SplashScreenActivity splashScreenActivity = this;
+
+    private final CountDownLatch rootCheckPassed = new CountDownLatch(1);
+    private final CountDownLatch coreRootServiceConnected = new CountDownLatch(1);
+    private final CountDownLatch dialerCheckPassed = new CountDownLatch(1);
+    private final CountDownLatch phenotypeCheckPassed = new CountDownLatch(1);
+    private final CountDownLatch updateCheckFinished = new CountDownLatch(1);
+
+    private boolean coreRootServiceBound = false;
+    private ServiceConnection coreRootServiceConnection;
+    private FileSystemManager coreRootServiceFSManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        // Start rootServiceConnection and save the fileSystemManager binder when the service is ready
-        rootServiceConnection = new RootServiceConnection() {
+        // Start CoreRootService connection
+        Intent intent = new Intent(this, CoreRootService.class);
+        coreRootServiceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
-                super.onServiceConnected(name, service);
-                fileSystemManager = this.getRemoteFS();
-                fileSystemManagerConnected.countDown();
+                // Set references to the remote coreRootService
+                coreRootServiceBound = true;
+                ICoreRootService ipc = ICoreRootService.Stub.asInterface(service);
+                try {
+                    coreRootServiceFSManager = FileSystemManager.getRemote(ipc.getFileSystemService());
+                    coreRootServiceConnected.countDown();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+
+                // Update the UI
+                setCheckUIDone(R.id.circular_root_service, R.id.done_root_service, coreRootServiceConnected.getCount()==0);
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                coreRootServiceBound = false;
+                coreRootServiceFSManager = null;
             }
         };
-        Intent intent = new Intent(this, RootFileSystemService.class);
-        RootService.bind(intent, rootServiceConnection);
+        RootService.bind(intent, coreRootServiceConnection);
 
         // Root permission check
         new Thread() {
@@ -100,8 +110,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                 try {
                     // Wait for root check to pass
                     rootCheckPassed.await();
-                    // Wait for fileSystemManager to connect
-                    fileSystemManagerConnected.await();
+                    // Wait for coreRootService to connect
+                    coreRootServiceConnected.await();
 
                     // Check the Dialer installation
                     if (checkDialerInstallation()) {
@@ -132,8 +142,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                 try {
                     // Wait for root check to pass
                     rootCheckPassed.await();
-                    // Wait for fileSystemManager to connect
-                    fileSystemManagerConnected.await();
+                    // Wait for coreRootService to connect
+                    coreRootServiceConnected.await();
 
                     // Check the Phenotype DB
                     if (checkPhenotypeDB()) {
@@ -150,46 +160,6 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                     // Update the UI
                     setCheckUIDone(R.id.circular_phenotype, R.id.done_phenotype, phenotypeCheckPassed.getCount()==0);
-                } catch(InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }.start();
-
-        // Copy assets
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    // Wait for root check to pass
-                    rootCheckPassed.await();
-
-                    // Copy application assets
-                    try {
-                        if (copyAssets()) {
-                            copyAssetsFinished.countDown();
-                        } else {
-                            runOnUiThread(() ->
-                                    new AlertDialog.Builder(splashScreenActivity)
-                                        .setCancelable(false)
-                                        .setMessage(R.string.cpu_arch_not_supported)
-                                        .setPositiveButton(getString(R.string.exit), (dialog, which) -> System.exit(0))
-                                        .show());
-                        }
-                    } catch (IOException e) {
-                        runOnUiThread(() ->
-                                new AlertDialog.Builder(splashScreenActivity)
-                                    .setCancelable(false)
-                                    .setMessage(R.string.splash_screen_copy_assets_error)
-                                    .setNegativeButton(R.string.github, (dialogInterface, i) ->
-                                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_link))))
-                                    )
-                                    .setPositiveButton(getString(R.string.exit), (dialog, which) -> System.exit(0))
-                                    .show());
-                    }
-
-                    // Update the UI
-                    setCheckUIDone(R.id.circular_copy_assets, R.id.done_copy_assets, copyAssetsFinished.getCount()==0);
                 } catch(InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -228,10 +198,9 @@ public class SplashScreenActivity extends AppCompatActivity {
                 try {
                     // Wait for all checks to pass and for all operations to finish
                     rootCheckPassed.await();
-                    fileSystemManagerConnected.await();
+                    coreRootServiceConnected.await();
                     dialerCheckPassed.await();
                     phenotypeCheckPassed.await();
-                    copyAssetsFinished.await();
                     updateCheckFinished.await();
 
                     // This is just for aesthetics: I don't want the splashscreen to be too fast
@@ -258,42 +227,11 @@ public class SplashScreenActivity extends AppCompatActivity {
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }
-        return fileSystemManager.getFile(DIALER_DATA_DATA).exists();
+        return coreRootServiceFSManager.getFile(DIALER_DATA_DATA).exists();
     }
 
     private boolean checkPhenotypeDB() {
-        return fileSystemManager.getFile(PHENOTYPE_DB).exists();
-    }
-
-    // TODO: eliminare con conversione a nio di sqlite o quantomeno verificare che faccia update, fare update con nuovo sqlite
-    // Copy to dataDir the right precompiled sqlite3 binary, based on the device supported ABIs.
-    // The sqlite3 binaries included in this project have been statically compiled from the official sqlite sources using the following scripts:
-    // https://github.com/jacopotediosi/sqlite3-android
-    @SuppressWarnings("IOStreamConstructor")
-    private boolean copyAssets() throws IOException {
-        final String dataDir = getApplicationInfo().dataDir;
-        InputStream inputStream = null;
-        OutputStream outputStream;
-        File outputFile;
-
-        for (String supportedAbi : Build.SUPPORTED_ABIS) {
-            if (supportedAbi.contains("arm")) {
-                inputStream = getResources().openRawResource(R.raw.sqlite3_armeabi_v7a);
-                break;
-            } else if (supportedAbi.contains("x86")) {
-                inputStream = getResources().openRawResource(R.raw.sqlite3_x86);
-                break;
-            }
-        }
-
-        if (inputStream == null)
-            return false;
-
-        outputFile = new File(dataDir, "sqlite3");
-        outputStream = new FileOutputStream(outputFile);
-        copyFile(inputStream, outputStream);
-        Shell.cmd("chmod 755 " + dataDir + "/sqlite3").exec();
-        return true;
+        return coreRootServiceFSManager.getFile(PHENOTYPE_DB).exists();
     }
 
     private void setCheckUIDone(int circularID, int doneImageID, boolean success) {
@@ -308,7 +246,8 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        if (coreRootServiceBound)
+            RootService.unbind(coreRootServiceConnection);
         super.onDestroy();
-        RootService.unbind(rootServiceConnection);
     }
 }

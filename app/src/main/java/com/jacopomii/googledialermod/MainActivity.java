@@ -1,8 +1,14 @@
 package com.jacopomii.googledialermod;
 
-import static com.jacopomii.googledialermod.Utils.revertAllMods;
+import static com.jacopomii.googledialermod.Constants.DIALER_CALLRECORDINGPROMPT;
+import static com.jacopomii.googledialermod.Constants.DIALER_PACKAGE_NAME;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,12 +24,21 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.topjohnwu.superuser.ipc.RootService;
+import com.topjohnwu.superuser.nio.ExtendedFile;
+import com.topjohnwu.superuser.nio.FileSystemManager;
 
 public class MainActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private TabLayout mTabLayout;
     private ViewPager2 mViewPager;
-    private ViewPagerAdapter mViewPagerAdapter;
+    private MainViewPagerAdapter mViewPagerAdapter;
+    private View mProgressBar;
+
+    private boolean coreRootServiceBound = false;
+    private ServiceConnection coreRootServiceConnection;
+    private ICoreRootService coreRootServiceIpc;
+    private FileSystemManager coreRootServiceFSManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,29 +49,60 @@ public class MainActivity extends AppCompatActivity {
         mToolbar = findViewById(R.id.toolbar);
         mTabLayout = findViewById(R.id.tab_layout);
         mViewPager = findViewById(R.id.viewpager);
+        mProgressBar = findViewById(R.id.progress_bar);
 
         setSupportActionBar(mToolbar);
 
-        mViewPagerAdapter = new ViewPagerAdapter(this);
+        mViewPagerAdapter = new MainViewPagerAdapter(this);
 
-        mViewPager.setAdapter(mViewPagerAdapter);
 
-        mViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+        // Start CoreRootService connection
+        Intent intent = new Intent(this, CoreRootService.class);
+        coreRootServiceConnection = new ServiceConnection() {
             @Override
-            public void onPageSelected(int position) {
-                RadioGroup radioGroupSearch = findViewById(R.id.radio_group_search);
-                radioGroupSearch.setVisibility(View.GONE);
-                radioGroupSearch.check(R.id.radiobutton_all);
-            }
-        });
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                // Set references to the remote coreRootService
+                coreRootServiceBound = true;
+                coreRootServiceIpc = ICoreRootService.Stub.asInterface(service);
+                try {
+                    coreRootServiceFSManager = FileSystemManager.getRemote(coreRootServiceIpc.getFileSystemService());
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
 
-        new TabLayoutMediator(mTabLayout, mViewPager, (tab, position) -> {
-            if (position == 1) {
-                tab.setText(R.string.boolean_mods);
-            } else {
-                tab.setText(R.string.suggested_mods);
+                // Update UI
+                mViewPager.setAdapter(mViewPagerAdapter);
+
+                mProgressBar.setVisibility(View.GONE);
+
+                mViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+                    @Override
+                    public void onPageSelected(int position) {
+                        RadioGroup radioGroupSearch = findViewById(R.id.radio_group_search);
+                        radioGroupSearch.setVisibility(View.GONE);
+                        radioGroupSearch.check(R.id.radiobutton_all);
+                    }
+                });
+
+                new TabLayoutMediator(mTabLayout, mViewPager, (tab, position) -> tab.setText(mViewPagerAdapter.getItemTitle(position))).attach();
             }
-        }).attach();
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                coreRootServiceBound = false;
+                coreRootServiceIpc = null;
+                coreRootServiceFSManager = null;
+            }
+        };
+        RootService.bind(intent, coreRootServiceConnection);
+    }
+
+    public FileSystemManager getCoreRootServiceFSManager() {
+        return coreRootServiceFSManager;
+    }
+
+    public ICoreRootService getCoreRootServiceIpc() {
+        return coreRootServiceIpc;
     }
 
     @Override
@@ -89,7 +135,20 @@ public class MainActivity extends AppCompatActivity {
                     .setNegativeButton(getString(android.R.string.cancel), (dialog, which) -> {
                     })
                     .setPositiveButton(getString(android.R.string.ok), (dialog, which) -> {
-                        revertAllMods(this);
+                        // Delete all flag overrides from Phenotype DB
+                        try {
+                            coreRootServiceIpc.phenotypeDBDeleteAllFlagOverrides(DIALER_PACKAGE_NAME);
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
+
+                        // Delete the Dialer callrecordingprompt folder
+                        ExtendedFile callRecordingPromptFolder = coreRootServiceFSManager.getFile(DIALER_CALLRECORDINGPROMPT);
+                        if (callRecordingPromptFolder.exists()) {
+                            //noinspection ResultOfMethodCallIgnored
+                            callRecordingPromptFolder.delete();
+                        }
+
                         // Restart the activity to be sure UI is updated
                         finish();
                         startActivity(getIntent());
@@ -100,5 +159,12 @@ public class MainActivity extends AppCompatActivity {
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (coreRootServiceBound)
+            RootService.unbind(coreRootServiceConnection);
+        super.onDestroy();
     }
 }

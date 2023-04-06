@@ -1,10 +1,8 @@
 <resources>
     <string name="all">Tout</string>
-    <string name="app_name">GoogleDialerMod</string>
     <string name="boolean_mods">Mods booléens</string>
     <string name="choose_a_language_for_call_screen">Choisissez une langue pour le filtrage d\'appels</string>
     <string name="continue_anyway">Continuer quand même</string>
-    <string name="cpu_arch_not_supported">L\’architecture de votre CPU n\’est pas supportée</string>
     <string name="credits">Crédits</string>
     <string name="delete_all_applied_mods">Supprimer toutes les modifications</string>
     <string name="delete_all_mods_alert">Voulez-vous vraiment supprimer toutes les modifications apportées par GoogleDialerMod?</string>
@@ -26,11 +24,10 @@
     <string name="root_access_denied">Accès à la racine refusé. Merci d\’autoriser l\’accès à la racine.</string>
     <string name="search">Rechercher</string>
     <string name="silence_call_recording_alerts">Mettre sous silence les alertes d\’enregistrement des appels (Dialer &lt;= 94.x uniquement)</string>
-    <string name="splash_screen_copy_assets">Copier les ressources de l\'application…</string>
-    <string name="splash_screen_copy_assets_error">Une erreur inattendue s\'est produite lors de la copie des ressources de l\'application dans la mémoire.\n\nSi vous le souhaitez, ouvrez un ticket sur Github.</string>
     <string name="splash_screen_dialer">Vérification de l\'installation de l\’application téléphone…</string>
     <string name="splash_screen_phenotype">Vérification de la base de données Phenotype…</string>
     <string name="splash_screen_root">Vérification des permissions racine…</string>
+    <string name="splash_screen_root_service">Connexion au service racine…</string>
     <string name="splash_screen_updates">Vérification des mises à jour…</string>
     <string name="suggested_mods">Mods suggérés</string>
     <string name="what_is_it">Qu\’est ce que c\’est</string>

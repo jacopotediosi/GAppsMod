@@ -1,10 +1,8 @@
 <resources>
     <string name="all">Todos</string>
-    <string name="app_name">GoogleDialerMod</string>
     <string name="boolean_mods">Mods booleanos</string>
     <string name="choose_a_language_for_call_screen">Elija un idioma para la pantalla de llamadas</string>
     <string name="continue_anyway">Continuar de todos modos</string>
-    <string name="cpu_arch_not_supported">Su arquitectura de CPU no es compatible</string>
     <string name="credits">Creditos</string>
     <string name="delete_all_applied_mods">Eliminar todas las modificaciones aplicadas</string>
     <string name="delete_all_mods_alert">¿Realmente desea eliminar todas las modificaciones aplicadas por GoogleDialerMod?</string>
@@ -14,9 +12,6 @@
     <string name="exit">Salir</string>
     <string name="force_enable_call_screen">Forzar habilitar pantalla de llamada</string>
     <string name="force_enable_disable_call_recording">Forzar habilitar la grabación de llamadas</string>
-    <string name="github" translatable="false">Github</string>
-    <string name="github_api_link" translatable="false">https://api.github.com/repos/jacopotediosi/GoogleDialerMod</string>
-    <string name="github_link" translatable="false">https://github.com/jacopotediosi/GoogleDialerMod</string>
     <string name="how_it_works">Cómo funciona</string>
     <string name="how_it_works_explanation">Los parches aplicados por GoogleDialerMod resisten las actualizaciones de Google Dialer con el tiempo, incluso después de desinstalar la aplicación.\nPor lo tanto, las modificaciones deben considerarse permanentes, pero se pueden revertir fácilmente presionando el ícono de la papelera en el menú superior derecho.\nNo es necesario para mantener esta aplicación instalada después de aplicar los cambios deseados.\n\nDespués de aplicar los cambios, es posible que deba volver a abrir y cerrar a la fuerza la aplicación Marcador un par de veces antes de que surtan efecto.</string>
     <string name="if_bug_found_open_github_issue">Si cree que ha encontrado algún error, abra un ticket en Github</string>
@@ -29,11 +24,10 @@
     <string name="root_access_denied">Acceso root denegado. Permita el acceso de root.</string>
     <string name="search">Buscar</string>
     <string name="silence_call_recording_alerts">Silenciar alertas de grabación de llamadas</string>
-    <string name="splash_screen_copy_assets">Copiando recursos de la aplicación…</string>
-    <string name="splash_screen_copy_assets_error">Se produjo un error inesperado al copiar los recursos de la aplicación en la memoria.\n\nSi lo desea, abra un ticket en Github.</string>
     <string name="splash_screen_dialer">Comprobando la instalación del dialer…</string>
     <string name="splash_screen_phenotype">Comprobando Phenotype DB…</string>
     <string name="splash_screen_root">Comprobando permisos root…</string>
+    <string name="splash_screen_root_service">Conexión al servicio root…</string>
     <string name="splash_screen_updates">Comprobando actualizaciones…</string>
     <string name="suggested_mods">Mods sugeridas</string>
     <string name="what_is_it">Qué es</string>

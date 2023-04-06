@@ -1,10 +1,8 @@
 <resources>
     <string name="all">Tutti</string>
-    <string name="app_name">GoogleDialerMod</string>
     <string name="boolean_mods">Mod booleane</string>
     <string name="choose_a_language_for_call_screen">Scegli una lingua per il call screen</string>
     <string name="continue_anyway">Continua comunque</string>
-    <string name="cpu_arch_not_supported">L\'architettura della tua CPU non è supportata</string>
     <string name="credits">Crediti</string>
     <string name="delete_all_applied_mods">Elimina tutte le mod applicate</string>
     <string name="delete_all_mods_alert">Vuoi davvero eliminare tutte le mod applicate da GoogleDialerMod?</string>
@@ -26,11 +24,10 @@
     <string name="root_access_denied">Impossibile ottenere i permessi di root. Per favore consenti l\'accesso root.</string>
     <string name="search">Cerca</string>
     <string name="silence_call_recording_alerts">Silenzia gli audio degli avvisi di registrazione chiamata (solo Dialer &lt;= 94.x)</string>
-    <string name="splash_screen_copy_assets">Copiando le risorse dell\'applicazione…</string>
-    <string name="splash_screen_copy_assets_error">Si è verificato un errore inaspettato copiando in memoria le risorse dell\'applicazione.\n\nSe vuoi, apri una issue su Github.</string>
     <string name="splash_screen_dialer">Controllando l\'installazione del Dialer…</string>
     <string name="splash_screen_phenotype">Controllando il Phenotype DB…</string>
     <string name="splash_screen_root">Controllando i permessi di root…</string>
+    <string name="splash_screen_root_service">Connettendo al servizio root…</string>
     <string name="splash_screen_updates">Controllando gli aggiornamenti…</string>
     <string name="suggested_mods">Mod suggerite</string>
     <string name="what_is_it">Che cos\'è</string>

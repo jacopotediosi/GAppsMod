@@ -71,6 +71,36 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:id="@+id/done_root_service"
+            android:layout_width="25dp"
+            android:layout_height="48dp"
+            android:visibility="gone"
+            android:importantForAccessibility="no"/>
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/circular_root_service"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:text="@string/splash_screen_root_service"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            app:fontFamily="sans-serif" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="horizontal">
+
+        <ImageView
             android:id="@+id/done_dialer"
             android:layout_width="25dp"
             android:layout_height="48dp"
@@ -120,36 +150,6 @@
             android:layout_gravity="center"
             android:layout_marginStart="5dp"
             android:text="@string/splash_screen_phenotype"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-            app:fontFamily="sans-serif" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/done_copy_assets"
-            android:layout_width="25dp"
-            android:layout_height="48dp"
-            android:visibility="gone"
-            android:importantForAccessibility="no"/>
-
-        <androidx.core.widget.ContentLoadingProgressBar
-            android:id="@+id/circular_copy_assets"
-            style="@style/Widget.AppCompat.ProgressBar"
-            android:layout_width="20dp"
-            android:layout_height="wrap_content"
-            android:indeterminate="true" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="5dp"
-            android:text="@string/splash_screen_copy_assets"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             app:fontFamily="sans-serif" />
     </LinearLayout>

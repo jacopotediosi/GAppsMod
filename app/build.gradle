@@ -59,7 +59,10 @@ android {
 }
 
 dependencies {
-    def libsuVersion = '5.0.3'
+    def libsuVersion = '5.0.4'
+
+    // Official SQLite Java Bindings, downloaded from https://www.sqlite.org/download.html
+    implementation files('libs/sqlite-android-3410200.aar')
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'

@@ -1,7 +1,10 @@
 package com.jacopomii.googledialermod;
 
+import static com.jacopomii.googledialermod.Constants.DIALER_PACKAGE_NAME;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.RemoteException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +28,13 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
     private List<SwitchRowItem> mDataFiltered;
 
     public BooleanModsRecyclerViewAdapter(Context context, List<SwitchRowItem> data) {
-        mContext = context;
-        mData = data;
-        mDataFiltered = data;
+        if (context instanceof MainActivity) {
+            mContext = context;
+            mData = data;
+            mDataFiltered = data;
+        } else {
+            throw new RuntimeException("BooleanModsRecyclerViewAdapter can be attached only to the MainActivity");
+        }
     }
 
     @NonNull
@@ -47,7 +54,11 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
 
         holder.mS.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mDataFiltered.get(position).setSwitchChecked(isChecked);
-            DBFlagsSingleton.getInstance(mContext).updateDBFlag(holder.mT.getText().toString(), isChecked);
+            try {
+                ((MainActivity)mContext).getCoreRootServiceIpc().phenotypeDBUpdateBooleanFlag(DIALER_PACKAGE_NAME, holder.mT.getText().toString(), isChecked);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
             notifyItemChanged(position);
         });
     }

@@ -1,6 +1,10 @@
 package com.jacopomii.googledialermod;
 
+import static com.jacopomii.googledialermod.Constants.DIALER_PACKAGE_NAME;
+
+import android.app.Activity;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,12 +28,16 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
+@SuppressWarnings("unchecked")
 public class BooleanModsFragment extends Fragment {
     View mView;
     private RecyclerView mRecyclerView;
     private BooleanModsRecyclerViewAdapter mBooleanModsRecyclerViewAdapter;
     private final List<SwitchRowItem> mLstSwitch = new ArrayList<>();
+
+    private ICoreRootService coreRootServiceIpc;
 
     public BooleanModsFragment() {}
 
@@ -37,13 +45,19 @@ public class BooleanModsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        Activity activity = getActivity();
+        if (activity instanceof MainActivity)
+            coreRootServiceIpc = ((MainActivity) activity).getCoreRootServiceIpc();
+        else
+            throw new RuntimeException("SuggestedModsFragment can be attached only to the MainActivity");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.boolean_mods_fragment, container, false);
         mRecyclerView = mView.findViewById(R.id.recyclerView);
-        mBooleanModsRecyclerViewAdapter = new BooleanModsRecyclerViewAdapter(getContext(), mLstSwitch);
+        mBooleanModsRecyclerViewAdapter = new BooleanModsRecyclerViewAdapter(getActivity(), mLstSwitch);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mBooleanModsRecyclerViewAdapter);
         return mView;
@@ -145,14 +159,17 @@ public class BooleanModsFragment extends Fragment {
     public void refreshAdapter() {
         mLstSwitch.clear();
 
-        for (Map.Entry<String, Boolean> flag : DBFlagsSingleton.getInstance(getActivity()).getDBBooleanFlags().entrySet()) {
-            mLstSwitch.add(new SwitchRowItem(flag.getKey(), flag.getValue()));
+        try {
+            TreeMap<String, Boolean> map = new TreeMap<String, Boolean>(coreRootServiceIpc.phenotypeDBGetBooleanFlags(DIALER_PACKAGE_NAME));
+            for (Map.Entry<String, Boolean> flag : map.entrySet())
+                mLstSwitch.add(new SwitchRowItem(flag.getKey(), flag.getValue()));
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
 
         mBooleanModsRecyclerViewAdapter = new BooleanModsRecyclerViewAdapter(getContext(), mLstSwitch);
 
-        if (mRecyclerView != null) {
+        if (mRecyclerView != null)
             mRecyclerView.setAdapter(mBooleanModsRecyclerViewAdapter);
-        }
     }
 }

@@ -1,6 +1,5 @@
 package com.jacopomii.googledialermod;
 
-import static com.jacopomii.googledialermod.Constants.DIALER_CALLRECORDINGPROMPT;
 import static com.jacopomii.googledialermod.Constants.VENDING_PACKAGE_NAME;
 
 import android.content.ActivityNotFoundException;
@@ -13,14 +12,12 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
-import com.topjohnwu.superuser.Shell;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Formatter;
 
 public class Utils {
     public static void copyFile(InputStream inputStream, OutputStream outputStream) throws IOException {
@@ -34,13 +31,6 @@ public class Utils {
         outputStream.close();
     }
 
-    public static String byteArrayToHexString(byte[] byteArray) {
-        Formatter formatter = new Formatter();
-        for (byte b : byteArray)
-            formatter.format("%02x", b);
-        return formatter.toString();
-    }
-
     public static void openGooglePlay(Context context, String googlePlayLink) {
         try {
             Intent appStoreIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(googlePlayLink));
@@ -49,20 +39,6 @@ public class Utils {
         } catch (ActivityNotFoundException exception) {
             context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(googlePlayLink)));
         }
-    }
-
-    public static void revertAllMods(Context context) {
-        DBFlagsSingleton.getInstance(context).deleteAllFlagOverrides();
-        deleteCallrecordingpromptFolder();
-    }
-
-    public static void deleteCallrecordingpromptFolder() {
-        Shell.cmd(
-                String.format(
-                        "rm -rf %s",
-                        DIALER_CALLRECORDINGPROMPT
-                )
-        ).exec();
     }
 
     public static boolean checkUpdateAvailable(Context context) {
@@ -90,5 +66,22 @@ public class Utils {
         }
 
         return false;
+    }
+
+    /**
+     * This method generates strings used for IN queries.
+     * It creates string containing "?" characters repeated {@code size} times and separated by ",".
+     * @param size size of the items.
+     * @return IN query string of the form ?,?,?,?.
+     */
+    public static String createInQueryString(int size) {
+        StringBuilder stringBuilder = new StringBuilder();
+        String separator = "";
+        for (int i=0; i<size; i++) {
+            stringBuilder.append(separator);
+            stringBuilder.append("?");
+            separator = ",";
+        }
+        return stringBuilder.toString();
     }
 }

@@ -5,15 +5,25 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-public class ViewPagerAdapter extends FragmentStateAdapter {
+public class MainViewPagerAdapter extends FragmentStateAdapter {
+    private final FragmentActivity fragmentActivity;
 
-    public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
+    public MainViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
+        this.fragmentActivity = fragmentActivity;
     }
 
     @Override
     public int getItemCount() {
         return 2;
+    }
+
+    public String getItemTitle(int position) {
+        if (position == 1) {
+            return fragmentActivity.getString(R.string.boolean_mods);
+        } else {
+            return fragmentActivity.getString(R.string.suggested_mods);
+        }
     }
 
     @NonNull
