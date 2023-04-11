@@ -1,4 +1,4 @@
-package com.jacopomii.googledialermod;
+package com.jacopomii.googledialermod.ui.viewmodel;
 
 public class SwitchRowItem {
     private String mSwitchText;

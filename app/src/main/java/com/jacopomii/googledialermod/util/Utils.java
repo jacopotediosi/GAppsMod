@@ -1,6 +1,6 @@
-package com.jacopomii.googledialermod;
+package com.jacopomii.googledialermod.util;
 
-import static com.jacopomii.googledialermod.Constants.VENDING_PACKAGE_NAME;
+import static com.jacopomii.googledialermod.data.Constants.VENDING_PACKAGE_NAME;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -12,6 +12,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
+import com.jacopomii.googledialermod.BuildConfig;
+import com.jacopomii.googledialermod.R;
+import com.jacopomii.googledialermod.data.Version;
 
 import org.json.JSONObject;
 

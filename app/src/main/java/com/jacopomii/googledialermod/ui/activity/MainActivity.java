@@ -1,7 +1,7 @@
-package com.jacopomii.googledialermod;
+package com.jacopomii.googledialermod.ui.activity;
 
-import static com.jacopomii.googledialermod.Constants.DIALER_CALLRECORDINGPROMPT;
-import static com.jacopomii.googledialermod.Constants.DIALER_PACKAGE_NAME;
+import static com.jacopomii.googledialermod.data.Constants.DIALER_CALLRECORDINGPROMPT;
+import static com.jacopomii.googledialermod.data.Constants.DIALER_PACKAGE_NAME;
 
 import android.content.ComponentName;
 import android.content.Intent;
@@ -24,6 +24,10 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.jacopomii.googledialermod.ICoreRootService;
+import com.jacopomii.googledialermod.ui.adapter.MainViewPagerAdapter;
+import com.jacopomii.googledialermod.R;
+import com.jacopomii.googledialermod.service.CoreRootService;
 import com.topjohnwu.superuser.ipc.RootService;
 import com.topjohnwu.superuser.nio.ExtendedFile;
 import com.topjohnwu.superuser.nio.FileSystemManager;
@@ -54,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
 
         mViewPagerAdapter = new MainViewPagerAdapter(this);
-
 
         // Start CoreRootService connection
         Intent intent = new Intent(this, CoreRootService.class);

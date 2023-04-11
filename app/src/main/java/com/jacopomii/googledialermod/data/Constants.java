@@ -1,4 +1,4 @@
-package com.jacopomii.googledialermod;
+package com.jacopomii.googledialermod.data;
 
 import android.annotation.SuppressLint;
 

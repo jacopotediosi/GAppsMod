@@ -1,9 +1,13 @@
-package com.jacopomii.googledialermod;
+package com.jacopomii.googledialermod.ui.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import com.jacopomii.googledialermod.R;
+import com.jacopomii.googledialermod.ui.fragment.BooleanModsFragment;
+import com.jacopomii.googledialermod.ui.fragment.SuggestedModsFragment;
 
 public class MainViewPagerAdapter extends FragmentStateAdapter {
     private final FragmentActivity fragmentActivity;

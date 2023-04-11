@@ -1,13 +1,13 @@
-package com.jacopomii.googledialermod;
+package com.jacopomii.googledialermod.ui.activity;
 
-import static com.jacopomii.googledialermod.Constants.DIALER_DATA_DATA;
-import static com.jacopomii.googledialermod.Constants.DIALER_GOOGLE_PLAY_BETA_LINK;
-import static com.jacopomii.googledialermod.Constants.DIALER_GOOGLE_PLAY_LINK;
-import static com.jacopomii.googledialermod.Constants.DIALER_PACKAGE_NAME;
-import static com.jacopomii.googledialermod.Constants.GMS_GOOGLE_PLAY_LINK;
-import static com.jacopomii.googledialermod.Constants.PHENOTYPE_DB;
-import static com.jacopomii.googledialermod.Utils.checkUpdateAvailable;
-import static com.jacopomii.googledialermod.Utils.openGooglePlay;
+import static com.jacopomii.googledialermod.data.Constants.DIALER_DATA_DATA;
+import static com.jacopomii.googledialermod.data.Constants.DIALER_GOOGLE_PLAY_BETA_LINK;
+import static com.jacopomii.googledialermod.data.Constants.DIALER_GOOGLE_PLAY_LINK;
+import static com.jacopomii.googledialermod.data.Constants.DIALER_PACKAGE_NAME;
+import static com.jacopomii.googledialermod.data.Constants.GMS_GOOGLE_PLAY_LINK;
+import static com.jacopomii.googledialermod.data.Constants.PHENOTYPE_DB;
+import static com.jacopomii.googledialermod.util.Utils.checkUpdateAvailable;
+import static com.jacopomii.googledialermod.util.Utils.openGooglePlay;
 
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
@@ -24,6 +24,10 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.jacopomii.googledialermod.BuildConfig;
+import com.jacopomii.googledialermod.ICoreRootService;
+import com.jacopomii.googledialermod.R;
+import com.jacopomii.googledialermod.service.CoreRootService;
 import com.topjohnwu.superuser.Shell;
 import com.topjohnwu.superuser.ipc.RootService;
 import com.topjohnwu.superuser.nio.FileSystemManager;

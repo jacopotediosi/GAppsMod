@@ -1,9 +1,9 @@
-package com.jacopomii.googledialermod;
+package com.jacopomii.googledialermod.service;
 
-import static com.jacopomii.googledialermod.Constants.DIALER_PACKAGE_NAME;
-import static com.jacopomii.googledialermod.Constants.DIALER_PHENOTYPE_CACHE;
-import static com.jacopomii.googledialermod.Constants.PHENOTYPE_DB;
-import static com.jacopomii.googledialermod.Utils.createInQueryString;
+import static com.jacopomii.googledialermod.data.Constants.DIALER_PACKAGE_NAME;
+import static com.jacopomii.googledialermod.data.Constants.DIALER_PHENOTYPE_CACHE;
+import static com.jacopomii.googledialermod.data.Constants.PHENOTYPE_DB;
+import static com.jacopomii.googledialermod.util.Utils.createInQueryString;
 import static org.sqlite.database.sqlite.SQLiteDatabase.OPEN_READWRITE;
 import static org.sqlite.database.sqlite.SQLiteDatabase.openDatabase;
 
@@ -15,6 +15,7 @@ import android.os.Process;
 
 import androidx.annotation.NonNull;
 
+import com.jacopomii.googledialermod.ICoreRootService;
 import com.topjohnwu.superuser.Shell;
 import com.topjohnwu.superuser.ipc.RootService;
 import com.topjohnwu.superuser.nio.ExtendedFile;
@@ -59,7 +60,6 @@ public class CoreRootService extends RootService {
             phenotypeDB.close();
         super.onDestroy();
     }
-
 
     private class CoreRootServiceIPC extends ICoreRootService.Stub {
         @Override

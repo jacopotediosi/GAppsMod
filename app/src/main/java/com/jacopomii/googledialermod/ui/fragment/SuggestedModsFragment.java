@@ -1,8 +1,8 @@
-package com.jacopomii.googledialermod;
+package com.jacopomii.googledialermod.ui.fragment;
 
-import static com.jacopomii.googledialermod.Constants.DIALER_CALLRECORDINGPROMPT;
-import static com.jacopomii.googledialermod.Constants.DIALER_PACKAGE_NAME;
-import static com.jacopomii.googledialermod.Utils.copyFile;
+import static com.jacopomii.googledialermod.data.Constants.DIALER_CALLRECORDINGPROMPT;
+import static com.jacopomii.googledialermod.data.Constants.DIALER_PACKAGE_NAME;
+import static com.jacopomii.googledialermod.util.Utils.copyFile;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,7 +20,10 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.protobuf.ByteString;
+import com.jacopomii.googledialermod.ICoreRootService;
+import com.jacopomii.googledialermod.R;
 import com.jacopomii.googledialermod.protos.Call_screen_i18n_config;
+import com.jacopomii.googledialermod.ui.activity.MainActivity;
 import com.topjohnwu.superuser.Shell;
 import com.topjohnwu.superuser.nio.ExtendedFile;
 import com.topjohnwu.superuser.nio.FileSystemManager;

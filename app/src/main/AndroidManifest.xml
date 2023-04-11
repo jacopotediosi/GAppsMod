@@ -18,7 +18,7 @@
         android:theme="@style/Theme.GoogleDialerMod"
         tools:ignore="DataExtractionRules">
         <activity
-            android:name=".SplashScreenActivity"
+            android:name=".ui.activity.SplashScreenActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenLayout|screenSize"
             android:screenOrientation="portrait"
             android:exported="true"
@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenLayout|screenSize"
             android:exported="true"
             android:theme="@style/Theme.GoogleDialerMod.NoActionBar">

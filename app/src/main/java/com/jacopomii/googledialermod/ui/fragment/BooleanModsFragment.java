@@ -1,6 +1,6 @@
-package com.jacopomii.googledialermod;
+package com.jacopomii.googledialermod.ui.fragment;
 
-import static com.jacopomii.googledialermod.Constants.DIALER_PACKAGE_NAME;
+import static com.jacopomii.googledialermod.data.Constants.DIALER_PACKAGE_NAME;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -21,6 +21,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.jacopomii.googledialermod.ui.adapter.BooleanModsRecyclerViewAdapter;
+import com.jacopomii.googledialermod.ICoreRootService;
+import com.jacopomii.googledialermod.R;
+import com.jacopomii.googledialermod.ui.viewmodel.SwitchRowItem;
+import com.jacopomii.googledialermod.ui.activity.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
