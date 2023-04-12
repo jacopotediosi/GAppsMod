@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_suggested_mods">
+
+    <fragment
+        android:id="@+id/nav_suggested_mods"
+        android:name="com.jacopomii.googledialermod.ui.fragment.SuggestedModsFragment"
+        android:label="@string/suggested_mods"
+        tools:layout="@layout/fragment_suggested_mods" />
+
+    <fragment
+        android:id="@+id/nav_boolean_mods"
+        android:name="com.jacopomii.googledialermod.ui.fragment.BooleanModsFragment"
+        android:label="@string/boolean_mods"
+        tools:layout="@layout/fragment_boolean_mods" />
+
+    <fragment
+        android:id="@+id/nav_revert_mods"
+        android:name="com.jacopomii.googledialermod.ui.fragment.RevertModsFragment"
+        android:label="@string/revert_mods"
+        tools:layout="@layout/fragment_revert_mods" />
+
+    <fragment
+        android:id="@+id/nav_information"
+        android:name="com.jacopomii.googledialermod.ui.fragment.InformationFragment"
+        android:label="@string/information"
+        tools:layout="@layout/fragment_information" />
+</navigation>

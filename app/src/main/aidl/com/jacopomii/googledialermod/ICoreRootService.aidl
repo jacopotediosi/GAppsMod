@@ -9,7 +9,8 @@ interface ICoreRootService {
     boolean phenotypeDBAreAllFlagsOverridden(in String packageName, in String[] flags);
     boolean phenotypeDBAreAllStringFlagsEmpty(in String packageName, in String[] flags);
 
-    void phenotypeDBDeleteAllFlagOverrides(in String packageName);
+    void phenotypeDBDeleteAllFlagOverrides();
+    void phenotypeDBDeleteAllFlagOverridesByPackageName(in String packageName);
     void phenotypeDBDeleteFlagOverrides(in String packageName, in String[] flags);
 
     void phenotypeDBUpdateBooleanFlag(in String packageName, in String flag, in boolean value);

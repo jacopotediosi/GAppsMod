@@ -10,18 +10,19 @@
 
     <application
         android:allowBackup="false"
-        tools:replace="android:allowBackup"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.GoogleDialerMod"
-        tools:ignore="DataExtractionRules">
+        tools:ignore="DataExtractionRules"
+        tools:replace="android:allowBackup">
+
         <activity
             android:name=".ui.activity.SplashScreenActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenLayout|screenSize"
-            android:screenOrientation="portrait"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.GoogleDialerMod.NoActionBar"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
@@ -30,12 +31,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.activity.MainActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenLayout|screenSize"
             android:exported="true"
             android:theme="@style/Theme.GoogleDialerMod.NoActionBar">
         </activity>
+
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.jacopomii.googledialermod.ui.fragment;
 
+import static android.Manifest.permission.CAPTURE_AUDIO_OUTPUT;
 import static com.jacopomii.googledialermod.data.Constants.DIALER_CALLRECORDINGPROMPT;
 import static com.jacopomii.googledialermod.data.Constants.DIALER_PACKAGE_NAME;
 import static com.jacopomii.googledialermod.util.Utils.copyFile;
@@ -13,8 +14,8 @@ import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
@@ -22,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import com.google.protobuf.ByteString;
 import com.jacopomii.googledialermod.ICoreRootService;
 import com.jacopomii.googledialermod.R;
+import com.jacopomii.googledialermod.databinding.FragmentSuggestedModsBinding;
 import com.jacopomii.googledialermod.protos.Call_screen_i18n_config;
 import com.jacopomii.googledialermod.ui.activity.MainActivity;
 import com.topjohnwu.superuser.Shell;
@@ -35,10 +37,7 @@ import java.io.InputStream;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class SuggestedModsFragment extends Fragment {
-    private View mView;
-    private SwitchCompat mForceEnableCallRecordingSwitch;
-    private SwitchCompat mSilenceCallRecordingAlertsSwitch;
-    private SwitchCompat mForceEnableCallScreenSwitch;
+    private FragmentSuggestedModsBinding binding;
 
     private ICoreRootService coreRootServiceIpc;
     private FileSystemManager coreRootServiceFSManager;
@@ -111,10 +110,6 @@ public class SuggestedModsFragment extends Fragment {
     // which matches the languages to be used for the Call Screen feature to the supported countries
     private final String CALL_SCREEN_I18N_CONFIG_FLAG = "CallScreenI18n__call_screen_i18n_config";
 
-    private CompoundButton.OnCheckedChangeListener mForceEnableCallRecordingSwitchOnCheckedChangeListener;
-    private CompoundButton.OnCheckedChangeListener mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener;
-    private CompoundButton.OnCheckedChangeListener mForceEnableCallScreenSwitchOnCheckedChangeListener;
-
     public SuggestedModsFragment() {}
 
     @Override
@@ -131,45 +126,29 @@ public class SuggestedModsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.suggested_mods_fragment, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentSuggestedModsBinding.inflate(getLayoutInflater());
 
-        mForceEnableCallRecordingSwitch = mView.findViewById(R.id.force_enable_call_recording_switch);
-        mSilenceCallRecordingAlertsSwitch = mView.findViewById(R.id.silence_call_recording_alerts_switch);
-        mForceEnableCallScreenSwitch = mView.findViewById(R.id.force_enable_call_screen_switch);
+        SwitchCompat forceEnableCallRecordingSwitch = binding.forceEnableCallRecordingSwitch;
+        SwitchCompat silenceCallRecordingAlertsSwitch = binding.silenceCallRecordingAlertsSwitch;
+        SwitchCompat forceEnableCallScreenSwitch = binding.forceEnableCallScreenSwitch;
 
-        mForceEnableCallRecordingSwitchOnCheckedChangeListener = (buttonView, isChecked) -> forceEnableCallRecording(isChecked);
-        mForceEnableCallRecordingSwitch.setOnCheckedChangeListener(mForceEnableCallRecordingSwitchOnCheckedChangeListener);
+        // dialerPermissionAlert
+        if (requireContext().getPackageManager().checkPermission(CAPTURE_AUDIO_OUTPUT, DIALER_PACKAGE_NAME) != PackageManager.PERMISSION_GRANTED)
+            binding.dialerPermissionAlert.setVisibility(View.VISIBLE);
 
-        mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener = (buttonView, isChecked) -> silenceCallRecordingAlerts(isChecked);
-        mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener);
-
-        mForceEnableCallScreenSwitchOnCheckedChangeListener = (buttonView, isChecked) -> forceEnableCallScreen(isChecked);
-        mForceEnableCallScreenSwitch.setOnCheckedChangeListener(mForceEnableCallScreenSwitchOnCheckedChangeListener);
-
-        return mView;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        refreshSwitchesStatus();
-    }
-
-    public void refreshSwitchesStatus() {
-        // mForceEnableCallRecordingSwitch
-        mForceEnableCallRecordingSwitch.setOnCheckedChangeListener(null);
+        // forceEnableCallRecordingSwitch
         try {
-            mForceEnableCallRecordingSwitch.setChecked(
+            forceEnableCallRecordingSwitch.setChecked(
                     coreRootServiceIpc.phenotypeDBAreAllBooleanFlagsTrue(DIALER_PACKAGE_NAME, ENABLE_CALL_RECORDING_FLAGS)
             );
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-        mForceEnableCallRecordingSwitch.setOnCheckedChangeListener(mForceEnableCallRecordingSwitchOnCheckedChangeListener);
-        mForceEnableCallRecordingSwitch.setEnabled(true);
+        forceEnableCallRecordingSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> forceEnableCallRecording(isChecked));
+        forceEnableCallRecordingSwitch.setEnabled(true);
 
-        // mSilenceCallRecordingAlertsSwitch
+        // silenceCallRecordingAlertsSwitch
         boolean mSilenceCallRecordingAlertsSwitchNewStatus = false;
         try {
             ExtendedFile startingVoiceFile = coreRootServiceFSManager.getFile(DIALER_CALLRECORDINGPROMPT, CALLRECORDINGPROMPT_STARTING_VOICE_US);
@@ -198,35 +177,35 @@ public class SuggestedModsFragment extends Fragment {
         }
 
         try {
-            // If Dialer version > SILENCE_CALL_RECORDING_ALERTS_MAX_VERSION the mSilenceCallRecordingAlertsSwitch must remain disabled
+            // If Dialer version > SILENCE_CALL_RECORDING_ALERTS_MAX_VERSION the silenceCallRecordingAlertsSwitch must remain disabled
             if (requireContext().getPackageManager().getPackageInfo(DIALER_PACKAGE_NAME, 0).versionCode > SILENCE_CALL_RECORDING_ALERTS_MAX_VERSION) {
-                // If the mSilenceCallRecordingAlertsSwitch was enabled in previous versions of GoogleDialerMod, the silenceCallRecordingAlerts mod must be automatically disabled
+                // If the silenceCallRecordingAlertsSwitch was enabled in previous versions of GoogleDialerMod, the silenceCallRecordingAlerts mod must be automatically disabled
                 if (mSilenceCallRecordingAlertsSwitchNewStatus) {
                     silenceCallRecordingAlerts(false);
                 }
-            // Otherwise, the mSilenceCallRecordingAlertsSwitch should be loaded as usual
+                // Otherwise, the silenceCallRecordingAlertsSwitch should be loaded as usual
             } else {
-                mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(null);
-                mSilenceCallRecordingAlertsSwitch.setChecked(mSilenceCallRecordingAlertsSwitchNewStatus);
-                mSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener(mSilenceCallRecordingAlertsSwitchOnCheckedChangeListener);
-                mSilenceCallRecordingAlertsSwitch.setEnabled(true);
+                silenceCallRecordingAlertsSwitch.setChecked(mSilenceCallRecordingAlertsSwitchNewStatus);
+                silenceCallRecordingAlertsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> silenceCallRecordingAlerts(isChecked));
+                silenceCallRecordingAlertsSwitch.setEnabled(true);
             }
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
 
-        // mForceEnableCallScreenSwitch
-        mForceEnableCallScreenSwitch.setOnCheckedChangeListener(null);
+        // forceEnableCallScreenSwitch
         try {
-            mForceEnableCallScreenSwitch.setChecked(
+            forceEnableCallScreenSwitch.setChecked(
                     coreRootServiceIpc.phenotypeDBAreAllBooleanFlagsTrue(DIALER_PACKAGE_NAME, ENABLE_CALL_SCREEN_FLAGS) &&
                             coreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(DIALER_PACKAGE_NAME, new String[]{CALL_SCREEN_I18N_CONFIG_FLAG})
             );
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-        mForceEnableCallScreenSwitch.setOnCheckedChangeListener(mForceEnableCallScreenSwitchOnCheckedChangeListener);
-        mForceEnableCallScreenSwitch.setEnabled(true);
+        forceEnableCallScreenSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> forceEnableCallScreen(isChecked));
+        forceEnableCallScreenSwitch.setEnabled(true);
+
+        return binding.getRoot();
     }
 
     private void forceEnableCallRecording(boolean enable) {

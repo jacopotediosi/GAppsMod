@@ -17,8 +17,8 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jacopomii.googledialermod.R;
-import com.jacopomii.googledialermod.ui.viewmodel.SwitchRowItem;
 import com.jacopomii.googledialermod.ui.activity.MainActivity;
+import com.jacopomii.googledialermod.ui.viewmodel.SwitchRowItem;
 
 import org.json.JSONException;
 import org.json.JSONObject;

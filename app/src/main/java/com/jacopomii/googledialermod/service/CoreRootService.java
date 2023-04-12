@@ -136,7 +136,14 @@ public class CoreRootService extends RootService {
         }
 
         @Override
-        public void phenotypeDBDeleteAllFlagOverrides(String packageName) {
+        public void phenotypeDBDeleteAllFlagOverrides() {
+            killDialerAndDeletePhenotypeCache();
+
+            phenotypeDB.delete("FlagOverrides", null, null);
+        }
+
+        @Override
+        public void phenotypeDBDeleteAllFlagOverridesByPackageName(String packageName) {
             killDialerAndDeletePhenotypeCache();
 
             phenotypeDB.delete("FlagOverrides", "packageName=?", new String[]{packageName});

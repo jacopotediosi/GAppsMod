@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group
+        android:id="@+id/nav_drawer_first_group"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_suggested_mods"
+            android:icon="@drawable/ic_nav_drawer_suggested_mods_24"
+            android:title="@string/suggested_mods" />
+        <item
+            android:id="@+id/nav_boolean_mods"
+            android:icon="@drawable/ic_nav_drawer_boolean_mods_24"
+            android:title="@string/boolean_mods" />
+        <item
+            android:id="@+id/nav_revert_mods"
+            android:icon="@drawable/ic_nav_drawer_delete_24"
+            android:title="@string/revert_mods" />
+    </group>
+
+    <group
+        android:id="@+id/nav_drawer_second_group"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_information"
+            android:icon="@drawable/ic_nav_drawer_information_24"
+            android:title="@string/information" />
+    </group>
+</menu>

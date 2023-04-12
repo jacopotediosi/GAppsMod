@@ -10,7 +10,7 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
     </style>
 
     <style name="Theme.GoogleDialerMod.NoActionBar">
@@ -19,5 +19,4 @@
     </style>
 
     <style name="Theme.GoogleDialerMod.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
 </resources>

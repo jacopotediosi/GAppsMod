@@ -1,27 +1,33 @@
 <resources>
     <string name="all">Todos</string>
+    <string name="an_error_has_occurred">Se ha producido un error</string>
     <string name="boolean_mods">Mods booleanos</string>
     <string name="choose_a_language_for_call_screen">Elija un idioma para la pantalla de llamadas</string>
     <string name="continue_anyway">Continuar de todos modos</string>
     <string name="credits">Creditos</string>
-    <string name="delete_all_applied_mods">Eliminar todas las modificaciones aplicadas</string>
-    <string name="delete_all_mods_alert">¿Realmente desea eliminar todas las modificaciones aplicadas por ${app_name}?</string>
     <string name="dialer_app_name">Teléfono de Google</string> <!-- Taken from https://play.google.com/store/apps/details?id=com.google.android.dialer&hl=es-->
     <string name="dialer_not_installed_error">Parece que ${dialer_app_name} no está instalado.\n\nInstala la última versión de ${dialer_app_name} desde Google Play e inténtalo de nuevo.\n\nTambién puedes unirte al programa ${dialer_app_name} Beta usando el botón a continuación.</string>
+    <string name="dialer_permission_alert">${dialer_app_name} no está instalada como una aplicación del sistema y, por lo tanto, no tiene el permiso CAPTURE_AUDIO_OUTPUT.\nAlgunas funciones, como la grabación de llamadas, pueden no funcionar.</string>
     <string name="disabled_only">Solo deshabitados</string>
+    <string name="done">Hecho</string>
     <string name="enabled_only">Solo habitados</string>
     <string name="exit">Salir</string>
     <string name="force_enable_call_screen">Forzar habilitar pantalla de llamada</string>
     <string name="force_enable_disable_call_recording">Forzar habilitar la grabación de llamadas</string>
     <string name="how_it_works">Cómo funciona</string>
-    <string name="how_it_works_explanation">Los parches aplicados por ${app_name} resisten las actualizaciones de ${dialer_app_name} con el tiempo, incluso después de desinstalar la aplicación.\nPor lo tanto, las modificaciones deben considerarse permanentes, pero se pueden revertir fácilmente presionando el ícono de la papelera en el menú superior derecho.\nNo es necesario para mantener esta aplicación instalada después de aplicar los cambios deseados.\n\nDespués de aplicar los cambios, es posible que deba volver a abrir y cerrar a la fuerza la aplicación ${dialer_app_name} un par de veces antes de que surtan efecto.</string>
+    <string name="how_it_works_explanation">Los parches aplicados por ${app_name} sobreviven a las actualizaciones de la aplicación ${dialer_app_name} con el tiempo, incluso después de desinstalar la aplicación.\nPor lo tanto, las modificaciones deben considerarse permanentes, pero se pueden revertir fácilmente usando la función \"${revert_mods}\".\nNo es necesario para mantener esta aplicación instalada después de aplicar los cambios deseados.\n\nDespués de aplicar los cambios, es posible que deba volver a abrir y cerrar a la fuerza la aplicación ${dialer_app_name} un par de veces antes de que surtan efecto.</string>
     <string name="if_bug_found_open_github_issue">Si cree que ha encontrado algún error, abra un ticket en Github</string>
     <string name="information">Información</string>
     <string name="install_from_google_play">Instalar desde Google Play</string>
     <string name="join_beta_program">Únete al programa Beta</string>
     <string name="made_with_love_by_jacopo_tediosi">Hecho con ❤ por <a href="https://github.com/jacopotediosi">Jacopo Tediosi</a></string>
     <string name="new_version_alert">Hay disponible una nueva versión de ${app_name}.\n\nPuedes descargarla desde la página de lanzamientos de Github.</string>
+    <string name="no">No</string>
     <string name="phenotype_db_does_not_exist">Phenotype DB no parece existir.\n\nInstala Google Play Services desde Google Play e inténtalo de nuevo.</string>
+    <string name="revert_all_mods_alert">¿De verdad quieres revertir todas las modificaciones aplicadas por ${app_name}?</string>
+    <string name="revert_all_mods_button">Revertir todos los mods</string>
+    <string name="revert_all_mods_text">Presione el botón de abajo para revertir todas las modificaciones aplicadas por ${app_name}</string>
+    <string name="revert_mods">Revertir mods</string>
     <string name="root_access_denied">Acceso root denegado. Permita el acceso de root.</string>
     <string name="search">Buscar</string>
     <string name="silence_call_recording_alerts">Silenciar alertas de grabación de llamadas</string>
@@ -31,6 +37,8 @@
     <string name="splash_screen_root_service">Conexión al servicio root…</string>
     <string name="splash_screen_updates">Comprobando actualizaciones…</string>
     <string name="suggested_mods">Mods sugeridas</string>
-    <string name="what_is_it">Qué es</string>
-    <string name="what_is_it_explanation">${app_name} es una aplicación que permite, usando privilegios de root, modificar los valores contenidos en la base de datos "Phenotype" de Google Play Services, alterando así el comportamiento de la aplicación ${dialer_app_name} para desbloquear funciones experimentales o bloqueadas en algunos países.\n\nSiempre verifica que estás usando la <a href="https://play.google.com/store/apps/details?id=com.google.android.dialer">última versión beta de ${dialer_app_name} disponible en Play Store</a>, para aprovechar las funciones más recientes.</string>
+    <string name="what_is_app_name">Qué es ${app_name}</string>
+    <string name="what_is_it_explanation">${app_name} es una aplicación que permite, usando privilegios de root, modificar los valores contenidos en la base de datos "Phenotype" de Google Play Services, alterando así el comportamiento de la aplicación ${dialer_app_name} para desbloquear funciones experimentales o bloqueadas en algunos países.</string>
+    <string name="what_is_it_explanation_beta">Siempre verifica que estás usando la <a href="https://play.google.com/store/apps/details?id=com.google.android.dialer">última versión beta de ${dialer_app_name} disponible en Play Store</a>, para aprovechar las funciones más recientes.</string>
+    <string name="yes">Sí</string>
 </resources>

@@ -74,13 +74,14 @@ public class Utils {
     /**
      * This method generates strings used for IN queries.
      * It creates string containing "?" characters repeated {@code size} times and separated by ",".
+     *
      * @param size size of the items.
      * @return IN query string of the form ?,?,?,?.
      */
     public static String createInQueryString(int size) {
         StringBuilder stringBuilder = new StringBuilder();
         String separator = "";
-        for (int i=0; i<size; i++) {
+        for (int i = 0; i < size; i++) {
             stringBuilder.append(separator);
             stringBuilder.append("?");
             separator = ",";
