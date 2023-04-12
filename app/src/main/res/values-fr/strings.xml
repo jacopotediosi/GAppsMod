@@ -5,31 +5,32 @@
     <string name="continue_anyway">Continuer quand même</string>
     <string name="credits">Crédits</string>
     <string name="delete_all_applied_mods">Supprimer toutes les modifications</string>
-    <string name="delete_all_mods_alert">Voulez-vous vraiment supprimer toutes les modifications apportées par GoogleDialerMod?</string>
-    <string name="dialer_not_installed_error">Il semblerait que l\'application Téléphone de Google ne soit pas installée.\n\nInstaller la dernière version de Google Dialer depuis le magasin Google Play et réessayez.\n\nVous pouvez également éventuellement rejoindre le programme bêta de Google Dialer en utilisant le bouton ci-dessous.</string>
+    <string name="delete_all_mods_alert">Voulez-vous vraiment supprimer toutes les modifications apportées par ${app_name}?</string>
+    <string name="dialer_app_name">Téléphone de Google</string> <!-- Taken from https://play.google.com/store/apps/details?id=com.google.android.dialer&hl=fr-->
+    <string name="dialer_not_installed_error">Il semblerait que l\'application ${dialer_app_name} ne soit pas installée.\n\nInstaller la dernière version de ${dialer_app_name} depuis le magasin Google Play et réessayez.\n\nVous pouvez également éventuellement rejoindre le programme bêta de ${dialer_app_name} en utilisant le bouton ci-dessous.</string>
     <string name="disabled_only">Désactiver uniquement</string>
     <string name="enabled_only">Activer uniquement</string>
     <string name="exit">Sortir</string>
     <string name="force_enable_call_screen">Forcer l\'activation du filtrage d\'appels</string>
     <string name="force_enable_disable_call_recording">Forcer l\’activation de l\’enregistrement des appels</string>
     <string name="how_it_works">Comment ça fonctionne</string>
-    <string name="how_it_works_explanation">Le correctif appliqué par GoogleDialerMod aux mises à jours du téléphone de Google au fil du temps, même après avoir désinstallé l\application.\nLes correctifs sont donc considérés comme étants permanents, mais ils peuvent être facilement annulables en appuyant sur l\’icône de la corbeille dans le menu situé dans le coin suppérieur droit.\nIl n\’y a pas de nécessitée à conserver cette application installée après avoir appliqué les changements désirés.\n\nAprès avoir appliqué les changements, il est tout à fait possible que vous soyez forcer de réouvrir et fermer l\’application téléphone à plusieures reprises avant que ceux-ci ne prennent effet.</string>
+    <string name="how_it_works_explanation">Le correctif appliqué par ${app_name} aux mises à jours du ${dialer_app_name} au fil du temps, même après avoir désinstallé l\application.\nLes correctifs sont donc considérés comme étants permanents, mais ils peuvent être facilement annulables en appuyant sur l\’icône de la corbeille dans le menu situé dans le coin suppérieur droit.\nIl n\’y a pas de nécessitée à conserver cette application installée après avoir appliqué les changements désirés.\n\nAprès avoir appliqué les changements, il est tout à fait possible que vous soyez forcer de réouvrir et fermer l\’application ${dialer_app_name} à plusieures reprises avant que ceux-ci ne prennent effet.</string>
     <string name="if_bug_found_open_github_issue">Si vous pensez avoir trouver un bug, veuillez ouvrir un ticket sur Github.</string>
     <string name="information">Informations</string>
     <string name="install_from_google_play">Installer depuis Google Play</string>
     <string name="join_beta_program">Rejoindre le programme Bêta</string>
     <string name="made_with_love_by_jacopo_tediosi">Fait avec ❤ par <a href="https://github.com/jacopotediosi">Jacopo Tediosi</a></string>
-    <string name="new_version_alert">Une nouvelle version du GoogleDialerMod est disponible.\n\nVous pouvez la télécharger depuis la pages des versions sur Github.</string>
+    <string name="new_version_alert">Une nouvelle version du ${app_name} est disponible.\n\nVous pouvez la télécharger depuis la pages des versions sur Github.</string>
     <string name="phenotype_db_does_not_exist">La base de données Phenotype n\’existe pas.\n\nInstaller Google Play Services depuis le magasin Google Play et réessayez.</string>
     <string name="root_access_denied">Accès à la racine refusé. Merci d\’autoriser l\’accès à la racine.</string>
     <string name="search">Rechercher</string>
-    <string name="silence_call_recording_alerts">Mettre sous silence les alertes d\’enregistrement des appels (Dialer &lt;= 94.x uniquement)</string>
-    <string name="splash_screen_dialer">Vérification de l\'installation de l\’application téléphone…</string>
+    <string name="silence_call_recording_alerts">Mettre sous silence les alertes d\’enregistrement des appels (${dialer_app_name} &lt;= 94.x uniquement)</string>
+    <string name="splash_screen_dialer">Vérification de l\'installation de l\’application ${dialer_app_name}…</string>
     <string name="splash_screen_phenotype">Vérification de la base de données Phenotype…</string>
     <string name="splash_screen_root">Vérification des permissions racine…</string>
     <string name="splash_screen_root_service">Connexion au service racine…</string>
     <string name="splash_screen_updates">Vérification des mises à jour…</string>
     <string name="suggested_mods">Mods suggérés</string>
     <string name="what_is_it">Qu\’est ce que c\’est</string>
-    <string name="what_is_it_explanation">GoogleDialerMod est une application qui autorise, en utilisant les privilèges d\’accès à la racine, de modifier les valeures présentes dans la base de données du "téléphone" des Services Google Play, modifiant ainsi le comportement de l\’application Google Dialer pour débloquer des fonctionnalités expérimentales ou bloquées dans certains pays.\n\nSoyez sûr d’utiliser le <a href="https://play.google.com/store/apps/details?id=com.google.android.dialer"> dernière version Beta du Téléphone disponible sur le Play Store</a>, pour obtenir les avantages des dernières fonctionnalités.</string>
+    <string name="what_is_it_explanation">${app_name} est une application qui autorise, en utilisant les privilèges d\’accès à la racine, de modifier les valeures présentes dans la base de données "Phenotype" des Services Google Play, modifiant ainsi le comportement de l\’application ${dialer_app_name} pour débloquer des fonctionnalités expérimentales ou bloquées dans certains pays.\n\nSoyez sûr d’utiliser le <a href="https://play.google.com/store/apps/details?id=com.google.android.dialer"> dernière version Beta du Téléphone disponible sur le Play Store</a>, pour obtenir les avantages des dernières fonctionnalités.</string>
 </resources>

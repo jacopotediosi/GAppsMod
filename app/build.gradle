@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'com.google.protobuf'
+    id 'com.likethesalad.stem'
 }
 
 // Remember to config your keystore settings in local.properties or in the below lines
