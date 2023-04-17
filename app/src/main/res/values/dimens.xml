@@ -9,4 +9,6 @@
     <dimen name="l1">16dp</dimen>
     <dimen name="l1_5">24dp</dimen>
     <dimen name="l2">32dp</dimen>
+
+    <dimen name="fastscroll_scrollbar_padding_end">0dp</dimen>
 </resources>

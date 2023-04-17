@@ -88,6 +88,9 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment:${navigationVersion}"
     implementation "androidx.navigation:navigation-ui:${navigationVersion}"
 
+    // FastScroller for RecyclerView
+    implementation "io.github.l4digital:fastscroll:2.1.0"
+
     // Other UI Components
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'

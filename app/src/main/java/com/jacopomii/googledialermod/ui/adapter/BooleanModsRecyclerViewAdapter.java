@@ -19,6 +19,7 @@ import com.google.android.material.materialswitch.MaterialSwitch;
 import com.jacopomii.googledialermod.R;
 import com.jacopomii.googledialermod.ui.activity.MainActivity;
 import com.jacopomii.googledialermod.ui.viewmodel.SwitchCardViewModel;
+import com.l4digital.fastscroll.FastScroller;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,7 +27,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<BooleanModsRecyclerViewAdapter.BooleanModsViewHolder> implements Filterable {
+public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<BooleanModsRecyclerViewAdapter.BooleanModsViewHolder> implements Filterable, FastScroller.SectionIndexer {
     private final Context mContext;
     private final List<SwitchCardViewModel> mData;
     private List<SwitchCardViewModel> mDataFiltered;
@@ -110,6 +111,11 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
                 notifyDataSetChanged();
             }
         };
+    }
+
+    @Override
+    public CharSequence getSectionText(int position) {
+        return mDataFiltered.get(position).getSwitchText().substring(0,1);
     }
 
     public static class BooleanModsViewHolder extends RecyclerView.ViewHolder {

@@ -57,12 +57,21 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:padding="@dimen/margin_generic"
-        android:scrollbars="vertical" />
+        android:layout_height="match_parent">
+
+        <com.l4digital.fastscroll.FastScrollRecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:padding="@dimen/margin_generic"
+            app:bubbleColor="?attr/colorSecondary"
+            app:bubbleTextColor="?attr/colorOnSecondary"
+            app:handleColor="?attr/colorSecondary"
+            app:hideScrollbar="false"
+            app:trackColor="?attr/colorSecondary" />
+    </RelativeLayout>
 
 </LinearLayout>

@@ -19,7 +19,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.jacopomii.googledialermod.ICoreRootService;
 import com.jacopomii.googledialermod.R;
@@ -27,6 +26,7 @@ import com.jacopomii.googledialermod.databinding.FragmentBooleanModsBinding;
 import com.jacopomii.googledialermod.ui.activity.MainActivity;
 import com.jacopomii.googledialermod.ui.adapter.BooleanModsRecyclerViewAdapter;
 import com.jacopomii.googledialermod.ui.viewmodel.SwitchCardViewModel;
+import com.l4digital.fastscroll.FastScrollRecyclerView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,7 +68,7 @@ public class BooleanModsFragment extends Fragment {
 
             mBooleanModsRecyclerViewAdapter = new BooleanModsRecyclerViewAdapter(getActivity(), mLstSwitch);
 
-            RecyclerView recyclerView = binding.recyclerView;
+            FastScrollRecyclerView recyclerView = binding.recyclerView;
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             recyclerView.setAdapter(mBooleanModsRecyclerViewAdapter);
         } catch (RemoteException e) {
