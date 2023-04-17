@@ -1,10 +1,10 @@
 package com.jacopomii.googledialermod.ui.viewmodel;
 
-public class SwitchRowItem {
+public class SwitchCardViewModel {
     private String mSwitchText;
     private boolean mSwitchChecked;
 
-    public SwitchRowItem(String switchText, boolean switchChecked) {
+    public SwitchCardViewModel(String switchText, boolean switchChecked) {
         mSwitchText = switchText;
         mSwitchChecked = switchChecked;
     }

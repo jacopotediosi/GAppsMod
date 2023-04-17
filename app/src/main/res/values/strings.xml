@@ -1,48 +1,66 @@
 <resources>
-    <string name="all">All</string>
-    <string name="an_error_has_occurred">An error has occurred</string>
+    <!-- App name -->
     <string name="app_name" translatable="false">GoogleDialerMod</string>
-    <string name="boolean_mods">Boolean mods</string>
-    <string name="choose_a_language_for_call_screen">Choose a language for call screen</string>
+
+    <!-- Github and links -->
+    <string name="github" translatable="false">Github</string>
+    <string name="github_api_link" translatable="false">https://api.github.com/repos/jacopotediosi/GoogleDialerMod</string>
+    <string name="github_link" translatable="false">https://github.com/jacopotediosi/GoogleDialerMod</string>
+
+    <!-- GApp names, taken from https://play.google.com/store/apps/details?id=PACKAGE_NAME&hl=LANGUAGE -->
+    <string name="dialer_app_name">Phone by Google</string>
+
+    <!-- Common -->
+    <string name="all">All</string>
     <string name="continue_anyway">Continue anyway</string>
-    <string name="credits">Credits</string>
-    <string name="dialer_app_name">Phone by Google</string> <!-- Taken from https://play.google.com/store/apps/details?id=com.google.android.dialer&hl=en-->
-    <string name="dialer_not_installed_error">It appears that ${dialer_app_name} is not installed.\n\nPlease install the latest version of ${dialer_app_name} from Google Play and try again.\n\nYou can also optionally join the ${dialer_app_name} Beta program using the button below.</string>
-    <string name="dialer_permission_alert">${dialer_app_name} is not installed as a system app and therefore does not have the CAPTURE_AUDIO_OUTPUT permission.\nSome features, such as call recording, may not work.</string>
     <string name="disabled_only">Disabled only</string>
     <string name="done">Done</string>
     <string name="enabled_only">Enabled only</string>
     <string name="exit">Exit</string>
-    <string name="force_enable_call_screen">Force enable call screen</string>
-    <string name="force_enable_disable_call_recording">Force enable call recording</string>
-    <string name="github" translatable="false">Github</string>
-    <string name="github_api_link" translatable="false">https://api.github.com/repos/jacopotediosi/GoogleDialerMod</string>
-    <string name="github_link" translatable="false">https://github.com/jacopotediosi/GoogleDialerMod</string>
-    <string name="how_it_works">How it works</string>
-    <string name="how_it_works_explanation">The patches applied by ${app_name} survive the updates of application ${dialer_app_name} over time, even after uninstalling the app.\nMods are therefore to be considered permanent, but they can be easily reverted using the \"${revert_mods}\" feature.\nThere is no need to keep this app installed after applying the desired changes.\n\nAfter applying changes, you may need to forcibly reopen and close the ${dialer_app_name} app a couple of times before they take effect.</string>
-    <string name="if_bug_found_open_github_issue">If you think you\'ve found any bugs please open an issue on Github</string>
-    <string name="information">Information</string>
     <string name="install_from_google_play">Install from Google Play</string>
     <string name="join_beta_program">Join the Beta program</string>
-    <string name="made_with_love_by_jacopo_tediosi">Made with ❤ by <a href="https://github.com/jacopotediosi">Jacopo Tediosi</a></string>
-    <string name="new_version_alert">A new version of ${app_name} is available.\n\nYou can download it from Github Releases page.</string>
     <string name="no">No</string>
-    <string name="phenotype_db_does_not_exist">Phenotype DB does not appear to exist.\n\nInstall Google Play Services from Google Play and try again.</string>
-    <string name="revert_all_mods_alert">Do you really want to revert all mods applied by ${app_name}?</string>
-    <string name="revert_all_mods_button">Revert all mods</string>
-    <string name="revert_all_mods_text">Press the button below to revert all mods applied by ${app_name}</string>
-    <string name="revert_mods">Revert mods</string>
-    <string name="root_access_denied">Root access denied. Please allow root access.</string>
     <string name="search">Search</string>
-    <string name="silence_call_recording_alerts">Silence call recording alerts (${dialer_app_name} &lt;= 94.x only)</string>
-    <string name="splash_screen_dialer">Checking ${dialer_app_name} installation…</string>
+    <string name="yes">Yes</string>
+
+    <!-- Fragment titles -->
+    <string name="boolean_mods">Boolean mods</string>
+    <string name="information">Information</string>
+    <string name="revert_mods">Revert mods</string>
+    <string name="suggested_mods">Suggested mods</string>
+
+    <!-- Splash screen -->
     <string name="splash_screen_phenotype">Checking Phenotype DB…</string>
     <string name="splash_screen_root">Checking root permissions…</string>
     <string name="splash_screen_root_service">Connecting to the root service…</string>
     <string name="splash_screen_updates">Checking updates…</string>
-    <string name="suggested_mods">Suggested mods</string>
+
+    <!-- Suggested mods -->
+    <string name="choose_a_language_for_call_screen">Choose a language for call screen</string>
+    <string name="force_enable_call_screen">Force enable call screen</string>
+    <string name="force_enable_disable_call_recording">Force enable call recording</string>
+    <string name="silence_call_recording_alerts">Silence call recording alerts (${dialer_app_name} &lt;= 94.x only)</string>
+
+    <!-- Revert mods -->
+    <string name="revert_all_mods_alert">Do you really want to revert all mods applied by ${app_name}?</string>
+    <string name="revert_all_mods_button">Revert all mods</string>
+    <string name="revert_all_mods_text">Press the button below to revert all mods applied by ${app_name}</string>
+
+    <!-- Information -->
+    <string name="credits">Credits</string>
+    <string name="how_it_works">How it works</string>
+    <string name="how_it_works_explanation">The patches applied by ${app_name} survive the updates of application ${dialer_app_name} over time, even after uninstalling the app.\nMods are therefore to be considered permanent, but they can be easily reverted using the \"${revert_mods}\" feature.\nThere is no need to keep this app installed after applying the desired changes.\n\nAfter applying changes, you may need to forcibly reopen and close the ${dialer_app_name} app a couple of times before they take effect.</string>
+    <string name="if_bug_found_open_github_issue">If you think you\'ve found any bugs please open an issue on Github</string>
+    <string name="made_with_love_by_jacopo_tediosi">Made with ❤ by <a href="https://github.com/jacopotediosi">Jacopo Tediosi</a></string>
     <string name="what_is_app_name">What is ${app_name}</string>
     <string name="what_is_it_explanation">${app_name} is an app that allows, using root privileges, to modify the values contained in the Google Play Services "Phenotype" database, thus altering the behavior of the ${dialer_app_name} app to unlock experimental or blocked features in some countries.</string>
     <string name="what_is_it_explanation_beta">Always make sure you are using the <a href="https://play.google.com/store/apps/details?id=com.google.android.dialer">latest Dialer beta version available on the Play Store</a>, to take advantage of the latest features.</string>
-    <string name="yes">Yes</string>
+
+    <!-- Warning and error messages -->
+    <string name="an_error_has_occurred">An error has occurred</string>
+    <string name="app_not_installed_error">It looks like the app is not installed.</string>
+    <string name="dialer_permission_alert">${dialer_app_name} is not installed as a system app and therefore does not have the CAPTURE_AUDIO_OUTPUT permission.\nSome features, such as call recording, may not work.</string>
+    <string name="new_version_alert">A new version of ${app_name} is available.\n\nYou can download it from Github Releases page.</string>
+    <string name="phenotype_db_does_not_exist">Phenotype DB does not appear to exist.\n\nInstall Google Play Services from Google Play and try again.</string>
+    <string name="root_access_denied">Root access denied. Please allow root access.</string>
 </resources>

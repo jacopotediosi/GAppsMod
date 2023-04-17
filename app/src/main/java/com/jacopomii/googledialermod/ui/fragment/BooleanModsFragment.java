@@ -26,7 +26,7 @@ import com.jacopomii.googledialermod.R;
 import com.jacopomii.googledialermod.databinding.FragmentBooleanModsBinding;
 import com.jacopomii.googledialermod.ui.activity.MainActivity;
 import com.jacopomii.googledialermod.ui.adapter.BooleanModsRecyclerViewAdapter;
-import com.jacopomii.googledialermod.ui.viewmodel.SwitchRowItem;
+import com.jacopomii.googledialermod.ui.viewmodel.SwitchCardViewModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,7 +39,7 @@ import java.util.TreeMap;
 @SuppressWarnings({"unchecked"})
 public class BooleanModsFragment extends Fragment {
     private BooleanModsRecyclerViewAdapter mBooleanModsRecyclerViewAdapter;
-    private final List<SwitchRowItem> mLstSwitch = new ArrayList<>();
+    private final List<SwitchCardViewModel> mLstSwitch = new ArrayList<>();
     private FragmentBooleanModsBinding binding;
 
     private ICoreRootService coreRootServiceIpc;
@@ -64,7 +64,7 @@ public class BooleanModsFragment extends Fragment {
         try {
             TreeMap<String, Boolean> map = new TreeMap<String, Boolean>(coreRootServiceIpc.phenotypeDBGetBooleanFlags(DIALER_PACKAGE_NAME));
             for (Map.Entry<String, Boolean> flag : map.entrySet())
-                mLstSwitch.add(new SwitchRowItem(flag.getKey(), flag.getValue()));
+                mLstSwitch.add(new SwitchCardViewModel(flag.getKey(), flag.getValue()));
 
             mBooleanModsRecyclerViewAdapter = new BooleanModsRecyclerViewAdapter(getActivity(), mLstSwitch);
 
@@ -89,6 +89,7 @@ public class BooleanModsFragment extends Fragment {
         MenuItem searchIcon = menu.findItem(R.id.menu_search_icon);
 
         SearchView searchView = (SearchView) searchIcon.getActionView();
+        searchView.setQueryHint(getString(R.string.search));
 
         radioGroupSearch.setOnCheckedChangeListener((group, checkedId) -> {
             RadioButton radioButtonChecked = binding.getRoot().findViewById(checkedId);

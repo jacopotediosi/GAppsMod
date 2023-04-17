@@ -17,7 +17,7 @@
             android:paddingBottom="@dimen/l1"
             android:text="@string/what_is_app_name"
             android:textAlignment="viewStart"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.WindowTitle" />
+            android:textAppearance="?attr/textAppearanceTitleLarge" />
 
         <TextView
             android:layout_width="match_parent"
@@ -46,7 +46,7 @@
             android:paddingBottom="@dimen/l1"
             android:text="@string/how_it_works"
             android:textAlignment="viewStart"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.WindowTitle" />
+            android:textAppearance="?attr/textAppearanceTitleLarge" />
 
         <TextView
             android:layout_width="match_parent"
@@ -64,7 +64,7 @@
             android:paddingBottom="@dimen/l1"
             android:text="@string/credits"
             android:textAlignment="viewStart"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.WindowTitle" />
+            android:textAppearance="?attr/textAppearanceTitleLarge" />
 
         <TextView
             android:layout_width="match_parent"
@@ -82,15 +82,14 @@
             android:paddingBottom="@dimen/l_75"
             android:text="@string/github_link"
             android:textAlignment="viewStart"
-            tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
+            tools:ignore="TouchTargetSizeCheck" />
 
         <TextView
             android:id="@+id/made_with_love_by_jacopo_tediosi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/made_with_love_by_jacopo_tediosi"
-            android:textAlignment="viewStart"
-            tools:ignore="TextContrastCheck" />
+            android:textAlignment="viewStart" />
 
     </LinearLayout>
 </ScrollView>

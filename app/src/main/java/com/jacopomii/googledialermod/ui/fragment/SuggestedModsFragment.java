@@ -2,8 +2,11 @@ package com.jacopomii.googledialermod.ui.fragment;
 
 import static android.Manifest.permission.CAPTURE_AUDIO_OUTPUT;
 import static com.jacopomii.googledialermod.data.Constants.DIALER_CALLRECORDINGPROMPT;
+import static com.jacopomii.googledialermod.data.Constants.DIALER_GOOGLE_PLAY_BETA_LINK;
+import static com.jacopomii.googledialermod.data.Constants.DIALER_GOOGLE_PLAY_LINK;
 import static com.jacopomii.googledialermod.data.Constants.DIALER_PACKAGE_NAME;
 import static com.jacopomii.googledialermod.util.Utils.copyFile;
+import static com.jacopomii.googledialermod.util.Utils.openGooglePlay;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,10 +19,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.protobuf.ByteString;
 import com.jacopomii.googledialermod.ICoreRootService;
 import com.jacopomii.googledialermod.R;
@@ -129,81 +132,90 @@ public class SuggestedModsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentSuggestedModsBinding.inflate(getLayoutInflater());
 
-        SwitchCompat forceEnableCallRecordingSwitch = binding.forceEnableCallRecordingSwitch;
-        SwitchCompat silenceCallRecordingAlertsSwitch = binding.silenceCallRecordingAlertsSwitch;
-        SwitchCompat forceEnableCallScreenSwitch = binding.forceEnableCallScreenSwitch;
-
-        // dialerPermissionAlert
-        if (requireContext().getPackageManager().checkPermission(CAPTURE_AUDIO_OUTPUT, DIALER_PACKAGE_NAME) != PackageManager.PERMISSION_GRANTED)
-            binding.dialerPermissionAlert.setVisibility(View.VISIBLE);
-
-        // forceEnableCallRecordingSwitch
         try {
-            forceEnableCallRecordingSwitch.setChecked(
-                    coreRootServiceIpc.phenotypeDBAreAllBooleanFlagsTrue(DIALER_PACKAGE_NAME, ENABLE_CALL_RECORDING_FLAGS)
-            );
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        forceEnableCallRecordingSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> forceEnableCallRecording(isChecked));
-        forceEnableCallRecordingSwitch.setEnabled(true);
+            // Check if Google Dialer is installed
+            requireContext().getPackageManager().getApplicationInfo(DIALER_PACKAGE_NAME, 0);
 
-        // silenceCallRecordingAlertsSwitch
-        boolean mSilenceCallRecordingAlertsSwitchNewStatus = false;
-        try {
-            ExtendedFile startingVoiceFile = coreRootServiceFSManager.getFile(DIALER_CALLRECORDINGPROMPT, CALLRECORDINGPROMPT_STARTING_VOICE_US);
-            ExtendedFile endingVoiceFile = coreRootServiceFSManager.getFile(DIALER_CALLRECORDINGPROMPT, CALLRECORDINGPROMPT_STARTING_VOICE_US);
+            // Check if Google Dialer has CAPTURE_AUDIO_OUTPUT permission
+            if (requireContext().getPackageManager().checkPermission(CAPTURE_AUDIO_OUTPUT, DIALER_PACKAGE_NAME) != PackageManager.PERMISSION_GRANTED)
+                binding.dialerPermissionAlert.setVisibility(View.VISIBLE);
 
-            if (startingVoiceFile.exists() && endingVoiceFile.exists()) {
-                InputStream silentVoiceInputStream;
-
-                InputStream startingVoiceInputStream = startingVoiceFile.newInputStream();
-                silentVoiceInputStream = getResources().openRawResource(R.raw.silent_wav);
-                boolean isStartingVoiceSilenced = IOUtils.contentEquals(silentVoiceInputStream, startingVoiceInputStream);
-                startingVoiceInputStream.close();
-                silentVoiceInputStream.close();
-
-                InputStream endingVoiceInputStream = endingVoiceFile.newInputStream();
-                silentVoiceInputStream = getResources().openRawResource(R.raw.silent_wav);
-                boolean isEndingVoiceSilenced = IOUtils.contentEquals(silentVoiceInputStream, endingVoiceInputStream);
-                endingVoiceInputStream.close();
-                silentVoiceInputStream.close();
-
-                mSilenceCallRecordingAlertsSwitchNewStatus = coreRootServiceIpc.phenotypeDBAreAllStringFlagsEmpty(DIALER_PACKAGE_NAME, SILENCE_CALL_RECORDING_ALERTS_FLAGS) &&
-                        isStartingVoiceSilenced && isEndingVoiceSilenced;
+            // forceEnableCallRecordingSwitch
+            MaterialSwitch forceEnableCallRecordingSwitch = binding.forceEnableCallRecordingCard.getSwitch();
+            forceEnableCallRecordingSwitch.setChecked(true);
+            try {
+                forceEnableCallRecordingSwitch.setChecked(
+                        coreRootServiceIpc.phenotypeDBAreAllBooleanFlagsTrue(DIALER_PACKAGE_NAME, ENABLE_CALL_RECORDING_FLAGS)
+                );
+            } catch (RemoteException e) {
+                e.printStackTrace();
             }
-        } catch (IOException | RemoteException e) {
-            e.printStackTrace();
-        }
+            forceEnableCallRecordingSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> forceEnableCallRecording(isChecked));
+            forceEnableCallRecordingSwitch.setEnabled(true);
 
-        try {
-            // If Dialer version > SILENCE_CALL_RECORDING_ALERTS_MAX_VERSION the silenceCallRecordingAlertsSwitch must remain disabled
-            if (requireContext().getPackageManager().getPackageInfo(DIALER_PACKAGE_NAME, 0).versionCode > SILENCE_CALL_RECORDING_ALERTS_MAX_VERSION) {
-                // If the silenceCallRecordingAlertsSwitch was enabled in previous versions of GoogleDialerMod, the silenceCallRecordingAlerts mod must be automatically disabled
-                if (mSilenceCallRecordingAlertsSwitchNewStatus) {
-                    silenceCallRecordingAlerts(false);
+            // silenceCallRecordingAlertsSwitch
+            MaterialSwitch silenceCallRecordingAlertsSwitch = binding.silenceCallRecordingAlertsCard.getSwitch();
+            boolean mSilenceCallRecordingAlertsSwitchNewStatus = false;
+            try {
+                ExtendedFile startingVoiceFile = coreRootServiceFSManager.getFile(DIALER_CALLRECORDINGPROMPT, CALLRECORDINGPROMPT_STARTING_VOICE_US);
+                ExtendedFile endingVoiceFile = coreRootServiceFSManager.getFile(DIALER_CALLRECORDINGPROMPT, CALLRECORDINGPROMPT_STARTING_VOICE_US);
+
+                if (startingVoiceFile.exists() && endingVoiceFile.exists()) {
+                    InputStream silentVoiceInputStream;
+
+                    InputStream startingVoiceInputStream = startingVoiceFile.newInputStream();
+                    silentVoiceInputStream = getResources().openRawResource(R.raw.silent_wav);
+                    boolean isStartingVoiceSilenced = IOUtils.contentEquals(silentVoiceInputStream, startingVoiceInputStream);
+                    startingVoiceInputStream.close();
+                    silentVoiceInputStream.close();
+
+                    InputStream endingVoiceInputStream = endingVoiceFile.newInputStream();
+                    silentVoiceInputStream = getResources().openRawResource(R.raw.silent_wav);
+                    boolean isEndingVoiceSilenced = IOUtils.contentEquals(silentVoiceInputStream, endingVoiceInputStream);
+                    endingVoiceInputStream.close();
+                    silentVoiceInputStream.close();
+
+                    mSilenceCallRecordingAlertsSwitchNewStatus = coreRootServiceIpc.phenotypeDBAreAllStringFlagsEmpty(DIALER_PACKAGE_NAME, SILENCE_CALL_RECORDING_ALERTS_FLAGS) &&
+                            isStartingVoiceSilenced && isEndingVoiceSilenced;
                 }
-                // Otherwise, the silenceCallRecordingAlertsSwitch should be loaded as usual
-            } else {
-                silenceCallRecordingAlertsSwitch.setChecked(mSilenceCallRecordingAlertsSwitchNewStatus);
-                silenceCallRecordingAlertsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> silenceCallRecordingAlerts(isChecked));
-                silenceCallRecordingAlertsSwitch.setEnabled(true);
+            } catch (IOException | RemoteException e) {
+                e.printStackTrace();
             }
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
 
-        // forceEnableCallScreenSwitch
-        try {
-            forceEnableCallScreenSwitch.setChecked(
-                    coreRootServiceIpc.phenotypeDBAreAllBooleanFlagsTrue(DIALER_PACKAGE_NAME, ENABLE_CALL_SCREEN_FLAGS) &&
-                            coreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(DIALER_PACKAGE_NAME, new String[]{CALL_SCREEN_I18N_CONFIG_FLAG})
-            );
-        } catch (RemoteException e) {
-            e.printStackTrace();
+            try {
+                // If Dialer version > SILENCE_CALL_RECORDING_ALERTS_MAX_VERSION the silenceCallRecordingAlertsSwitch must remain disabled
+                if (requireContext().getPackageManager().getPackageInfo(DIALER_PACKAGE_NAME, 0).versionCode > SILENCE_CALL_RECORDING_ALERTS_MAX_VERSION) {
+                    // If the silenceCallRecordingAlertsSwitch was enabled in previous versions of GoogleDialerMod, the silenceCallRecordingAlerts mod must be automatically disabled
+                    if (mSilenceCallRecordingAlertsSwitchNewStatus) {
+                        silenceCallRecordingAlerts(false);
+                    }
+                    // Otherwise, the silenceCallRecordingAlertsSwitch should be loaded as usual
+                } else {
+                    silenceCallRecordingAlertsSwitch.setChecked(mSilenceCallRecordingAlertsSwitchNewStatus);
+                    silenceCallRecordingAlertsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> silenceCallRecordingAlerts(isChecked));
+                    silenceCallRecordingAlertsSwitch.setEnabled(true);
+                }
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            // forceEnableCallScreenSwitch
+            MaterialSwitch forceEnableCallScreenSwitch = binding.forceEnableCallScreenCard.getSwitch();
+            try {
+                forceEnableCallScreenSwitch.setChecked(
+                        coreRootServiceIpc.phenotypeDBAreAllBooleanFlagsTrue(DIALER_PACKAGE_NAME, ENABLE_CALL_SCREEN_FLAGS) &&
+                                coreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(DIALER_PACKAGE_NAME, new String[]{CALL_SCREEN_I18N_CONFIG_FLAG})
+                );
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            forceEnableCallScreenSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> forceEnableCallScreen(isChecked));
+            forceEnableCallScreenSwitch.setEnabled(true);
+        } catch (PackageManager.NameNotFoundException e) {
+            binding.dialerBetaButton.setOnClickListener(v -> openGooglePlay(requireContext(), DIALER_GOOGLE_PLAY_BETA_LINK));
+            binding.dialerInstallButton.setOnClickListener(v -> openGooglePlay(requireContext(), DIALER_GOOGLE_PLAY_LINK));
+            binding.dialerNotInstalledAlert.setVisibility(View.VISIBLE);
         }
-        forceEnableCallScreenSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> forceEnableCallScreen(isChecked));
-        forceEnableCallScreenSwitch.setEnabled(true);
 
         return binding.getRoot();
     }
@@ -275,7 +287,7 @@ public class SuggestedModsFragment extends Fragment {
         if (enable) {
             // Ask the user what language the Call Screen feature should use
             String[] supportedLanguages = {"en", "en-AU", "en-GB", "en-IN", "ja-JP", "fr-FR", "hi-IN", "de-DE", "it-IT", "es-ES"};
-            new AlertDialog.Builder(requireContext())
+            new MaterialAlertDialogBuilder(requireContext())
                     .setTitle(R.string.choose_a_language_for_call_screen)
                     .setCancelable(false)
                     .setItems(supportedLanguages, (dialog, choice) -> {

@@ -10,14 +10,16 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         tools:context=".ui.activity.MainActivity">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/Theme.GoogleDialerMod.AppBarOverlay">
+            android:background="?attr/colorAppbar"
+            app:liftOnScroll="false">
 
-            <androidx.appcompat.widget.Toolbar
+            <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize" />
@@ -41,6 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        app:drawerLayoutCornerSize="0dp"
         app:headerLayout="@layout/nav_drawer_header"
         app:menu="@menu/nav_drawer" />
 </androidx.drawerlayout.widget.DrawerLayout>

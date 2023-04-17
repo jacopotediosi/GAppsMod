@@ -61,24 +61,38 @@ android {
 }
 
 dependencies {
+    // Libsu
     def libsuVersion = '5.0.4'
+    implementation "com.github.topjohnwu.libsu:core:${libsuVersion}"
+    implementation "com.github.topjohnwu.libsu:service:${libsuVersion}"
+    implementation "com.github.topjohnwu.libsu:nio:${libsuVersion}"
 
     // Official SQLite Java Bindings, downloaded from https://www.sqlite.org/download.html
     implementation files('libs/sqlite-android-3410200.aar')
 
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    // Advanced toast
+    implementation 'com.github.GrenderG:Toasty:1.5.2'
+
+    // HTTP
+    implementation 'com.android.volley:volley:1.2.1'
+
+    // Protobuf
+    implementation 'com.google.protobuf:protobuf-javalite:3.8.0'
+
+    // Apache Commons IO
+    //noinspection GradleDependency
+    implementation 'commons-io:commons-io:2.11.0'
+
+    // Navigation drawer
+    def navigationVersion = '2.5.3'
+    implementation "androidx.navigation:navigation-fragment:${navigationVersion}"
+    implementation "androidx.navigation:navigation-ui:${navigationVersion}"
+
+    // Other UI Components
     implementation 'com.google.android.material:material:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.navigation:navigation-fragment:2.5.3'
-    implementation 'androidx.navigation:navigation-ui:2.5.3'
-    implementation 'com.android.volley:volley:1.2.1'
-    implementation 'com.google.protobuf:protobuf-javalite:3.8.0'
-    implementation 'com.github.GrenderG:Toasty:1.5.2'
-    implementation 'commons-io:commons-io:2.11.0'
-    implementation "com.github.topjohnwu.libsu:core:${libsuVersion}"
-    implementation "com.github.topjohnwu.libsu:service:${libsuVersion}"
-    implementation "com.github.topjohnwu.libsu:nio:${libsuVersion}"
 }
 
 protobuf {

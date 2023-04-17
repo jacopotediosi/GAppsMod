@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="margin_generic">10dp</dimen>
+    <dimen name="margin_generic">12dp</dimen>
 
+    <dimen name="l_125">2dp</dimen>
     <dimen name="l_25">4dp</dimen>
     <dimen name="l_50">8dp</dimen>
     <dimen name="l_75">12dp</dimen>

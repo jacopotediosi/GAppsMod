@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
-        android:theme="@style/Theme.GoogleDialerMod"
+        android:theme="@style/AppTheme"
         tools:ignore="DataExtractionRules"
         tools:replace="android:allowBackup">
 
@@ -23,7 +23,7 @@
             android:configChanges="orientation|keyboard|keyboardHidden|screenLayout|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.GoogleDialerMod.NoActionBar"
+            android:theme="@style/AppTheme"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,7 +36,7 @@
             android:name=".ui.activity.MainActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenLayout|screenSize"
             android:exported="true"
-            android:theme="@style/Theme.GoogleDialerMod.NoActionBar">
+            android:theme="@style/AppTheme">
         </activity>
 
     </application>

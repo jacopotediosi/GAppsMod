@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/l2"
     android:gravity="center"
     android:orientation="vertical"
     android:paddingVertical="@dimen/l1_5"
@@ -21,7 +22,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="@string/app_name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="30sp" />
 
 </LinearLayout>

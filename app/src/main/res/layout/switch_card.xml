@@ -1,36 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="?attr/materialCardViewElevatedStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="@android:color/transparent"
-    app:cardCornerRadius="0dp"
-    app:cardElevation="0dp">
+    android:layout_marginVertical="@dimen/l_125"
+    app:contentPaddingLeft="@dimen/l_50"
+    app:contentPaddingRight="@dimen/l_50">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/switch_row_item_textview"
+            android:id="@+id/switch_card_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/l_50"
-            android:layout_toStartOf="@id/switch_row_item_switch"
-            android:textAlignment="viewStart" />
+            android:layout_toStartOf="@id/switch_card_switch"
+            android:labelFor="@id/switch_card_switch"
+            android:textAlignment="viewStart"
+            tools:ignore="LabelFor" />
 
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/switch_row_item_switch"
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/switch_card_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:minHeight="0dp"
-            android:saveEnabled="false"
-            tools:ignore="TouchTargetSizeCheck" />
+            android:saveEnabled="false" />
 
     </RelativeLayout>
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

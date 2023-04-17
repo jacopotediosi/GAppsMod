@@ -15,6 +15,7 @@
             android:id="@+id/revert_all_mods_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/l1"
             android:justificationMode="inter_word"
             android:text="@string/revert_all_mods_text"
             android:textAlignment="viewStart"
@@ -24,8 +25,9 @@
             android:id="@+id/revert_all_mods_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/errorColor"
+            android:backgroundTint="?attr/colorError"
             android:text="@string/revert_all_mods_button"
+            android:textColor="?attr/colorOnError"
             tools:ignore="VisualLintButtonSize" />
     </LinearLayout>
 

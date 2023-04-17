@@ -1,9 +1,5 @@
 package com.jacopomii.googledialermod.ui.activity;
 
-import static com.jacopomii.googledialermod.data.Constants.DIALER_DATA_DATA;
-import static com.jacopomii.googledialermod.data.Constants.DIALER_GOOGLE_PLAY_BETA_LINK;
-import static com.jacopomii.googledialermod.data.Constants.DIALER_GOOGLE_PLAY_LINK;
-import static com.jacopomii.googledialermod.data.Constants.DIALER_PACKAGE_NAME;
 import static com.jacopomii.googledialermod.data.Constants.GMS_GOOGLE_PLAY_LINK;
 import static com.jacopomii.googledialermod.data.Constants.PHENOTYPE_DB;
 import static com.jacopomii.googledialermod.util.Utils.checkUpdateAvailable;
@@ -13,7 +9,6 @@ import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -21,9 +16,10 @@ import android.os.RemoteException;
 import android.view.View;
 import android.widget.ImageView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.jacopomii.googledialermod.BuildConfig;
 import com.jacopomii.googledialermod.ICoreRootService;
 import com.jacopomii.googledialermod.R;
@@ -46,7 +42,6 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private final CountDownLatch rootCheckPassed = new CountDownLatch(1);
     private final CountDownLatch coreRootServiceConnected = new CountDownLatch(1);
-    private final CountDownLatch dialerCheckPassed = new CountDownLatch(1);
     private final CountDownLatch phenotypeCheckPassed = new CountDownLatch(1);
     private final CountDownLatch updateCheckFinished = new CountDownLatch(1);
 
@@ -75,7 +70,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 }
 
                 // Update the UI
-                setCheckUIDone(R.id.circular_root_service, R.id.done_root_service, coreRootServiceConnected.getCount()==0);
+                setCheckUIDone(R.id.circular_root_service, R.id.done_root_service, coreRootServiceConnected.getCount() == 0);
             }
 
             @Override
@@ -95,47 +90,15 @@ public class SplashScreenActivity extends AppCompatActivity {
                     rootCheckPassed.countDown();
                 } else {
                     runOnUiThread(() ->
-                            new AlertDialog.Builder(splashScreenActivity)
-                                .setCancelable(false)
-                                .setMessage(R.string.root_access_denied)
-                                .setPositiveButton(R.string.exit, (dialog, i) -> System.exit(0))
-                                .show());
+                            new MaterialAlertDialogBuilder(splashScreenActivity)
+                                    .setCancelable(false)
+                                    .setMessage(R.string.root_access_denied)
+                                    .setPositiveButton(R.string.exit, (dialog, i) -> System.exit(0))
+                                    .show());
                 }
 
                 // Update the UI
-                setCheckUIDone(R.id.circular_root, R.id.done_root, rootCheckPassed.getCount()==0);
-            }
-        }.start();
-
-        // Dialer installation check
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    // Wait for root check to pass
-                    rootCheckPassed.await();
-                    // Wait for coreRootService to connect
-                    coreRootServiceConnected.await();
-
-                    // Check the Dialer installation
-                    if (checkDialerInstallation()) {
-                        dialerCheckPassed.countDown();
-                    } else {
-                        runOnUiThread(() ->
-                                new AlertDialog.Builder(splashScreenActivity)
-                                    .setCancelable(false)
-                                    .setMessage(getString(R.string.dialer_not_installed_error))
-                                    .setPositiveButton(R.string.install_from_google_play, (dialogInterface, i) -> openGooglePlay(splashScreenActivity, DIALER_GOOGLE_PLAY_LINK))
-                                    .setNegativeButton(R.string.join_beta_program, (dialogInterface, i) -> openGooglePlay(splashScreenActivity, DIALER_GOOGLE_PLAY_BETA_LINK))
-                                    .setNeutralButton(R.string.continue_anyway, (dialogInterface, i) -> dialerCheckPassed.countDown())
-                                    .show());
-                    }
-
-                    // Update the UI
-                    setCheckUIDone(R.id.circular_dialer, R.id.done_dialer, dialerCheckPassed.getCount()==0);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                setCheckUIDone(R.id.circular_root, R.id.done_root, rootCheckPassed.getCount() == 0);
             }
         }.start();
 
@@ -154,17 +117,17 @@ public class SplashScreenActivity extends AppCompatActivity {
                         phenotypeCheckPassed.countDown();
                     } else {
                         runOnUiThread(() ->
-                                new AlertDialog.Builder(splashScreenActivity)
-                                    .setCancelable(false)
-                                    .setMessage(getString(R.string.phenotype_db_does_not_exist))
-                                    .setNegativeButton(R.string.install_from_google_play, (dialogInterface, i) -> openGooglePlay(splashScreenActivity, GMS_GOOGLE_PLAY_LINK))
-                                    .setPositiveButton(R.string.exit, (dialog, which) -> System.exit(0))
-                                    .show());
+                                new MaterialAlertDialogBuilder(splashScreenActivity)
+                                        .setCancelable(false)
+                                        .setMessage(getString(R.string.phenotype_db_does_not_exist))
+                                        .setNegativeButton(R.string.install_from_google_play, (dialogInterface, i) -> openGooglePlay(splashScreenActivity, GMS_GOOGLE_PLAY_LINK))
+                                        .setPositiveButton(R.string.exit, (dialog, which) -> System.exit(0))
+                                        .show());
                     }
 
                     // Update the UI
-                    setCheckUIDone(R.id.circular_phenotype, R.id.done_phenotype, phenotypeCheckPassed.getCount()==0);
-                } catch(InterruptedException e) {
+                    setCheckUIDone(R.id.circular_phenotype, R.id.done_phenotype, phenotypeCheckPassed.getCount() == 0);
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
@@ -179,19 +142,19 @@ public class SplashScreenActivity extends AppCompatActivity {
                     updateCheckFinished.countDown();
                 } else {
                     runOnUiThread(() ->
-                            new AlertDialog.Builder(splashScreenActivity)
+                            new MaterialAlertDialogBuilder(splashScreenActivity)
                                     .setCancelable(false)
                                     .setMessage(R.string.new_version_alert)
                                     .setNegativeButton(
                                             R.string.github,
-                                            (dialogInterface, i) -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_link)+"/releases")))
+                                            (dialogInterface, i) -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_link) + "/releases")))
                                     )
                                     .setPositiveButton(R.string.continue_anyway, (dialogInterface, i) -> updateCheckFinished.countDown())
                                     .show());
                 }
 
                 // Update the UI
-                setCheckUIDone(R.id.circular_updates, R.id.done_updates, updateCheckFinished.getCount()==0);
+                setCheckUIDone(R.id.circular_updates, R.id.done_updates, updateCheckFinished.getCount() == 0);
             }
         }.start();
 
@@ -203,7 +166,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                     // Wait for all checks to pass and for all operations to finish
                     rootCheckPassed.await();
                     coreRootServiceConnected.await();
-                    dialerCheckPassed.await();
                     phenotypeCheckPassed.await();
                     updateCheckFinished.await();
 
@@ -212,7 +174,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                     // Start the main activity
                     Intent intent = new Intent(splashScreenActivity, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -225,21 +187,12 @@ public class SplashScreenActivity extends AppCompatActivity {
         return Shell.getShell().isRoot();
     }
 
-    private boolean checkDialerInstallation() {
-        try {
-            getApplication().getPackageManager().getApplicationInfo(DIALER_PACKAGE_NAME, 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
-        }
-        return coreRootServiceFSManager.getFile(DIALER_DATA_DATA).exists();
-    }
-
     private boolean checkPhenotypeDB() {
         return coreRootServiceFSManager.getFile(PHENOTYPE_DB).exists();
     }
 
     private void setCheckUIDone(int circularID, int doneImageID, boolean success) {
-        View circular = findViewById(circularID);
+        CircularProgressIndicator circular = findViewById(circularID);
         ImageView doneImage = findViewById(doneImageID);
         runOnUiThread(() -> {
             circular.setVisibility(View.GONE);

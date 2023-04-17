@@ -1,44 +1,58 @@
 <resources>
+    <!-- GApp names, taken from https://play.google.com/store/apps/details?id=PACKAGE_NAME&hl=LANGUAGE -->
+    <string name="dialer_app_name">Telefono Google</string>
+
+    <!-- Common -->
     <string name="all">Tutti</string>
-    <string name="an_error_has_occurred">Si è verificato un errore</string>
-    <string name="boolean_mods">Mod booleane</string>
-    <string name="choose_a_language_for_call_screen">Scegli una lingua per il call screen</string>
     <string name="continue_anyway">Continua comunque</string>
-    <string name="credits">Crediti</string>
-    <string name="dialer_app_name">Telefono Google</string> <!-- Taken from https://play.google.com/store/apps/details?id=com.google.android.dialer&hl=it-->
-    <string name="dialer_not_installed_error">Sembra che ${dialer_app_name} non sia installato.\n\nInstalla l\'ultima versione di ${dialer_app_name} dal Google Play e riprova.\n\nInoltre, facoltativamente, puoi aderire al programma Beta di ${dialer_app_name} tramite il pulsante sottostante.</string>
-    <string name="dialer_permission_alert">${dialer_app_name} non è installato come app di sistema e pertanto non dispone del permesso CAPTURE_AUDIO_OUTPUT.\nAlcune funzioni, come la registrazione chiamate, potrebbero non funzionare.</string>
     <string name="disabled_only">Solo disabilitati</string>
     <string name="done">Fatto</string>
     <string name="enabled_only">Solo abilitati</string>
     <string name="exit">Esci</string>
-    <string name="force_enable_call_screen">Abilita forzatamente il filtro chiamate (call screen)</string>
-    <string name="force_enable_disable_call_recording">Abilita forzatamente la registrazione chiamate</string>
-    <string name="how_it_works">Come funziona</string>
-    <string name="how_it_works_explanation">Le patch applicate da ${app_name} resistono nel tempo agli aggiornamenti dell\'applicazione ${dialer_app_name}, anche dopo la disinstallazione dell\'app.\nTali modifiche sono da considerarsi quindi permanenti, ma si possono facilmente annullare premendo tramite la funzione \"${revert_mods}\".\nNon è necessario tenere installata questa app dopo aver applicato le mod desiderate.\n\nDopo aver applicato modifiche, potrebbe essere necessario riaprire e chiudere forzatamente un paio di volte l\'app ${dialer_app_name} prima che abbiano effetto.</string>
-    <string name="if_bug_found_open_github_issue">Se credi di aver trovato dei bug per favore apri una issue su Github</string>
-    <string name="information">Informazioni</string>
     <string name="install_from_google_play">Installa dal Google Play</string>
     <string name="join_beta_program">Aderisci al programma Beta</string>
-    <string name="made_with_love_by_jacopo_tediosi">Creato con ❤ da <a href="https://github.com/jacopotediosi">Jacopo Tediosi</a></string>
-    <string name="new_version_alert">E\' disponibile una nuova versione di ${app_name}.\n\nPuoi scaricarla dalla pagina Releases di Github.</string>
     <string name="no">No</string>
-    <string name="phenotype_db_does_not_exist">Sembra che non esista il Phenotype DB.\n\nInstalla Google Play Services da Google Play e riprova.</string>
-    <string name="revert_all_mods_alert">Vuoi davvero ripristinare tutte le mod applicate da ${app_name}?</string>
-    <string name="revert_all_mods_button">Ripristina tutte le mod</string>
-    <string name="revert_all_mods_text">Premi il pulsante sottostante per ripristinare tutte le mod applicate da ${app_name}</string>
-    <string name="revert_mods">Ripristina mod</string>
-    <string name="root_access_denied">Impossibile ottenere i permessi di root. Per favore consenti l\'accesso root.</string>
     <string name="search">Cerca</string>
-    <string name="silence_call_recording_alerts">Silenzia gli audio degli avvisi di registrazione chiamata (solo ${dialer_app_name} &lt;= 94.x)</string>
-    <string name="splash_screen_dialer">Controllando l\'installazione di ${dialer_app_name}…</string>
+    <string name="yes">Sì</string>
+
+    <!-- Fragment titles -->
+    <string name="boolean_mods">Mod booleane</string>
+    <string name="information">Informazioni</string>
+    <string name="revert_mods">Ripristina mod</string>
+    <string name="suggested_mods">Mod suggerite</string>
+
+    <!-- Splash screen -->
     <string name="splash_screen_phenotype">Controllando il Phenotype DB…</string>
     <string name="splash_screen_root">Controllando i permessi di root…</string>
     <string name="splash_screen_root_service">Connettendo al servizio root…</string>
     <string name="splash_screen_updates">Controllando gli aggiornamenti…</string>
-    <string name="suggested_mods">Mod suggerite</string>
+
+    <!-- Suggested mods -->
+    <string name="choose_a_language_for_call_screen">Scegli una lingua per il call screen</string>
+    <string name="force_enable_call_screen">Abilita forzatamente il filtro chiamate (call screen)</string>
+    <string name="force_enable_disable_call_recording">Abilita forzatamente la registrazione chiamate</string>
+    <string name="silence_call_recording_alerts">Silenzia gli audio degli avvisi di registrazione chiamata (solo ${dialer_app_name} &lt;= 94.x)</string>
+
+    <!-- Revert mods -->
+    <string name="revert_all_mods_alert">Vuoi davvero ripristinare tutte le mod applicate da ${app_name}?</string>
+    <string name="revert_all_mods_button">Ripristina tutte le mod</string>
+    <string name="revert_all_mods_text">Premi il pulsante sottostante per ripristinare tutte le mod applicate da ${app_name}</string>
+
+    <!-- Information -->
+    <string name="credits">Crediti</string>
+    <string name="how_it_works">Come funziona</string>
+    <string name="how_it_works_explanation">Le patch applicate da ${app_name} resistono nel tempo agli aggiornamenti dell\'applicazione ${dialer_app_name}, anche dopo la disinstallazione dell\'app.\nTali modifiche sono da considerarsi quindi permanenti, ma si possono facilmente annullare premendo tramite la funzione \"${revert_mods}\".\nNon è necessario tenere installata questa app dopo aver applicato le mod desiderate.\n\nDopo aver applicato modifiche, potrebbe essere necessario riaprire e chiudere forzatamente un paio di volte l\'app ${dialer_app_name} prima che abbiano effetto.</string>
+    <string name="if_bug_found_open_github_issue">Se credi di aver trovato dei bug per favore apri una issue su Github</string>
+    <string name="made_with_love_by_jacopo_tediosi">Creato con ❤ da <a href="https://github.com/jacopotediosi">Jacopo Tediosi</a></string>
     <string name="what_is_app_name">Che cos\'è ${app_name}</string>
     <string name="what_is_it_explanation">${app_name} è una app che permette, sfruttando i privilegi di root, di modificare i valori contenuti nel database "Phenotype" di Google Play Services, alterando così il comportamento dell\'app ${dialer_app_name} per sbloccarne funzionalità sperimentali o bloccate in alcuni stati.</string>
     <string name="what_is_it_explanation_beta">Assicurati sempre di star utilizzando <a href="https://play.google.com/store/apps/details?id=com.google.android.dialer">l\'ultima beta del Dialer disponibile sul Play Store</a>, per usufruire delle più recenti funzioni.</string>
-    <string name="yes">Sì</string>
+
+    <!-- Warning and error messages -->
+    <string name="an_error_has_occurred">Si è verificato un errore</string>
+    <string name="app_not_installed_error">Sembra che l\'applicazione non sia installata.</string>
+    <string name="dialer_permission_alert">${dialer_app_name} non è installato come app di sistema e pertanto non dispone del permesso CAPTURE_AUDIO_OUTPUT.\nAlcune funzioni, come la registrazione chiamate, potrebbero non funzionare.</string>
+    <string name="new_version_alert">E\' disponibile una nuova versione di ${app_name}.\n\nPuoi scaricarla dalla pagina Releases di Github.</string>
+    <string name="phenotype_db_does_not_exist">Sembra che non esista il Phenotype DB.\n\nInstalla Google Play Services da Google Play e riprova.</string>
+    <string name="root_access_denied">Impossibile ottenere i permessi di root. Per favore consenti l\'accesso root.</string>
 </resources>

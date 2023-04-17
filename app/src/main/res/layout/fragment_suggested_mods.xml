@@ -13,22 +13,80 @@
         android:orientation="vertical">
 
         <TextView
+            style="?attr/textAppearanceTitleLarge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/l_50"
             android:text="@string/dialer_app_name"
-            android:textAlignment="viewStart"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.WindowTitle" />
+            android:textAlignment="viewStart" />
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/dialer_permission_alert"
+            android:id="@+id/dialer_not_installed_alert"
+            style="?attr/materialCardViewElevatedStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/l_25"
             android:layout_marginBottom="@dimen/l_50"
             android:visibility="gone"
-            app:cardBackgroundColor="@color/warningColor"
-            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="?attr/colorErrorContainer"
+            app:cardElevation="4dp"
+            app:contentPadding="@dimen/l1"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:justificationMode="inter_word"
+                    android:text="@string/app_not_installed_error"
+                    android:textAlignment="viewStart"
+                    android:textColor="?attr/colorOnErrorContainer"
+                    tools:targetApi="o" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/dialer_beta_button"
+                        style="@style/Widget.Material3.Button.ElevatedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_weight="1"
+                        android:text="@string/join_beta_program"
+                        tools:ignore="VisualLintButtonSize" />
+
+                    <Button
+                        android:id="@+id/dialer_install_button"
+                        style="@style/Widget.Material3.Button.ElevatedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_weight="1"
+                        android:text="@string/install_from_google_play"
+                        tools:ignore="VisualLintButtonSize" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/dialer_permission_alert"
+            style="?attr/materialCardViewElevatedStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/l_25"
+            android:layout_marginBottom="@dimen/l_50"
+            android:visibility="gone"
+            app:cardBackgroundColor="?attr/colorErrorContainer"
             app:cardElevation="4dp"
             app:contentPadding="@dimen/l1"
             tools:visibility="visible">
@@ -39,7 +97,7 @@
                 android:justificationMode="inter_word"
                 android:text="@string/dialer_permission_alert"
                 android:textAlignment="viewStart"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnErrorContainer"
                 tools:targetApi="o" />
         </com.google.android.material.card.MaterialCardView>
 
@@ -48,80 +106,26 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <com.jacopomii.googledialermod.ui.view.SwitchCardView
+                android:id="@+id/force_enable_call_recording_card"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                app:enabled="false"
+                app:text="@string/force_enable_disable_call_recording" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/l_50"
-                    android:layout_toStartOf="@id/force_enable_call_recording_switch"
-                    android:text="@string/force_enable_disable_call_recording"
-                    android:textAlignment="viewStart" />
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/force_enable_call_recording_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:enabled="false"
-                    android:minHeight="0dp"
-                    android:saveEnabled="false"
-                    tools:ignore="TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
-            </RelativeLayout>
-
-            <RelativeLayout
+            <com.jacopomii.googledialermod.ui.view.SwitchCardView
+                android:id="@+id/silence_call_recording_alerts_card"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                app:enabled="false"
+                app:text="@string/silence_call_recording_alerts" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/l_50"
-                    android:layout_toStartOf="@id/silence_call_recording_alerts_switch"
-                    android:text="@string/silence_call_recording_alerts"
-                    android:textAlignment="viewStart" />
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/silence_call_recording_alerts_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:enabled="false"
-                    android:minHeight="0dp"
-                    android:saveEnabled="false"
-                    tools:ignore="TouchTargetSizeCheck" />
-            </RelativeLayout>
-
-            <RelativeLayout
+            <com.jacopomii.googledialermod.ui.view.SwitchCardView
+                android:id="@+id/force_enable_call_screen_card"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/l_50"
-                    android:layout_toStartOf="@id/force_enable_call_screen_switch"
-                    android:text="@string/force_enable_call_screen"
-                    android:textAlignment="viewStart" />
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/force_enable_call_screen_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:enabled="false"
-                    android:minHeight="0dp"
-                    android:saveEnabled="false"
-                    tools:ignore="TouchTargetSizeCheck" />
-            </RelativeLayout>
+                android:layout_height="wrap_content"
+                app:enabled="false"
+                app:text="@string/force_enable_call_screen" />
 
         </LinearLayout>
 

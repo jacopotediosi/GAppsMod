@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SwitchCardView">
+        <!-- The text accompanying the switch. -->
+        <attr name="text" format="string" />
+        <!-- Whether the switch should be enabled or not. Default true. -->
+        <attr name="enabled" format="boolean" />
+    </declare-styleable>
+
+    <attr name="colorAppbar" format="reference" />
+</resources>

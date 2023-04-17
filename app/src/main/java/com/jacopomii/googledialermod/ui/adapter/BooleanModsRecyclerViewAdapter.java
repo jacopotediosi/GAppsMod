@@ -13,12 +13,12 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.jacopomii.googledialermod.R;
 import com.jacopomii.googledialermod.ui.activity.MainActivity;
-import com.jacopomii.googledialermod.ui.viewmodel.SwitchRowItem;
+import com.jacopomii.googledialermod.ui.viewmodel.SwitchCardViewModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,10 +28,10 @@ import java.util.List;
 
 public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<BooleanModsRecyclerViewAdapter.BooleanModsViewHolder> implements Filterable {
     private final Context mContext;
-    private final List<SwitchRowItem> mData;
-    private List<SwitchRowItem> mDataFiltered;
+    private final List<SwitchCardViewModel> mData;
+    private List<SwitchCardViewModel> mDataFiltered;
 
-    public BooleanModsRecyclerViewAdapter(Context context, List<SwitchRowItem> data) {
+    public BooleanModsRecyclerViewAdapter(Context context, List<SwitchCardViewModel> data) {
         if (context instanceof MainActivity) {
             mContext = context;
             mData = data;
@@ -44,7 +44,7 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
     @NonNull
     @Override
     public BooleanModsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(mContext).inflate(R.layout.switch_row_item, parent, false);
+        View v = LayoutInflater.from(mContext).inflate(R.layout.switch_card, parent, false);
         return new BooleanModsViewHolder(v);
     }
 
@@ -82,8 +82,8 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
                     String key = filterConfig.getString("key");
                     String mode = filterConfig.getString("mode");
 
-                    List<SwitchRowItem> lstFiltered = new ArrayList<>();
-                    for (SwitchRowItem row : mData) {
+                    List<SwitchCardViewModel> lstFiltered = new ArrayList<>();
+                    for (SwitchCardViewModel row : mData) {
                         if (row.getSwitchText().toLowerCase().contains(key.toLowerCase())) {
                             boolean switchStatus = row.getSwitchChecked();
                             if (mode.equals("all") || (mode.equals("enabled_only") && switchStatus) || (mode.equals("disabled_only") && !switchStatus))
@@ -106,7 +106,7 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
             @SuppressLint("NotifyDataSetChanged")
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                mDataFiltered = (List<SwitchRowItem>) filterResults.values;
+                mDataFiltered = (List<SwitchCardViewModel>) filterResults.values;
                 notifyDataSetChanged();
             }
         };
@@ -114,12 +114,12 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
 
     public static class BooleanModsViewHolder extends RecyclerView.ViewHolder {
         private final TextView mT;
-        private final SwitchCompat mS;
+        private final MaterialSwitch mS;
 
         public BooleanModsViewHolder(View itemView) {
             super(itemView);
-            mT = itemView.findViewById(R.id.switch_row_item_textview);
-            mS = itemView.findViewById(R.id.switch_row_item_switch);
+            mT = itemView.findViewById(R.id.switch_card_textview);
+            mS = itemView.findViewById(R.id.switch_card_switch);
         }
     }
 }
