@@ -33,7 +33,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        // The savedInstanceState must not be used, otherwise the views (and the fragments contained
+        // by this activity) are restored before the RootService is started, causing NPE.
+        super.onCreate(null);
 
         // Start CoreRootService connection
         Intent intent = new Intent(this, CoreRootService.class);

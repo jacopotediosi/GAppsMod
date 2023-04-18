@@ -20,7 +20,6 @@
 
         <activity
             android:name=".ui.activity.SplashScreenActivity"
-            android:configChanges="orientation|keyboard|keyboardHidden|screenLayout|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
@@ -34,10 +33,9 @@
 
         <activity
             android:name=".ui.activity.MainActivity"
-            android:configChanges="orientation|keyboard|keyboardHidden|screenLayout|screenSize"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize"
             android:exported="true"
-            android:theme="@style/AppTheme">
-        </activity>
+            android:theme="@style/AppTheme" />
 
     </application>
 
