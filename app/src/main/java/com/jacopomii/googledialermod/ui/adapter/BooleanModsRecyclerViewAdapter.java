@@ -60,7 +60,7 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
         holder.mS.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mDataFiltered.get(position).setSwitchChecked(isChecked);
             try {
-                ((MainActivity)mContext).getCoreRootServiceIpc().phenotypeDBUpdateBooleanFlag(DIALER_PACKAGE_NAME, holder.mT.getText().toString(), isChecked);
+                ((MainActivity) mContext).getCoreRootServiceIpc().phenotypeDBUpdateBooleanFlag(DIALER_PACKAGE_NAME, holder.mT.getText().toString(), isChecked);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -98,10 +98,9 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
 
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = mDataFiltered;
+                filterResults.count = mDataFiltered.size();
                 return filterResults;
             }
-
-
 
             @SuppressWarnings("unchecked")
             @SuppressLint("NotifyDataSetChanged")
@@ -115,7 +114,7 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
 
     @Override
     public CharSequence getSectionText(int position) {
-        return mDataFiltered.get(position).getSwitchText().substring(0,1);
+        return mDataFiltered.get(position).getSwitchText().substring(0, 1);
     }
 
     public static class BooleanModsViewHolder extends RecyclerView.ViewHolder {

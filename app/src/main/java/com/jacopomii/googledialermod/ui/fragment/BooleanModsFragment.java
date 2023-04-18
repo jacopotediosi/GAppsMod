@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.jacopomii.googledialermod.ICoreRootService;
 import com.jacopomii.googledialermod.R;
@@ -62,13 +63,20 @@ public class BooleanModsFragment extends Fragment {
         binding = FragmentBooleanModsBinding.inflate(getLayoutInflater());
 
         try {
+            FastScrollRecyclerView recyclerView = binding.recyclerView;
+
             TreeMap<String, Boolean> map = new TreeMap<String, Boolean>(coreRootServiceIpc.phenotypeDBGetBooleanFlags(DIALER_PACKAGE_NAME));
             for (Map.Entry<String, Boolean> flag : map.entrySet())
                 mLstSwitch.add(new SwitchCardViewModel(flag.getKey(), flag.getValue()));
 
             mBooleanModsRecyclerViewAdapter = new BooleanModsRecyclerViewAdapter(getActivity(), mLstSwitch);
+            mBooleanModsRecyclerViewAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                @Override public void onChanged() {
+                    super.onChanged();
+                    recyclerView.setFastScrollEnabled(mBooleanModsRecyclerViewAdapter.getItemCount() != 0);
+                }
+            });
 
-            FastScrollRecyclerView recyclerView = binding.recyclerView;
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             recyclerView.setAdapter(mBooleanModsRecyclerViewAdapter);
         } catch (RemoteException e) {
