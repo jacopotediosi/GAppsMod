@@ -72,6 +72,9 @@ public class BooleanModsFragment extends Fragment {
                 mFlagsList.add(new BooleanFlag(flag.getKey(), flag.getValue()));
 
             mBooleanModsRecyclerViewAdapter = new BooleanModsRecyclerViewAdapter(getActivity(), mFlagsList);
+
+            // Disable fast scroll if recyclerview is empty or changes to empty
+            recyclerView.setFastScrollEnabled(mBooleanModsRecyclerViewAdapter.getItemCount() != 0);
             mBooleanModsRecyclerViewAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
                 @Override
                 public void onChanged() {
