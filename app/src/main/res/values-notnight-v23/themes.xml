@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Overwrite application light theme on API 23+ (because on lower versions light status bar is
-    not supported) to set statusBar color to colorAppbar and make it translucent -->
+    <!-- Override application light theme on API 23+ (because on lower versions light status bar is
+    not supported) to set statusBar color to transparent -->
     <style name="AppTheme" parent="BaseTheme">
-        <item name="statusBarBackground">?attr/colorAppbar</item>
-        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 </resources>

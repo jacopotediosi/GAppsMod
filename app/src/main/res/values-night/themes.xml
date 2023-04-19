@@ -2,9 +2,8 @@
 <resources>
     <!-- Application dark theme -->
     <style name="AppTheme" parent="BaseTheme">
-        <!-- Set statusBar color to colorAppbar and make it translucent -->
-        <item name="statusBarBackground">?attr/colorAppbar</item>
-        <item name="android:windowTranslucentStatus">true</item>
+        <!-- Set statusBar color to transparent -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
     <!-- Application dark base theme -->
