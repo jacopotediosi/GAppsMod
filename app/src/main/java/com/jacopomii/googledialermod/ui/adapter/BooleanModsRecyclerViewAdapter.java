@@ -1,12 +1,12 @@
 package com.jacopomii.googledialermod.ui.adapter;
 
 import static com.jacopomii.googledialermod.data.Constants.DIALER_PACKAGE_NAME;
+import static com.jacopomii.googledialermod.util.Utils.setCheckedWithoutTriggeringListeners;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.RemoteException;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -16,9 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.materialswitch.MaterialSwitch;
-import com.jacopomii.googledialermod.R;
+import com.jacopomii.googledialermod.data.BooleanFlag;
+import com.jacopomii.googledialermod.databinding.SwitchCardBinding;
 import com.jacopomii.googledialermod.ui.activity.MainActivity;
-import com.jacopomii.googledialermod.ui.viewmodel.SwitchCardViewModel;
 import com.l4digital.fastscroll.FastScroller;
 
 import org.json.JSONException;
@@ -29,14 +29,14 @@ import java.util.List;
 
 public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<BooleanModsRecyclerViewAdapter.BooleanModsViewHolder> implements Filterable, FastScroller.SectionIndexer {
     private final Context mContext;
-    private final List<SwitchCardViewModel> mData;
-    private List<SwitchCardViewModel> mDataFiltered;
+    private final List<BooleanFlag> mFlagsList;
+    private List<BooleanFlag> mFlagsListFiltered;
 
-    public BooleanModsRecyclerViewAdapter(Context context, List<SwitchCardViewModel> data) {
+    public BooleanModsRecyclerViewAdapter(Context context, List<BooleanFlag> flagList) {
         if (context instanceof MainActivity) {
             mContext = context;
-            mData = data;
-            mDataFiltered = data;
+            mFlagsList = flagList;
+            mFlagsListFiltered = flagList;
         } else {
             throw new RuntimeException("BooleanModsRecyclerViewAdapter can be attached only to the MainActivity");
         }
@@ -45,22 +45,20 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
     @NonNull
     @Override
     public BooleanModsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(mContext).inflate(R.layout.switch_card, parent, false);
-        return new BooleanModsViewHolder(v);
+        SwitchCardBinding binding = SwitchCardBinding.inflate(LayoutInflater.from(mContext), parent, false);
+        return new BooleanModsViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull BooleanModsViewHolder holder, int position) {
-        holder.mT.setText(mDataFiltered.get(position).getSwitchText());
+        // Update switch text
+        holder.mTextView.setText(mFlagsListFiltered.get(position).getFlagName());
 
-        holder.mS.setOnCheckedChangeListener(null); // Remove any existing listener from recycled view
-
-        holder.mS.setChecked(mDataFiltered.get(position).getSwitchChecked());
-
-        holder.mS.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            mDataFiltered.get(position).setSwitchChecked(isChecked);
+        // Update the switch checked status without triggering any existing listeners and set the new onCheckedChange listener
+        setCheckedWithoutTriggeringListeners(holder.mSwitch, mFlagsListFiltered.get(position).getFlagValue(), (buttonView, isChecked) -> {
+            mFlagsListFiltered.get(position).setFlagValue(isChecked);
             try {
-                ((MainActivity) mContext).getCoreRootServiceIpc().phenotypeDBOverrideBooleanFlag(DIALER_PACKAGE_NAME, holder.mT.getText().toString(), isChecked);
+                ((MainActivity) mContext).getCoreRootServiceIpc().phenotypeDBOverrideBooleanFlag(DIALER_PACKAGE_NAME, mFlagsListFiltered.get(holder.getAdapterPosition()).getFlagName(), isChecked);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -70,7 +68,7 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
 
     @Override
     public int getItemCount() {
-        return mDataFiltered.size();
+        return mFlagsListFiltered.size();
     }
 
     @Override
@@ -83,22 +81,22 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
                     String key = filterConfig.getString("key");
                     String mode = filterConfig.getString("mode");
 
-                    List<SwitchCardViewModel> lstFiltered = new ArrayList<>();
-                    for (SwitchCardViewModel row : mData) {
-                        if (row.getSwitchText().toLowerCase().contains(key.toLowerCase())) {
-                            boolean switchStatus = row.getSwitchChecked();
-                            if (mode.equals("all") || (mode.equals("enabled_only") && switchStatus) || (mode.equals("disabled_only") && !switchStatus))
-                                lstFiltered.add(row);
+                    List<BooleanFlag> flagsListFiltered = new ArrayList<>();
+                    for (BooleanFlag booleanFlag : mFlagsList) {
+                        if (booleanFlag.getFlagName().toLowerCase().contains(key.toLowerCase())) {
+                            boolean flagValue = booleanFlag.getFlagValue();
+                            if (mode.equals("all") || (mode.equals("enabled_only") && flagValue) || (mode.equals("disabled_only") && !flagValue))
+                                flagsListFiltered.add(booleanFlag);
                         }
                     }
-                    mDataFiltered = lstFiltered;
+                    mFlagsListFiltered = flagsListFiltered;
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
                 FilterResults filterResults = new FilterResults();
-                filterResults.values = mDataFiltered;
-                filterResults.count = mDataFiltered.size();
+                filterResults.values = mFlagsListFiltered;
+                filterResults.count = mFlagsListFiltered.size();
                 return filterResults;
             }
 
@@ -106,7 +104,7 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
             @SuppressLint("NotifyDataSetChanged")
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                mDataFiltered = (List<SwitchCardViewModel>) filterResults.values;
+                mFlagsListFiltered = (List<BooleanFlag>) filterResults.values;
                 notifyDataSetChanged();
             }
         };
@@ -114,17 +112,17 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
 
     @Override
     public CharSequence getSectionText(int position) {
-        return mDataFiltered.get(position).getSwitchText().substring(0, 1);
+        return mFlagsListFiltered.get(position).getFlagName().substring(0, 1);
     }
 
     public static class BooleanModsViewHolder extends RecyclerView.ViewHolder {
-        private final TextView mT;
-        private final MaterialSwitch mS;
+        private final TextView mTextView;
+        private final MaterialSwitch mSwitch;
 
-        public BooleanModsViewHolder(View itemView) {
-            super(itemView);
-            mT = itemView.findViewById(R.id.switch_card_textview);
-            mS = itemView.findViewById(R.id.switch_card_switch);
+        public BooleanModsViewHolder(SwitchCardBinding binding) {
+            super(binding.getRoot());
+            mTextView = binding.switchCardTextview;
+            mSwitch = binding.switchCardSwitch;
         }
     }
 }

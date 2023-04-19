@@ -26,7 +26,7 @@ import com.jacopomii.googledialermod.R;
 import com.jacopomii.googledialermod.databinding.FragmentBooleanModsBinding;
 import com.jacopomii.googledialermod.ui.activity.MainActivity;
 import com.jacopomii.googledialermod.ui.adapter.BooleanModsRecyclerViewAdapter;
-import com.jacopomii.googledialermod.ui.viewmodel.SwitchCardViewModel;
+import com.jacopomii.googledialermod.data.BooleanFlag;
 import com.l4digital.fastscroll.FastScrollRecyclerView;
 
 import org.json.JSONException;
@@ -39,13 +39,15 @@ import java.util.TreeMap;
 
 @SuppressWarnings({"unchecked"})
 public class BooleanModsFragment extends Fragment {
-    private BooleanModsRecyclerViewAdapter mBooleanModsRecyclerViewAdapter;
-    private final List<SwitchCardViewModel> mLstSwitch = new ArrayList<>();
     private FragmentBooleanModsBinding binding;
+
+    private BooleanModsRecyclerViewAdapter mBooleanModsRecyclerViewAdapter;
+    private final List<BooleanFlag> mFlagsList = new ArrayList<>();
 
     private ICoreRootService coreRootServiceIpc;
 
-    public BooleanModsFragment() {}
+    public BooleanModsFragment() {
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,11 +69,12 @@ public class BooleanModsFragment extends Fragment {
 
             TreeMap<String, Boolean> map = new TreeMap<String, Boolean>(coreRootServiceIpc.phenotypeDBGetBooleanFlagsOrOverridden(DIALER_PACKAGE_NAME));
             for (Map.Entry<String, Boolean> flag : map.entrySet())
-                mLstSwitch.add(new SwitchCardViewModel(flag.getKey(), flag.getValue()));
+                mFlagsList.add(new BooleanFlag(flag.getKey(), flag.getValue()));
 
-            mBooleanModsRecyclerViewAdapter = new BooleanModsRecyclerViewAdapter(getActivity(), mLstSwitch);
+            mBooleanModsRecyclerViewAdapter = new BooleanModsRecyclerViewAdapter(getActivity(), mFlagsList);
             mBooleanModsRecyclerViewAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-                @Override public void onChanged() {
+                @Override
+                public void onChanged() {
                     super.onChanged();
                     recyclerView.setFastScrollEnabled(mBooleanModsRecyclerViewAdapter.getItemCount() != 0);
                 }
