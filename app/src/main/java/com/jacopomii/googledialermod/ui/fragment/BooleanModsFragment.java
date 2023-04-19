@@ -65,7 +65,7 @@ public class BooleanModsFragment extends Fragment {
         try {
             FastScrollRecyclerView recyclerView = binding.recyclerView;
 
-            TreeMap<String, Boolean> map = new TreeMap<String, Boolean>(coreRootServiceIpc.phenotypeDBGetBooleanFlags(DIALER_PACKAGE_NAME));
+            TreeMap<String, Boolean> map = new TreeMap<String, Boolean>(coreRootServiceIpc.phenotypeDBGetBooleanFlagsOrOverridden(DIALER_PACKAGE_NAME));
             for (Map.Entry<String, Boolean> flag : map.entrySet())
                 mLstSwitch.add(new SwitchCardViewModel(flag.getKey(), flag.getValue()));
 

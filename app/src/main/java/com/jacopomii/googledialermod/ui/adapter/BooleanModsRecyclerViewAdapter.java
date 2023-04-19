@@ -60,7 +60,7 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
         holder.mS.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mDataFiltered.get(position).setSwitchChecked(isChecked);
             try {
-                ((MainActivity) mContext).getCoreRootServiceIpc().phenotypeDBUpdateBooleanFlag(DIALER_PACKAGE_NAME, holder.mT.getText().toString(), isChecked);
+                ((MainActivity) mContext).getCoreRootServiceIpc().phenotypeDBOverrideBooleanFlag(DIALER_PACKAGE_NAME, holder.mT.getText().toString(), isChecked);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

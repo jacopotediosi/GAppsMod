@@ -37,6 +37,10 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class SuggestedModsFragment extends Fragment {
@@ -45,73 +49,74 @@ public class SuggestedModsFragment extends Fragment {
     private ICoreRootService coreRootServiceIpc;
     private FileSystemManager coreRootServiceFSManager;
 
-    // The following boolean flags force enable or disable Call Recording features
-    private final String[] ENABLE_CALL_RECORDING_FLAGS = {
-            // Enable Call Recording feature
-            "G__enable_call_recording",
-            "enable_call_recording_system_feature",
-            // Enable Call Recording also for Google Fi / Fides (e2e calls, etc)
-            "CallRecording__enable_call_recording_for_fi",
-            // Bypass country-related restrictions for call recording feature
-            "G__force_within_call_recording_geofence_value",
-            // Bypass country-related restrictions for automatic call recording ("always record") feature
-            "G__force_within_crosby_geofence_value",
-            // Allow the usage of the above two "force geofence" flags
-            "G__use_call_recording_geofence_overrides",
-            // Show call recording button
-            "enable_tidepods_call_recording"
-    };
+    // The following boolean flags force enable Call Recording features in Dialer app
+    private final HashMap<String, Boolean> DIALER_ENABLE_CALL_RECORDING_FLAGS = new HashMap<String, Boolean>() {{
+        // Enable Call Recording feature
+        put("G__enable_call_recording", true);
+        put("enable_call_recording_system_feature", true);
+        // Enable Call Recording also for Google Fi / Fides (e2e calls, etc)
+        put("CallRecording__enable_call_recording_for_fi", true);
+        // Bypass country-related restrictions for call recording feature
+        put("G__force_within_call_recording_geofence_value", true);
+        // Bypass country-related restrictions for automatic call recording ("always record") feature
+        put("G__force_within_crosby_geofence_value", true);
+        // Allow the usage of the above two "force geofence" flags
+        put("G__use_call_recording_geofence_overrides", true);
+        // Show call recording button
+        put("enable_tidepods_call_recording", true);
+    }};
 
-    // The following extensionVal flags concern the announcement audio played when a call recording starts or ends
-    private final String[] SILENCE_CALL_RECORDING_ALERTS_FLAGS = {
-            // The following flag contains a protobuf list of countries where the use of embedded audio is enforced.
-            // If its value is blank, the Dialer will by default use TTS to generate audio call recording alerts.
-            "CallRecording__call_recording_countries_with_built_in_audio_file",
-            // The following flags are no longer used in recent versions of the Dialer and remain here for backwards compatibility.
-            // They were used to contain a protobuf list of countries where the use of embedded or TTS audio was enforced.
-            "CallRecording__call_recording_force_enable_built_in_audio_file_countries",
-            "CallRecording__call_recording_force_enable_tts_countries",
-            // The following flag contains a protobuf hashset with country-language matches, used by Dialer to generate call recording audio alerts via TTS
-            // in the right language. If its value is empty, TTS will always fall back to en_US (hardcoded in the Dialer sources).
-            "CallRecording__call_recording_countries"
-    };
-    private final String CALLRECORDINGPROMPT_STARTING_VOICE_US = "starting_voice-en_US.wav";
-    private final String CALLRECORDINGPROMPT_ENDING_VOICE_US = "ending_voice-en_US.wav";
+    // The following extensionVal flags concern the announcement audio played when a call recording starts or ends in Dialer app.
+    // To silence announcements, we set them as empty stringVal flags.
+    private final HashMap<String, String> DIALER_SILENCE_CALL_RECORDING_ALERTS_FLAGS = new HashMap<String, String>() {{
+        // The following flag contains a protobuf list of countries where the use of embedded audio is enforced.
+        // If its value is an empty string, the Dialer will by default use TTS to generate audio call recording alerts.
+        put("CallRecording__call_recording_countries_with_built_in_audio_file", "");
+        // The following flags are no longer used in recent versions of the Dialer and remain here for backwards compatibility.
+        // They were used to contain a protobuf list of countries where the use of embedded or TTS audio was enforced.
+        put("CallRecording__call_recording_force_enable_built_in_audio_file_countries", "");
+        put("CallRecording__call_recording_force_enable_tts_countries", "");
+        // The following flag contains a protobuf hashset with country-language matches, used by Dialer to generate call recording audio alerts via TTS
+        // in the right language. If its value is an empty string, TTS will always fall back to en_US (hardcoded in the Dialer sources).
+        put("CallRecording__call_recording_countries", "");
+    }};
+    private final String DIALER_CALLRECORDINGPROMPT_STARTING_VOICE_US = "starting_voice-en_US.wav";
+    private final String DIALER_CALLRECORDINGPROMPT_ENDING_VOICE_US = "ending_voice-en_US.wav";
     // Dialer versionCode 10681248 (94.x) is the last version in which we can silence call recording alerts. In newer versions Google patched our hack.
-    private final int SILENCE_CALL_RECORDING_ALERTS_MAX_VERSION = 10681248;
+    private final int DIALER_SILENCE_CALL_RECORDING_ALERTS_MAX_VERSION = 10681248;
 
-    // The following boolean flags enable or disable Call Screen / Revelio features
-    private final String[] ENABLE_CALL_SCREEN_FLAGS = {
-            // Enable Call Screen feature for both calls and video-calls
-            "G__speak_easy_enabled",
-            "enable_video_calling_screen",
-            // Bypass Call Screen locale restrictions
-            "G__speak_easy_bypass_locale_check",
-            // Enable translations for additional locales
-            "enable_call_screen_i18n_tidepods",
-            // Enable the "listen in" button, which is located at the bottom right during screening
-            "G__speak_easy_enable_listen_in_button",
-            // Enable the Call Screen Demo page in Dialer settings
-            "enable_call_screen_demo",
-            // Enable the "See transcript" button in call history, which allows to read call screen transcripts and listen to recordings
-            "G__enable_speakeasy_details",
-            // Enable Revelio,an advanced version of the Call Screen which allows to automatically filter calls
-            "G__enable_revelio",
-            "G__enable_revelio_on_bluetooth",
-            "G__enable_revelio_on_wired_headset",
-            // Bypass Revelio locale restrictions
-            "G__bypass_revelio_roaming_check",
-            // Enable translations for additional locales also for Revelio
-            "G__enable_tidepods_revelio",
-            // Enable the Dialer settings option to save screened call audio (it does not depend on the Call Recording feature, but depends on Revelio)
-            "G__enable_call_screen_saving_audio",
-            // Enable the saving of the transcript also for Revelio
-            "enable_revelio_transcript"
-    };
+    // The following boolean flags force enable Call Screen / Revelio features in Dialer app
+    private final HashMap<String, Boolean> DIALER_ENABLE_CALL_SCREEN_FLAGS = new HashMap<String, Boolean>() {{
+        // Enable Call Screen feature for both calls and video-calls
+        put("G__speak_easy_enabled", true);
+        put("enable_video_calling_screen", true);
+        // Bypass Call Screen locale restrictions
+        put("G__speak_easy_bypass_locale_check", true);
+        // Enable translations for additional locales
+        put("enable_call_screen_i18n_tidepods", true);
+        // Enable the "listen in" button, which is located at the bottom right during screening
+        put("G__speak_easy_enable_listen_in_button", true);
+        // Enable the Call Screen Demo page in Dialer settings
+        put("enable_call_screen_demo", true);
+        // Enable the "See transcript" button in call history, which allows to read call screen transcripts and listen to recordings
+        put("G__enable_speakeasy_details", true);
+        // Enable Revelio,an advanced version of the Call Screen which allows to automatically filter calls
+        put("G__enable_revelio", true);
+        put("G__enable_revelio_on_bluetooth", true);
+        put("G__enable_revelio_on_wired_headset", true);
+        // Bypass Revelio locale restrictions
+        put("G__bypass_revelio_roaming_check", true);
+        // Enable translations for additional locales also for Revelio
+        put("G__enable_tidepods_revelio", true);
+        // Enable the Dialer settings option to save screened call audio (it does not depend on the Call Recording feature, but depends on Revelio)
+        put("G__enable_call_screen_saving_audio", true);
+        // Enable the saving of the transcript also for Revelio
+        put("enable_revelio_transcript", true);
+    }};
 
     // The following extensionVal flag contains a protobuf (see call_screen_i18n.proto for its definition)
-    // which matches the languages to be used for the Call Screen feature to the supported countries
-    private final String CALL_SCREEN_I18N_CONFIG_FLAG = "CallScreenI18n__call_screen_i18n_config";
+    // which matches the languages to be used for the Call Screen feature to the supported countries in Dialer app
+    private final String DIALER_CALL_SCREEN_I18N_CONFIG_FLAG = "CallScreenI18n__call_screen_i18n_config";
 
     public SuggestedModsFragment() {}
 
@@ -132,11 +137,12 @@ public class SuggestedModsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentSuggestedModsBinding.inflate(getLayoutInflater());
 
+        // GDialer
         try {
-            // Check if Google Dialer is installed
+            // Check if application is installed
             requireContext().getPackageManager().getApplicationInfo(DIALER_PACKAGE_NAME, 0);
 
-            // Check if Google Dialer has CAPTURE_AUDIO_OUTPUT permission
+            // Check if GDialer has CAPTURE_AUDIO_OUTPUT permission
             if (requireContext().getPackageManager().checkPermission(CAPTURE_AUDIO_OUTPUT, DIALER_PACKAGE_NAME) != PackageManager.PERMISSION_GRANTED)
                 binding.dialerPermissionAlert.setVisibility(View.VISIBLE);
 
@@ -145,20 +151,20 @@ public class SuggestedModsFragment extends Fragment {
             forceEnableCallRecordingSwitch.setChecked(true);
             try {
                 forceEnableCallRecordingSwitch.setChecked(
-                        coreRootServiceIpc.phenotypeDBAreAllBooleanFlagsTrue(DIALER_PACKAGE_NAME, ENABLE_CALL_RECORDING_FLAGS)
+                        coreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(DIALER_PACKAGE_NAME, new ArrayList<>(DIALER_ENABLE_CALL_RECORDING_FLAGS.keySet()))
                 );
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
-            forceEnableCallRecordingSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> forceEnableCallRecording(isChecked));
+            forceEnableCallRecordingSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> dialerForceEnableCallRecording(isChecked));
             forceEnableCallRecordingSwitch.setEnabled(true);
 
             // silenceCallRecordingAlertsSwitch
             MaterialSwitch silenceCallRecordingAlertsSwitch = binding.silenceCallRecordingAlertsCard.getSwitch();
             boolean mSilenceCallRecordingAlertsSwitchNewStatus = false;
             try {
-                ExtendedFile startingVoiceFile = coreRootServiceFSManager.getFile(DIALER_CALLRECORDINGPROMPT, CALLRECORDINGPROMPT_STARTING_VOICE_US);
-                ExtendedFile endingVoiceFile = coreRootServiceFSManager.getFile(DIALER_CALLRECORDINGPROMPT, CALLRECORDINGPROMPT_STARTING_VOICE_US);
+                ExtendedFile startingVoiceFile = coreRootServiceFSManager.getFile(DIALER_CALLRECORDINGPROMPT, DIALER_CALLRECORDINGPROMPT_STARTING_VOICE_US);
+                ExtendedFile endingVoiceFile = coreRootServiceFSManager.getFile(DIALER_CALLRECORDINGPROMPT, DIALER_CALLRECORDINGPROMPT_STARTING_VOICE_US);
 
                 if (startingVoiceFile.exists() && endingVoiceFile.exists()) {
                     InputStream silentVoiceInputStream;
@@ -175,7 +181,7 @@ public class SuggestedModsFragment extends Fragment {
                     endingVoiceInputStream.close();
                     silentVoiceInputStream.close();
 
-                    mSilenceCallRecordingAlertsSwitchNewStatus = coreRootServiceIpc.phenotypeDBAreAllStringFlagsEmpty(DIALER_PACKAGE_NAME, SILENCE_CALL_RECORDING_ALERTS_FLAGS) &&
+                    mSilenceCallRecordingAlertsSwitchNewStatus = coreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(DIALER_PACKAGE_NAME, new ArrayList<>(DIALER_SILENCE_CALL_RECORDING_ALERTS_FLAGS.keySet())) &&
                             isStartingVoiceSilenced && isEndingVoiceSilenced;
                 }
             } catch (IOException | RemoteException e) {
@@ -184,15 +190,15 @@ public class SuggestedModsFragment extends Fragment {
 
             try {
                 // If Dialer version > SILENCE_CALL_RECORDING_ALERTS_MAX_VERSION the silenceCallRecordingAlertsSwitch must remain disabled
-                if (requireContext().getPackageManager().getPackageInfo(DIALER_PACKAGE_NAME, 0).versionCode > SILENCE_CALL_RECORDING_ALERTS_MAX_VERSION) {
+                if (requireContext().getPackageManager().getPackageInfo(DIALER_PACKAGE_NAME, 0).versionCode > DIALER_SILENCE_CALL_RECORDING_ALERTS_MAX_VERSION) {
                     // If the silenceCallRecordingAlertsSwitch was enabled in previous versions of GoogleDialerMod, the silenceCallRecordingAlerts mod must be automatically disabled
                     if (mSilenceCallRecordingAlertsSwitchNewStatus) {
-                        silenceCallRecordingAlerts(false);
+                        dialerSilenceCallRecordingAlerts(false);
                     }
                     // Otherwise, the silenceCallRecordingAlertsSwitch should be loaded as usual
                 } else {
                     silenceCallRecordingAlertsSwitch.setChecked(mSilenceCallRecordingAlertsSwitchNewStatus);
-                    silenceCallRecordingAlertsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> silenceCallRecordingAlerts(isChecked));
+                    silenceCallRecordingAlertsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> dialerSilenceCallRecordingAlerts(isChecked));
                     silenceCallRecordingAlertsSwitch.setEnabled(true);
                 }
             } catch (PackageManager.NameNotFoundException e) {
@@ -203,46 +209,47 @@ public class SuggestedModsFragment extends Fragment {
             MaterialSwitch forceEnableCallScreenSwitch = binding.forceEnableCallScreenCard.getSwitch();
             try {
                 forceEnableCallScreenSwitch.setChecked(
-                        coreRootServiceIpc.phenotypeDBAreAllBooleanFlagsTrue(DIALER_PACKAGE_NAME, ENABLE_CALL_SCREEN_FLAGS) &&
-                                coreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(DIALER_PACKAGE_NAME, new String[]{CALL_SCREEN_I18N_CONFIG_FLAG})
+                        coreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(DIALER_PACKAGE_NAME, new ArrayList<>(DIALER_ENABLE_CALL_SCREEN_FLAGS.keySet())) &&
+                                coreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(DIALER_PACKAGE_NAME, Collections.singletonList(DIALER_CALL_SCREEN_I18N_CONFIG_FLAG))
                 );
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
-            forceEnableCallScreenSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> forceEnableCallScreen(isChecked));
+            forceEnableCallScreenSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> dialerForceEnableCallScreen(isChecked));
             forceEnableCallScreenSwitch.setEnabled(true);
         } catch (PackageManager.NameNotFoundException e) {
-            binding.dialerBetaButton.setOnClickListener(v -> openGooglePlay(requireContext(), DIALER_GOOGLE_PLAY_BETA_LINK));
-            binding.dialerInstallButton.setOnClickListener(v -> openGooglePlay(requireContext(), DIALER_GOOGLE_PLAY_LINK));
+            binding.dialerBetaButton.setOnClickListener(v -> openGooglePlay(requireContext(), GOOGLE_PLAY_BETA_LINK + DIALER_PACKAGE_NAME));
+            binding.dialerInstallButton.setOnClickListener(v -> openGooglePlay(requireContext(), GOOGLE_PLAY_DETAILS_LINK + DIALER_PACKAGE_NAME));
             binding.dialerNotInstalledAlert.setVisibility(View.VISIBLE);
         }
 
         return binding.getRoot();
     }
 
-    private void forceEnableCallRecording(boolean enable) {
-        if (enable) {
-            for (String flag : ENABLE_CALL_RECORDING_FLAGS) {
+    private void dialerForceEnableCallRecording(boolean enableMod) {
+        if (enableMod) {
+            for(Map.Entry<String, Boolean> entry : DIALER_ENABLE_CALL_RECORDING_FLAGS.entrySet()) {
                 try {
-                    coreRootServiceIpc.phenotypeDBUpdateBooleanFlag(DIALER_PACKAGE_NAME, flag, true);
+                    coreRootServiceIpc.phenotypeDBOverrideBooleanFlag(DIALER_PACKAGE_NAME, entry.getKey(), entry.getValue());
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
             }
         } else {
+            // Delete flag overrides
             try {
-                coreRootServiceIpc.phenotypeDBDeleteFlagOverrides(DIALER_PACKAGE_NAME, ENABLE_CALL_RECORDING_FLAGS);
+                coreRootServiceIpc.phenotypeDBDeleteFlagOverrides(DIALER_PACKAGE_NAME, new ArrayList<>(DIALER_ENABLE_CALL_RECORDING_FLAGS.keySet()));
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void silenceCallRecordingAlerts(boolean silence) {
-        if (silence) {
-            for (String flag : SILENCE_CALL_RECORDING_ALERTS_FLAGS) {
+    private void dialerSilenceCallRecordingAlerts(boolean enableMod) {
+        if (enableMod) {
+            for(Map.Entry<String, String> entry : DIALER_SILENCE_CALL_RECORDING_ALERTS_FLAGS.entrySet()) {
                 try {
-                    coreRootServiceIpc.phenotypeDBUpdateStringFlag(DIALER_PACKAGE_NAME, flag, "");
+                    coreRootServiceIpc.phenotypeDBOverrideStringFlag(DIALER_PACKAGE_NAME, entry.getKey(), entry.getValue());
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -252,8 +259,8 @@ public class SuggestedModsFragment extends Fragment {
                 ExtendedFile callRecordingPromptDir = coreRootServiceFSManager.getFile(DIALER_CALLRECORDINGPROMPT);
                 if ( callRecordingPromptDir.mkdir() || (callRecordingPromptDir.exists() && callRecordingPromptDir.isDirectory()) ) {
                     // Overwrite the two alert files with an empty audio
-                    ExtendedFile startingVoice = coreRootServiceFSManager.getFile(callRecordingPromptDir, CALLRECORDINGPROMPT_STARTING_VOICE_US);
-                    ExtendedFile endingVoice = coreRootServiceFSManager.getFile(callRecordingPromptDir, CALLRECORDINGPROMPT_ENDING_VOICE_US);
+                    ExtendedFile startingVoice = coreRootServiceFSManager.getFile(callRecordingPromptDir, DIALER_CALLRECORDINGPROMPT_STARTING_VOICE_US);
+                    ExtendedFile endingVoice = coreRootServiceFSManager.getFile(callRecordingPromptDir, DIALER_CALLRECORDINGPROMPT_ENDING_VOICE_US);
                     copyFile(getResources().openRawResource(R.raw.silent_wav), startingVoice.newOutputStream());
                     copyFile(getResources().openRawResource(R.raw.silent_wav), endingVoice.newOutputStream());
 
@@ -270,11 +277,13 @@ public class SuggestedModsFragment extends Fragment {
                 e.printStackTrace();
             }
         } else {
+            // Delete flag overrides
             try {
-                coreRootServiceIpc.phenotypeDBDeleteFlagOverrides(DIALER_PACKAGE_NAME, SILENCE_CALL_RECORDING_ALERTS_FLAGS);
+                coreRootServiceIpc.phenotypeDBDeleteFlagOverrides(DIALER_PACKAGE_NAME, new ArrayList<>(DIALER_SILENCE_CALL_RECORDING_ALERTS_FLAGS.keySet()));
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
+            // Delete callrecordingprompt folder
             ExtendedFile callRecordingPromptFolder = coreRootServiceFSManager.getFile(DIALER_CALLRECORDINGPROMPT);
             if (callRecordingPromptFolder.exists()) {
                 //noinspection ResultOfMethodCallIgnored
@@ -283,8 +292,8 @@ public class SuggestedModsFragment extends Fragment {
         }
     }
 
-    private void forceEnableCallScreen(boolean enable) {
-        if (enable) {
+    private void dialerForceEnableCallScreen(boolean enableMod) {
+        if (enableMod) {
             // Ask the user what language the Call Screen feature should use
             String[] supportedLanguages = {"en", "en-AU", "en-GB", "en-IN", "ja-JP", "fr-FR", "hi-IN", "de-DE", "it-IT", "es-ES"};
             new MaterialAlertDialogBuilder(requireContext())
@@ -292,11 +301,11 @@ public class SuggestedModsFragment extends Fragment {
                     .setCancelable(false)
                     .setItems(supportedLanguages, (dialog, choice) -> {
                         // Update boolean flags
-                        for (String flag : ENABLE_CALL_SCREEN_FLAGS) {
+                        for(Map.Entry<String, Boolean> entry : DIALER_ENABLE_CALL_SCREEN_FLAGS.entrySet()) {
                             try {
-                                coreRootServiceIpc.phenotypeDBUpdateBooleanFlag(DIALER_PACKAGE_NAME, flag, true);
+                                coreRootServiceIpc.phenotypeDBOverrideBooleanFlag(DIALER_PACKAGE_NAME, entry.getKey(), entry.getValue());
                             } catch (RemoteException e) {
-                                throw new RuntimeException(e);
+                                e.printStackTrace();
                             }
                         }
 
@@ -323,20 +332,20 @@ public class SuggestedModsFragment extends Fragment {
                                                 )
                                 ).build();
                         try {
-                            coreRootServiceIpc.phenotypeDBUpdateExtensionFlag(DIALER_PACKAGE_NAME, CALL_SCREEN_I18N_CONFIG_FLAG, call_screen_i18n_config.toByteArray());
+                            coreRootServiceIpc.phenotypeDBOverrideExtensionFlag(DIALER_PACKAGE_NAME, DIALER_CALL_SCREEN_I18N_CONFIG_FLAG, call_screen_i18n_config.toByteArray());
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
                     }).create().show();
         } else {
-            // Remove flag overrides
+            // Delete flag overrides
             try {
-                coreRootServiceIpc.phenotypeDBDeleteFlagOverrides(DIALER_PACKAGE_NAME, ENABLE_CALL_SCREEN_FLAGS);
+                coreRootServiceIpc.phenotypeDBDeleteFlagOverrides(DIALER_PACKAGE_NAME, new ArrayList<>(DIALER_ENABLE_CALL_SCREEN_FLAGS.keySet()));
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
             try {
-                coreRootServiceIpc.phenotypeDBDeleteFlagOverrides(DIALER_PACKAGE_NAME, new String[]{CALL_SCREEN_I18N_CONFIG_FLAG});
+                coreRootServiceIpc.phenotypeDBDeleteFlagOverrides(DIALER_PACKAGE_NAME, Collections.singletonList(DIALER_CALL_SCREEN_I18N_CONFIG_FLAG));
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
