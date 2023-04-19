@@ -61,7 +61,7 @@
                         android:layout_marginHorizontal="4dp"
                         android:layout_weight="1"
                         android:text="@string/join_beta_program"
-                        tools:ignore="VisualLintButtonSize" />
+                        tools:ignore="VisualLintButtonSize,DuplicateSpeakableTextCheck" />
 
                     <Button
                         android:id="@+id/dialer_install_button"
@@ -71,7 +71,7 @@
                         android:layout_marginHorizontal="4dp"
                         android:layout_weight="1"
                         android:text="@string/install_from_google_play"
-                        tools:ignore="VisualLintButtonSize" />
+                        tools:ignore="VisualLintButtonSize,DuplicateSpeakableTextCheck" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -111,7 +111,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:enabled="false"
-                app:text="@string/force_enable_disable_call_recording" />
+                app:text="@string/force_enable_call_recording" />
 
             <com.jacopomii.googledialermod.ui.view.SwitchCardView
                 android:id="@+id/silence_call_recording_alerts_card"
@@ -128,6 +128,86 @@
                 app:text="@string/force_enable_call_screen" />
 
         </LinearLayout>
+
+        <TextView
+            style="?attr/textAppearanceTitleLarge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/l1"
+            android:paddingBottom="@dimen/l_50"
+            android:text="@string/messages_app_name"
+            android:textAlignment="viewStart" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/messages_not_installed_alert"
+            style="?attr/materialCardViewElevatedStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/l_25"
+            android:layout_marginBottom="@dimen/l_50"
+            android:visibility="gone"
+            app:cardBackgroundColor="?attr/colorErrorContainer"
+            app:cardElevation="4dp"
+            app:contentPadding="@dimen/l1"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:justificationMode="inter_word"
+                    android:text="@string/app_not_installed_error"
+                    android:textAlignment="viewStart"
+                    android:textColor="?attr/colorOnErrorContainer"
+                    tools:targetApi="o" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/messages_beta_button"
+                        style="@style/Widget.Material3.Button.ElevatedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_weight="1"
+                        android:text="@string/join_beta_program"
+                        tools:ignore="VisualLintButtonSize" />
+
+                    <Button
+                        android:id="@+id/messages_install_button"
+                        style="@style/Widget.Material3.Button.ElevatedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_weight="1"
+                        android:text="@string/install_from_google_play"
+                        tools:ignore="VisualLintButtonSize" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.jacopomii.googledialermod.ui.view.SwitchCardView
+            android:id="@+id/force_enable_message_organization_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:enabled="false"
+            app:text="@string/force_enable_message_organization" />
+    </LinearLayout>
 
     </LinearLayout>
 

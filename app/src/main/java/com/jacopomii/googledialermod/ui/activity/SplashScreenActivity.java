@@ -1,6 +1,7 @@
 package com.jacopomii.googledialermod.ui.activity;
 
-import static com.jacopomii.googledialermod.data.Constants.GMS_GOOGLE_PLAY_LINK;
+import static com.jacopomii.googledialermod.data.Constants.GMS_PACKAGE_NAME;
+import static com.jacopomii.googledialermod.data.Constants.GOOGLE_PLAY_DETAILS_LINK;
 import static com.jacopomii.googledialermod.data.Constants.PHENOTYPE_DB;
 import static com.jacopomii.googledialermod.util.Utils.checkUpdateAvailable;
 import static com.jacopomii.googledialermod.util.Utils.openGooglePlay;
@@ -120,7 +121,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                                 new MaterialAlertDialogBuilder(splashScreenActivity)
                                         .setCancelable(false)
                                         .setMessage(getString(R.string.phenotype_db_does_not_exist))
-                                        .setNegativeButton(R.string.install_from_google_play, (dialogInterface, i) -> openGooglePlay(splashScreenActivity, GMS_GOOGLE_PLAY_LINK))
+                                        .setNegativeButton(R.string.install_from_google_play, (dialogInterface, i) -> openGooglePlay(splashScreenActivity, GOOGLE_PLAY_DETAILS_LINK + GMS_PACKAGE_NAME))
                                         .setPositiveButton(R.string.exit, (dialog, which) -> System.exit(0))
                                         .show());
                     }

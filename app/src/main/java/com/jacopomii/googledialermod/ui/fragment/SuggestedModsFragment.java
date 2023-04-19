@@ -2,9 +2,11 @@ package com.jacopomii.googledialermod.ui.fragment;
 
 import static android.Manifest.permission.CAPTURE_AUDIO_OUTPUT;
 import static com.jacopomii.googledialermod.data.Constants.DIALER_CALLRECORDINGPROMPT;
-import static com.jacopomii.googledialermod.data.Constants.DIALER_GOOGLE_PLAY_BETA_LINK;
-import static com.jacopomii.googledialermod.data.Constants.DIALER_GOOGLE_PLAY_LINK;
 import static com.jacopomii.googledialermod.data.Constants.DIALER_PACKAGE_NAME;
+import static com.jacopomii.googledialermod.data.Constants.GOOGLE_PLAY_BETA_LINK;
+import static com.jacopomii.googledialermod.data.Constants.GOOGLE_PLAY_DETAILS_LINK;
+import static com.jacopomii.googledialermod.data.Constants.MESSAGES_PACKAGE_NAME;
+import static com.jacopomii.googledialermod.data.Constants.MESSAGES_PACKAGE_NAME_PHENOTYPE_DB;
 import static com.jacopomii.googledialermod.util.Utils.copyFile;
 import static com.jacopomii.googledialermod.util.Utils.openGooglePlay;
 
@@ -118,6 +120,24 @@ public class SuggestedModsFragment extends Fragment {
     // which matches the languages to be used for the Call Screen feature to the supported countries in Dialer app
     private final String DIALER_CALL_SCREEN_I18N_CONFIG_FLAG = "CallScreenI18n__call_screen_i18n_config";
 
+    // The following boolean flags force enable Message Organization (Super Sort) features in Messages app
+    private final HashMap<String, Boolean> MESSAGES_ENABLE_MESSAGE_ORGANIZATION_FLAGS = new HashMap<String, Boolean>() {{
+        // Enable super sort
+        put("bugle_phenotype__conversation_labels_enabled", true);
+        // Enable "all" category (this flag may be superfluous)
+        put("bugle_phenotype__supersort_badge_all_filter", true);
+        // Enable donation banner
+        put("bugle_phenotype__supersort_enable_update_donation_banner", true);
+        // Enable OTP auto deletion
+        put("bugle_phenotype__enable_otp_auto_deletion", true);
+        // Classify messages also in the foreground (don't use only workmanager)
+        put("bugle_phenotype__supersort_use_only_work_manager", false);
+        // I don't know what is it. In the Messages code I see that it's about "generating annotations" for "money, coupon, account number, percentage"
+        put("bugle_phenotype__enable_supersort_annotators", true);
+        // QPBC = Participant Based Quick Classification. I don't know how it works.
+        put("bugle_phenotype__supersort_enable_qpbc", true);
+    }};
+
     public SuggestedModsFragment() {}
 
     @Override
@@ -221,6 +241,27 @@ public class SuggestedModsFragment extends Fragment {
             binding.dialerBetaButton.setOnClickListener(v -> openGooglePlay(requireContext(), GOOGLE_PLAY_BETA_LINK + DIALER_PACKAGE_NAME));
             binding.dialerInstallButton.setOnClickListener(v -> openGooglePlay(requireContext(), GOOGLE_PLAY_DETAILS_LINK + DIALER_PACKAGE_NAME));
             binding.dialerNotInstalledAlert.setVisibility(View.VISIBLE);
+        }
+
+        // GMessages
+        try {
+            // Check if application is installed
+            requireContext().getPackageManager().getApplicationInfo(MESSAGES_PACKAGE_NAME, 0);
+
+            MaterialSwitch forceEnableMessageOrganizationCardSwitch = binding.forceEnableMessageOrganizationCard.getSwitch();
+            try {
+                forceEnableMessageOrganizationCardSwitch.setChecked(
+                        coreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(MESSAGES_PACKAGE_NAME_PHENOTYPE_DB, new ArrayList<>(MESSAGES_ENABLE_MESSAGE_ORGANIZATION_FLAGS.keySet()))
+                );
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            forceEnableMessageOrganizationCardSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> messagesForceEnableMessageOrganization(isChecked));
+            forceEnableMessageOrganizationCardSwitch.setEnabled(true);
+        } catch (PackageManager.NameNotFoundException e) {
+            binding.messagesBetaButton.setOnClickListener(v -> openGooglePlay(requireContext(), GOOGLE_PLAY_BETA_LINK + MESSAGES_PACKAGE_NAME));
+            binding.messagesInstallButton.setOnClickListener(v -> openGooglePlay(requireContext(), GOOGLE_PLAY_DETAILS_LINK + MESSAGES_PACKAGE_NAME));
+            binding.messagesNotInstalledAlert.setVisibility(View.VISIBLE);
         }
 
         return binding.getRoot();
@@ -346,6 +387,25 @@ public class SuggestedModsFragment extends Fragment {
             }
             try {
                 coreRootServiceIpc.phenotypeDBDeleteFlagOverrides(DIALER_PACKAGE_NAME, Collections.singletonList(DIALER_CALL_SCREEN_I18N_CONFIG_FLAG));
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void messagesForceEnableMessageOrganization(boolean enableMod) {
+        if (enableMod) {
+            for(Map.Entry<String, Boolean> entry : MESSAGES_ENABLE_MESSAGE_ORGANIZATION_FLAGS.entrySet()) {
+                try {
+                    coreRootServiceIpc.phenotypeDBOverrideBooleanFlag(MESSAGES_PACKAGE_NAME_PHENOTYPE_DB, entry.getKey(), entry.getValue());
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            // Delete flag overrides
+            try {
+                coreRootServiceIpc.phenotypeDBDeleteFlagOverrides(MESSAGES_PACKAGE_NAME_PHENOTYPE_DB, new ArrayList<>(MESSAGES_ENABLE_MESSAGE_ORGANIZATION_FLAGS.keySet()));
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

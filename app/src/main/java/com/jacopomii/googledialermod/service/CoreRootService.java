@@ -2,6 +2,7 @@ package com.jacopomii.googledialermod.service;
 
 import static com.jacopomii.googledialermod.data.Constants.DATA_DATA_PREFIX;
 import static com.jacopomii.googledialermod.data.Constants.DIALER_PACKAGE_NAME;
+import static com.jacopomii.googledialermod.data.Constants.MESSAGES_PACKAGE_NAME;
 import static com.jacopomii.googledialermod.data.Constants.PHENOTYPE_DB;
 import static com.jacopomii.googledialermod.util.Utils.createInQueryString;
 import static org.sqlite.database.sqlite.SQLiteDatabase.OPEN_READWRITE;
@@ -240,7 +241,7 @@ public class CoreRootService extends RootService {
     }
 
     private void killSuggestedPackagesAndDeletePhenotypeCaches() {
-        String[] suggestedPackageNames = {DIALER_PACKAGE_NAME};
+        String[] suggestedPackageNames = {DIALER_PACKAGE_NAME, MESSAGES_PACKAGE_NAME};
         for (String packageName : suggestedPackageNames) {
             killPackageAndDeletePhenotypeCache(packageName);
         }

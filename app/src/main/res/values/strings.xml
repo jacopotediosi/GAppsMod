@@ -7,8 +7,9 @@
     <string name="github_api_link" translatable="false">https://api.github.com/repos/jacopotediosi/GoogleDialerMod</string>
     <string name="github_link" translatable="false">https://github.com/jacopotediosi/GoogleDialerMod</string>
 
-    <!-- GApp names, taken from https://play.google.com/store/apps/details?id=PACKAGE_NAME&hl=LANGUAGE -->
+    <!-- GApp names, taken from https://play.google.com/store/apps/details?id=PACKAGE_NAME&hl=en -->
     <string name="dialer_app_name">Phone by Google</string>
+    <string name="messages_app_name">Messages by Google</string>
 
     <!-- Common -->
     <string name="all">All</string>
@@ -38,8 +39,9 @@
     <!-- Suggested mods -->
     <string name="choose_a_language_for_call_screen">Choose a language for call screen</string>
     <string name="force_enable_call_screen">Force enable call screen</string>
-    <string name="force_enable_disable_call_recording">Force enable call recording</string>
+    <string name="force_enable_call_recording">Force enable call recording</string>
     <string name="silence_call_recording_alerts">Silence call recording alerts (${dialer_app_name} &lt;= 94.x only)</string>
+    <string name="force_enable_message_organization">Force enable message organization</string>
 
     <!-- Revert mods -->
     <string name="revert_all_mods_alert">Do you really want to revert all mods applied by ${app_name}?</string>

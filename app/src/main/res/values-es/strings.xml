@@ -1,6 +1,7 @@
 <resources>
-    <!-- GApp names, taken from https://play.google.com/store/apps/details?id=PACKAGE_NAME&hl=LANGUAGE -->
+    <!-- GApp names, taken from https://play.google.com/store/apps/details?id=PACKAGE_NAME&hl=es -->
     <string name="dialer_app_name">Teléfono de Google</string>
+    <string name="messages_app_name">Mensajes de Google</string>
 
     <!-- Common -->
     <string name="all">Todos</string>
@@ -30,8 +31,9 @@
     <!-- Suggested mods -->
     <string name="choose_a_language_for_call_screen">Elija un idioma para la pantalla de llamadas</string>
     <string name="force_enable_call_screen">Forzar habilitar pantalla de llamada</string>
-    <string name="force_enable_disable_call_recording">Forzar habilitar la grabación de llamadas</string>
+    <string name="force_enable_call_recording">Forzar habilitar la grabación de llamadas</string>
     <string name="silence_call_recording_alerts">Silenciar alertas de grabación de llamadas</string>
+    <string name="force_enable_message_organization">Forzar habilitar la organización de mensajes</string>
 
     <!-- Revert mods -->
     <string name="revert_all_mods_alert">¿De verdad quieres revertir todas las modificaciones aplicadas por ${app_name}?</string>
