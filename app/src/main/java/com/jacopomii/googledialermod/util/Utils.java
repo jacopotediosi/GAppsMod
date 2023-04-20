@@ -6,7 +6,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.widget.CompoundButton;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -88,22 +87,5 @@ public class Utils {
             separator = ",";
         }
         return stringBuilder.toString();
-    }
-
-    /**
-     * Set Compound Buttons (e.g. checkboxes and switches) checked or unchecked without triggering
-     * any listeners.
-     * This method removes existing listeners from the button in order to work. For convenience, it
-     * sets the listener specified via the {@code newOnCheckedChangeListener} parameter as the new
-     * OnCheckedChangeListener.
-     *
-     * @param compoundButton the button to check or uncheck.
-     * @param checked if {@code true} the button will be checked; it will be unchecked otherwise.
-     * @param newOnCheckedChangeListener the new button OnCheckedChangeListener to set.
-     */
-    public static void setCheckedWithoutTriggeringListeners(CompoundButton compoundButton, boolean checked, CompoundButton.OnCheckedChangeListener newOnCheckedChangeListener) {
-        compoundButton.setOnCheckedChangeListener(null);
-        compoundButton.setChecked(checked);
-        compoundButton.setOnCheckedChangeListener(newOnCheckedChangeListener);
     }
 }

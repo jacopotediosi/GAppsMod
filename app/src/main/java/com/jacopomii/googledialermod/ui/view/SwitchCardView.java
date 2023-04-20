@@ -8,7 +8,6 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
-import com.google.android.material.materialswitch.MaterialSwitch;
 import com.jacopomii.googledialermod.R;
 import com.jacopomii.googledialermod.databinding.SwitchCardBinding;
 
@@ -39,7 +38,7 @@ public class SwitchCardView extends LinearLayout {
         binding.switchCardSwitch.setEnabled(enabled);
     }
 
-    public MaterialSwitch getSwitch() {
+    public ProgrammaticMaterialSwitch getSwitch() {
         return binding.switchCardSwitch;
     }
 }

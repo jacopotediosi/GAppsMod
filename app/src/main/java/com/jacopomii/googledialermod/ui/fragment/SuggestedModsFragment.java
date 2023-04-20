@@ -9,7 +9,6 @@ import static com.jacopomii.googledialermod.data.Constants.MESSAGES_PACKAGE_NAME
 import static com.jacopomii.googledialermod.data.Constants.MESSAGES_PACKAGE_NAME_PHENOTYPE_DB;
 import static com.jacopomii.googledialermod.util.Utils.copyFile;
 import static com.jacopomii.googledialermod.util.Utils.openGooglePlay;
-import static com.jacopomii.googledialermod.util.Utils.setCheckedWithoutTriggeringListeners;
 
 import android.app.Activity;
 import android.content.Context;
@@ -25,13 +24,13 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.protobuf.ByteString;
 import com.jacopomii.googledialermod.ICoreRootService;
 import com.jacopomii.googledialermod.R;
 import com.jacopomii.googledialermod.databinding.FragmentSuggestedModsBinding;
 import com.jacopomii.googledialermod.protos.Call_screen_i18n_config;
 import com.jacopomii.googledialermod.ui.activity.MainActivity;
+import com.jacopomii.googledialermod.ui.view.ProgrammaticMaterialSwitch;
 import com.topjohnwu.superuser.Shell;
 import com.topjohnwu.superuser.nio.ExtendedFile;
 import com.topjohnwu.superuser.nio.FileSystemManager;
@@ -169,18 +168,19 @@ public class SuggestedModsFragment extends Fragment {
                 binding.dialerPermissionAlert.setVisibility(View.VISIBLE);
 
             // forceEnableCallRecordingSwitch
-            MaterialSwitch forceEnableCallRecordingSwitch = binding.forceEnableCallRecordingCard.getSwitch();
+            ProgrammaticMaterialSwitch forceEnableCallRecordingSwitch = binding.forceEnableCallRecordingCard.getSwitch();
             boolean forceEnableCallRecordingSwitchChecked = false;
             try {
                 forceEnableCallRecordingSwitchChecked = coreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(DIALER_PACKAGE_NAME, new ArrayList<>(DIALER_ENABLE_CALL_RECORDING_FLAGS.keySet()));
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
-            setCheckedWithoutTriggeringListeners(forceEnableCallRecordingSwitch, forceEnableCallRecordingSwitchChecked, (buttonView, isChecked) -> dialerForceEnableCallRecording(isChecked));
+            forceEnableCallRecordingSwitch.setCheckedProgrammatically(forceEnableCallRecordingSwitchChecked);
+            forceEnableCallRecordingSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> dialerForceEnableCallRecording(isChecked));
             forceEnableCallRecordingSwitch.setEnabled(true);
 
             // silenceCallRecordingAlertsSwitch
-            MaterialSwitch silenceCallRecordingAlertsSwitch = binding.silenceCallRecordingAlertsCard.getSwitch();
+            ProgrammaticMaterialSwitch silenceCallRecordingAlertsSwitch = binding.silenceCallRecordingAlertsCard.getSwitch();
             boolean mSilenceCallRecordingAlertsSwitchChecked = false;
             try {
                 ExtendedFile startingVoiceFile = coreRootServiceFSManager.getFile(DIALER_CALLRECORDINGPROMPT, DIALER_CALLRECORDINGPROMPT_STARTING_VOICE_US);
@@ -217,7 +217,8 @@ public class SuggestedModsFragment extends Fragment {
                     }
                     // Otherwise, the silenceCallRecordingAlertsSwitch should be loaded as usual
                 } else {
-                    setCheckedWithoutTriggeringListeners(silenceCallRecordingAlertsSwitch, mSilenceCallRecordingAlertsSwitchChecked, (buttonView, isChecked) -> dialerSilenceCallRecordingAlerts(isChecked));
+                    silenceCallRecordingAlertsSwitch.setCheckedProgrammatically(mSilenceCallRecordingAlertsSwitchChecked);
+                    silenceCallRecordingAlertsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> dialerSilenceCallRecordingAlerts(isChecked));
                     silenceCallRecordingAlertsSwitch.setEnabled(true);
                 }
             } catch (PackageManager.NameNotFoundException e) {
@@ -225,7 +226,7 @@ public class SuggestedModsFragment extends Fragment {
             }
 
             // forceEnableCallScreenSwitch
-            MaterialSwitch forceEnableCallScreenSwitch = binding.forceEnableCallScreenCard.getSwitch();
+            ProgrammaticMaterialSwitch forceEnableCallScreenSwitch = binding.forceEnableCallScreenCard.getSwitch();
             boolean forceEnableCallScreenSwitchChecked = false;
             try {
                 forceEnableCallScreenSwitchChecked = coreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(DIALER_PACKAGE_NAME, new ArrayList<>(DIALER_ENABLE_CALL_SCREEN_FLAGS.keySet())) &&
@@ -233,7 +234,8 @@ public class SuggestedModsFragment extends Fragment {
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
-            setCheckedWithoutTriggeringListeners(forceEnableCallScreenSwitch, forceEnableCallScreenSwitchChecked, (buttonView, isChecked) -> dialerForceEnableCallScreen(isChecked));
+            forceEnableCallScreenSwitch.setCheckedProgrammatically(forceEnableCallScreenSwitchChecked);
+            forceEnableCallScreenSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> dialerForceEnableCallScreen(isChecked));
             forceEnableCallScreenSwitch.setEnabled(true);
         } catch (PackageManager.NameNotFoundException e) {
             binding.dialerBetaButton.setOnClickListener(v -> openGooglePlay(requireContext(), GOOGLE_PLAY_BETA_LINK + DIALER_PACKAGE_NAME));
@@ -247,14 +249,15 @@ public class SuggestedModsFragment extends Fragment {
             requireContext().getPackageManager().getApplicationInfo(MESSAGES_PACKAGE_NAME, 0);
 
             // forceEnableMessageOrganizationSwitch
-            MaterialSwitch forceEnableMessageOrganizationSwitch = binding.forceEnableMessageOrganizationCard.getSwitch();
+            ProgrammaticMaterialSwitch forceEnableMessageOrganizationSwitch = binding.forceEnableMessageOrganizationCard.getSwitch();
             boolean forceEnableMessageOrganizationSwitchChecked = false;
             try {
                 forceEnableMessageOrganizationSwitchChecked = coreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(MESSAGES_PACKAGE_NAME_PHENOTYPE_DB, new ArrayList<>(MESSAGES_ENABLE_MESSAGE_ORGANIZATION_FLAGS.keySet()));
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
-            setCheckedWithoutTriggeringListeners(forceEnableMessageOrganizationSwitch, forceEnableMessageOrganizationSwitchChecked, (buttonView, isChecked) -> messagesForceEnableMessageOrganization(isChecked));
+            forceEnableMessageOrganizationSwitch.setCheckedProgrammatically(forceEnableMessageOrganizationSwitchChecked);
+            forceEnableMessageOrganizationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> messagesForceEnableMessageOrganization(isChecked));
             forceEnableMessageOrganizationSwitch.setEnabled(true);
         } catch (PackageManager.NameNotFoundException e) {
             binding.messagesBetaButton.setOnClickListener(v -> openGooglePlay(requireContext(), GOOGLE_PLAY_BETA_LINK + MESSAGES_PACKAGE_NAME));
@@ -335,10 +338,11 @@ public class SuggestedModsFragment extends Fragment {
         if (enableMod) {
             // Ask the user what language the Call Screen feature should use
             String[] supportedLanguages = {"en", "en-AU", "en-GB", "en-IN", "ja-JP", "fr-FR", "hi-IN", "de-DE", "it-IT", "es-ES"};
+            final int[] chosenLanguageIndex = {0};
             new MaterialAlertDialogBuilder(requireContext())
                     .setTitle(R.string.choose_a_language_for_call_screen)
-                    .setCancelable(false)
-                    .setItems(supportedLanguages, (dialog, choice) -> {
+                    .setSingleChoiceItems(supportedLanguages, chosenLanguageIndex[0], (dialog, which) -> chosenLanguageIndex[0] = which)
+                    .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                         // Update boolean flags
                         for (Map.Entry<String, Boolean> entry : DIALER_ENABLE_CALL_SCREEN_FLAGS.entrySet()) {
                             try {
@@ -352,7 +356,7 @@ public class SuggestedModsFragment extends Fragment {
                         TelephonyManager telephonyManager = (TelephonyManager) requireActivity().getSystemService(Context.TELEPHONY_SERVICE);
                         String simCountryIso = telephonyManager.getSimCountryIso();
 
-                        String chosenLanguage = supportedLanguages[choice];
+                        String chosenLanguage = supportedLanguages[chosenLanguageIndex[0]];
 
                         Call_screen_i18n_config call_screen_i18n_config = Call_screen_i18n_config.newBuilder()
                                 .addCountryConfigs(
@@ -375,7 +379,10 @@ public class SuggestedModsFragment extends Fragment {
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
-                    }).create().show();
+                    })
+                    .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
+                    .setOnCancelListener(dialog -> binding.forceEnableCallScreenCard.getSwitch().setCheckedProgrammatically(false))
+                    .show();
         } else {
             // Delete flag overrides
             try {

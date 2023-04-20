@@ -1,7 +1,6 @@
 package com.jacopomii.googledialermod.ui.adapter;
 
 import static com.jacopomii.googledialermod.data.Constants.DIALER_PACKAGE_NAME;
-import static com.jacopomii.googledialermod.util.Utils.setCheckedWithoutTriggeringListeners;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -15,10 +14,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.materialswitch.MaterialSwitch;
 import com.jacopomii.googledialermod.data.BooleanFlag;
 import com.jacopomii.googledialermod.databinding.SwitchCardBinding;
 import com.jacopomii.googledialermod.ui.activity.MainActivity;
+import com.jacopomii.googledialermod.ui.view.ProgrammaticMaterialSwitch;
 import com.l4digital.fastscroll.FastScroller;
 
 import org.json.JSONException;
@@ -54,8 +53,11 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
         // Update switch text
         holder.mTextView.setText(mFlagsListFiltered.get(position).getFlagName());
 
-        // Update the switch checked status without triggering any existing listeners and set the new onCheckedChange listener
-        setCheckedWithoutTriggeringListeners(holder.mSwitch, mFlagsListFiltered.get(position).getFlagValue(), (buttonView, isChecked) -> {
+        // Update the switch checked status without triggering any existing listener
+        holder.mSwitch.setCheckedProgrammatically(mFlagsListFiltered.get(position).getFlagValue());
+
+        // Set the new onCheckedChange listener
+        holder.mSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mFlagsListFiltered.get(position).setFlagValue(isChecked);
             try {
                 ((MainActivity) mContext).getCoreRootServiceIpc().phenotypeDBOverrideBooleanFlag(DIALER_PACKAGE_NAME, mFlagsListFiltered.get(holder.getAdapterPosition()).getFlagName(), isChecked);
@@ -117,7 +119,7 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
 
     public static class BooleanModsViewHolder extends RecyclerView.ViewHolder {
         private final TextView mTextView;
-        private final MaterialSwitch mSwitch;
+        private final ProgrammaticMaterialSwitch mSwitch;
 
         public BooleanModsViewHolder(SwitchCardBinding binding) {
             super(binding.getRoot());
