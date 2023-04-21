@@ -2,11 +2,12 @@ package com.jacopomii.googledialermod.ui.fragment;
 
 import static android.Manifest.permission.CAPTURE_AUDIO_OUTPUT;
 import static com.jacopomii.googledialermod.data.Constants.DIALER_CALLRECORDINGPROMPT;
-import static com.jacopomii.googledialermod.data.Constants.DIALER_PACKAGE_NAME;
+import static com.jacopomii.googledialermod.data.Constants.DIALER_ANDROID_PACKAGE_NAME;
+import static com.jacopomii.googledialermod.data.Constants.DIALER_PHENOTYPE_PACKAGE_NAME;
 import static com.jacopomii.googledialermod.data.Constants.GOOGLE_PLAY_BETA_LINK;
 import static com.jacopomii.googledialermod.data.Constants.GOOGLE_PLAY_DETAILS_LINK;
-import static com.jacopomii.googledialermod.data.Constants.MESSAGES_PACKAGE_NAME;
-import static com.jacopomii.googledialermod.data.Constants.MESSAGES_PACKAGE_NAME_PHENOTYPE_DB;
+import static com.jacopomii.googledialermod.data.Constants.MESSAGES_ANDROID_PACKAGE_NAME;
+import static com.jacopomii.googledialermod.data.Constants.MESSAGES_PHENOTYPE_PACKAGE_NAME;
 import static com.jacopomii.googledialermod.util.Utils.copyFile;
 import static com.jacopomii.googledialermod.util.Utils.openGooglePlay;
 
@@ -161,21 +162,21 @@ public class SuggestedModsFragment extends Fragment {
         // GDialer
         try {
             // Beta and Install buttons actions
-            binding.dialerAppHeader.getBetaButton().setOnClickListener(v -> openGooglePlay(requireContext(), GOOGLE_PLAY_BETA_LINK + DIALER_PACKAGE_NAME));
-            binding.dialerAppHeader.getInstallButton().setOnClickListener(v -> openGooglePlay(requireContext(), GOOGLE_PLAY_DETAILS_LINK + DIALER_PACKAGE_NAME));
+            binding.dialerAppHeader.getBetaButton().setOnClickListener(v -> openGooglePlay(requireContext(), GOOGLE_PLAY_BETA_LINK + DIALER_ANDROID_PACKAGE_NAME));
+            binding.dialerAppHeader.getInstallButton().setOnClickListener(v -> openGooglePlay(requireContext(), GOOGLE_PLAY_DETAILS_LINK + DIALER_ANDROID_PACKAGE_NAME));
 
             // Check if application is installed
-            requireContext().getPackageManager().getApplicationInfo(DIALER_PACKAGE_NAME, 0);
+            requireContext().getPackageManager().getApplicationInfo(DIALER_ANDROID_PACKAGE_NAME, 0);
 
             // Check if application has CAPTURE_AUDIO_OUTPUT permission
-            if (requireContext().getPackageManager().checkPermission(CAPTURE_AUDIO_OUTPUT, DIALER_PACKAGE_NAME) != PackageManager.PERMISSION_GRANTED)
+            if (requireContext().getPackageManager().checkPermission(CAPTURE_AUDIO_OUTPUT, DIALER_ANDROID_PACKAGE_NAME) != PackageManager.PERMISSION_GRANTED)
                 binding.dialerPermissionAlert.setVisibility(View.VISIBLE);
 
             // forceEnableCallRecordingSwitch
             ProgrammaticMaterialSwitch forceEnableCallRecordingSwitch = binding.forceEnableCallRecordingCard.getSwitch();
             boolean forceEnableCallRecordingSwitchChecked = false;
             try {
-                forceEnableCallRecordingSwitchChecked = coreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(DIALER_PACKAGE_NAME, new ArrayList<>(DIALER_ENABLE_CALL_RECORDING_FLAGS.keySet()));
+                forceEnableCallRecordingSwitchChecked = coreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(DIALER_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(DIALER_ENABLE_CALL_RECORDING_FLAGS.keySet()));
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -205,7 +206,7 @@ public class SuggestedModsFragment extends Fragment {
                     endingVoiceInputStream.close();
                     silentVoiceInputStream.close();
 
-                    mSilenceCallRecordingAlertsSwitchChecked = coreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(DIALER_PACKAGE_NAME, new ArrayList<>(DIALER_SILENCE_CALL_RECORDING_ALERTS_FLAGS.keySet())) &&
+                    mSilenceCallRecordingAlertsSwitchChecked = coreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(DIALER_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(DIALER_SILENCE_CALL_RECORDING_ALERTS_FLAGS.keySet())) &&
                             isStartingVoiceSilenced && isEndingVoiceSilenced;
                 }
             } catch (IOException | RemoteException e) {
@@ -214,7 +215,7 @@ public class SuggestedModsFragment extends Fragment {
 
             try {
                 // If Dialer version > SILENCE_CALL_RECORDING_ALERTS_MAX_VERSION the silenceCallRecordingAlertsSwitch must remain disabled
-                if (requireContext().getPackageManager().getPackageInfo(DIALER_PACKAGE_NAME, 0).versionCode > DIALER_SILENCE_CALL_RECORDING_ALERTS_MAX_VERSION) {
+                if (requireContext().getPackageManager().getPackageInfo(DIALER_ANDROID_PACKAGE_NAME, 0).versionCode > DIALER_SILENCE_CALL_RECORDING_ALERTS_MAX_VERSION) {
                     // If the silenceCallRecordingAlertsSwitch was enabled in previous versions of GoogleDialerMod, the silenceCallRecordingAlerts mod must be automatically disabled
                     if (mSilenceCallRecordingAlertsSwitchChecked) {
                         dialerSilenceCallRecordingAlerts(false);
@@ -233,8 +234,8 @@ public class SuggestedModsFragment extends Fragment {
             ProgrammaticMaterialSwitch forceEnableCallScreenSwitch = binding.forceEnableCallScreenCard.getSwitch();
             boolean forceEnableCallScreenSwitchChecked = false;
             try {
-                forceEnableCallScreenSwitchChecked = coreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(DIALER_PACKAGE_NAME, new ArrayList<>(DIALER_ENABLE_CALL_SCREEN_FLAGS.keySet())) &&
-                        coreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(DIALER_PACKAGE_NAME, Collections.singletonList(DIALER_CALL_SCREEN_I18N_CONFIG_FLAG));
+                forceEnableCallScreenSwitchChecked = coreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(DIALER_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(DIALER_ENABLE_CALL_SCREEN_FLAGS.keySet())) &&
+                        coreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(DIALER_PHENOTYPE_PACKAGE_NAME, Collections.singletonList(DIALER_CALL_SCREEN_I18N_CONFIG_FLAG));
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -248,17 +249,17 @@ public class SuggestedModsFragment extends Fragment {
         // GMessages
         try {
             // Beta and Install buttons actions
-            binding.messagesAppHeader.getBetaButton().setOnClickListener(v -> openGooglePlay(requireContext(), GOOGLE_PLAY_BETA_LINK + MESSAGES_PACKAGE_NAME));
-            binding.messagesAppHeader.getInstallButton().setOnClickListener(v -> openGooglePlay(requireContext(), GOOGLE_PLAY_DETAILS_LINK + MESSAGES_PACKAGE_NAME));
+            binding.messagesAppHeader.getBetaButton().setOnClickListener(v -> openGooglePlay(requireContext(), GOOGLE_PLAY_BETA_LINK + MESSAGES_ANDROID_PACKAGE_NAME));
+            binding.messagesAppHeader.getInstallButton().setOnClickListener(v -> openGooglePlay(requireContext(), GOOGLE_PLAY_DETAILS_LINK + MESSAGES_ANDROID_PACKAGE_NAME));
 
             // Check if application is installed
-            requireContext().getPackageManager().getApplicationInfo(MESSAGES_PACKAGE_NAME, 0);
+            requireContext().getPackageManager().getApplicationInfo(MESSAGES_ANDROID_PACKAGE_NAME, 0);
 
             // forceEnableMessageOrganizationSwitch
             ProgrammaticMaterialSwitch forceEnableMessageOrganizationSwitch = binding.forceEnableMessageOrganizationCard.getSwitch();
             boolean forceEnableMessageOrganizationSwitchChecked = false;
             try {
-                forceEnableMessageOrganizationSwitchChecked = coreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(MESSAGES_PACKAGE_NAME_PHENOTYPE_DB, new ArrayList<>(MESSAGES_ENABLE_MESSAGE_ORGANIZATION_FLAGS.keySet()));
+                forceEnableMessageOrganizationSwitchChecked = coreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(MESSAGES_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(MESSAGES_ENABLE_MESSAGE_ORGANIZATION_FLAGS.keySet()));
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -276,7 +277,7 @@ public class SuggestedModsFragment extends Fragment {
         if (enableMod) {
             for (Map.Entry<String, Boolean> entry : DIALER_ENABLE_CALL_RECORDING_FLAGS.entrySet()) {
                 try {
-                    coreRootServiceIpc.phenotypeDBOverrideBooleanFlag(DIALER_PACKAGE_NAME, entry.getKey(), entry.getValue());
+                    coreRootServiceIpc.phenotypeDBOverrideBooleanFlag(DIALER_PHENOTYPE_PACKAGE_NAME, entry.getKey(), entry.getValue());
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -284,7 +285,7 @@ public class SuggestedModsFragment extends Fragment {
         } else {
             // Delete flag overrides
             try {
-                coreRootServiceIpc.phenotypeDBDeleteFlagOverrides(DIALER_PACKAGE_NAME, new ArrayList<>(DIALER_ENABLE_CALL_RECORDING_FLAGS.keySet()));
+                coreRootServiceIpc.phenotypeDBDeleteFlagOverrides(DIALER_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(DIALER_ENABLE_CALL_RECORDING_FLAGS.keySet()));
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -295,7 +296,7 @@ public class SuggestedModsFragment extends Fragment {
         if (enableMod) {
             for (Map.Entry<String, String> entry : DIALER_SILENCE_CALL_RECORDING_ALERTS_FLAGS.entrySet()) {
                 try {
-                    coreRootServiceIpc.phenotypeDBOverrideStringFlag(DIALER_PACKAGE_NAME, entry.getKey(), entry.getValue());
+                    coreRootServiceIpc.phenotypeDBOverrideStringFlag(DIALER_PHENOTYPE_PACKAGE_NAME, entry.getKey(), entry.getValue());
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -311,7 +312,7 @@ public class SuggestedModsFragment extends Fragment {
                     copyFile(getResources().openRawResource(R.raw.silent_wav), endingVoice.newOutputStream());
 
                     // Set the right permissions to files and folders
-                    final int uid = requireActivity().getPackageManager().getApplicationInfo(DIALER_PACKAGE_NAME, 0).uid;
+                    final int uid = requireActivity().getPackageManager().getApplicationInfo(DIALER_ANDROID_PACKAGE_NAME, 0).uid;
                     Shell.cmd(
                             String.format("chown -R %s:%s %s", uid, uid, DIALER_CALLRECORDINGPROMPT),
                             String.format("chmod 755 %s", DIALER_CALLRECORDINGPROMPT),
@@ -325,7 +326,7 @@ public class SuggestedModsFragment extends Fragment {
         } else {
             // Delete flag overrides
             try {
-                coreRootServiceIpc.phenotypeDBDeleteFlagOverrides(DIALER_PACKAGE_NAME, new ArrayList<>(DIALER_SILENCE_CALL_RECORDING_ALERTS_FLAGS.keySet()));
+                coreRootServiceIpc.phenotypeDBDeleteFlagOverrides(DIALER_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(DIALER_SILENCE_CALL_RECORDING_ALERTS_FLAGS.keySet()));
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -350,7 +351,7 @@ public class SuggestedModsFragment extends Fragment {
                         // Update boolean flags
                         for (Map.Entry<String, Boolean> entry : DIALER_ENABLE_CALL_SCREEN_FLAGS.entrySet()) {
                             try {
-                                coreRootServiceIpc.phenotypeDBOverrideBooleanFlag(DIALER_PACKAGE_NAME, entry.getKey(), entry.getValue());
+                                coreRootServiceIpc.phenotypeDBOverrideBooleanFlag(DIALER_PHENOTYPE_PACKAGE_NAME, entry.getKey(), entry.getValue());
                             } catch (RemoteException e) {
                                 e.printStackTrace();
                             }
@@ -379,7 +380,7 @@ public class SuggestedModsFragment extends Fragment {
                                                 )
                                 ).build();
                         try {
-                            coreRootServiceIpc.phenotypeDBOverrideExtensionFlag(DIALER_PACKAGE_NAME, DIALER_CALL_SCREEN_I18N_CONFIG_FLAG, call_screen_i18n_config.toByteArray());
+                            coreRootServiceIpc.phenotypeDBOverrideExtensionFlag(DIALER_PHENOTYPE_PACKAGE_NAME, DIALER_CALL_SCREEN_I18N_CONFIG_FLAG, call_screen_i18n_config.toByteArray());
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
@@ -390,12 +391,12 @@ public class SuggestedModsFragment extends Fragment {
         } else {
             // Delete flag overrides
             try {
-                coreRootServiceIpc.phenotypeDBDeleteFlagOverrides(DIALER_PACKAGE_NAME, new ArrayList<>(DIALER_ENABLE_CALL_SCREEN_FLAGS.keySet()));
+                coreRootServiceIpc.phenotypeDBDeleteFlagOverrides(DIALER_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(DIALER_ENABLE_CALL_SCREEN_FLAGS.keySet()));
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
             try {
-                coreRootServiceIpc.phenotypeDBDeleteFlagOverrides(DIALER_PACKAGE_NAME, Collections.singletonList(DIALER_CALL_SCREEN_I18N_CONFIG_FLAG));
+                coreRootServiceIpc.phenotypeDBDeleteFlagOverrides(DIALER_PHENOTYPE_PACKAGE_NAME, Collections.singletonList(DIALER_CALL_SCREEN_I18N_CONFIG_FLAG));
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -406,7 +407,7 @@ public class SuggestedModsFragment extends Fragment {
         if (enableMod) {
             for (Map.Entry<String, Boolean> entry : MESSAGES_ENABLE_MESSAGE_ORGANIZATION_FLAGS.entrySet()) {
                 try {
-                    coreRootServiceIpc.phenotypeDBOverrideBooleanFlag(MESSAGES_PACKAGE_NAME_PHENOTYPE_DB, entry.getKey(), entry.getValue());
+                    coreRootServiceIpc.phenotypeDBOverrideBooleanFlag(MESSAGES_PHENOTYPE_PACKAGE_NAME, entry.getKey(), entry.getValue());
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -414,7 +415,7 @@ public class SuggestedModsFragment extends Fragment {
         } else {
             // Delete flag overrides
             try {
-                coreRootServiceIpc.phenotypeDBDeleteFlagOverrides(MESSAGES_PACKAGE_NAME_PHENOTYPE_DB, new ArrayList<>(MESSAGES_ENABLE_MESSAGE_ORGANIZATION_FLAGS.keySet()));
+                coreRootServiceIpc.phenotypeDBDeleteFlagOverrides(MESSAGES_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(MESSAGES_ENABLE_MESSAGE_ORGANIZATION_FLAGS.keySet()));
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

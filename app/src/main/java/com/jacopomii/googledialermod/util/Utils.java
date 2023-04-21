@@ -1,6 +1,6 @@
 package com.jacopomii.googledialermod.util;
 
-import static com.jacopomii.googledialermod.data.Constants.VENDING_PACKAGE_NAME;
+import static com.jacopomii.googledialermod.data.Constants.VENDING_ANDROID_PACKAGE_NAME;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -37,7 +37,7 @@ public class Utils {
     public static void openGooglePlay(Context context, String googlePlayLink) {
         try {
             Intent appStoreIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(googlePlayLink));
-            appStoreIntent.setPackage(VENDING_PACKAGE_NAME);
+            appStoreIntent.setPackage(VENDING_ANDROID_PACKAGE_NAME);
             context.startActivity(appStoreIntent);
         } catch (ActivityNotFoundException exception) {
             context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(googlePlayLink)));

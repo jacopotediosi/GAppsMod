@@ -1,7 +1,5 @@
 package com.jacopomii.googledialermod.ui.adapter;
 
-import static com.jacopomii.googledialermod.data.Constants.DIALER_PACKAGE_NAME;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.RemoteException;
@@ -14,9 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.jacopomii.googledialermod.ICoreRootService;
 import com.jacopomii.googledialermod.data.BooleanFlag;
 import com.jacopomii.googledialermod.databinding.SwitchCardBinding;
-import com.jacopomii.googledialermod.ui.activity.MainActivity;
 import com.jacopomii.googledialermod.ui.view.ProgrammaticMaterialSwitch;
 import com.l4digital.fastscroll.FastScroller;
 
@@ -25,19 +23,33 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
+@SuppressWarnings("unchecked")
 public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<BooleanModsRecyclerViewAdapter.BooleanModsViewHolder> implements Filterable, FastScroller.SectionIndexer {
     private final Context mContext;
-    private final List<BooleanFlag> mFlagsList;
-    private List<BooleanFlag> mFlagsListFiltered;
 
-    public BooleanModsRecyclerViewAdapter(Context context, List<BooleanFlag> flagList) {
-        if (context instanceof MainActivity) {
-            mContext = context;
-            mFlagsList = flagList;
-            mFlagsListFiltered = flagList;
-        } else {
-            throw new RuntimeException("BooleanModsRecyclerViewAdapter can be attached only to the MainActivity");
+    private List<BooleanFlag> mFlagsList;
+    private List<BooleanFlag> mFlagsListFiltered;
+    private String mPhenotypePackageName;
+
+    private final ICoreRootService mCoreRootServiceIpc;
+
+    public BooleanModsRecyclerViewAdapter(Context context, ICoreRootService coreRootServiceIpc, String phenotypePackageName) {
+        mContext = context;
+        mCoreRootServiceIpc = coreRootServiceIpc;
+        mPhenotypePackageName = phenotypePackageName;
+
+        try {
+            mFlagsList = new ArrayList<>();
+            TreeMap<String, Boolean> map = new TreeMap<String, Boolean>(coreRootServiceIpc.phenotypeDBGetBooleanFlagsOrOverridden(phenotypePackageName));
+            for (Map.Entry<String, Boolean> flag : map.entrySet())
+                mFlagsList.add(new BooleanFlag(flag.getKey(), flag.getValue()));
+
+            mFlagsListFiltered = mFlagsList;
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
     }
 
@@ -60,7 +72,7 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
         holder.mSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mFlagsListFiltered.get(position).setFlagValue(isChecked);
             try {
-                ((MainActivity) mContext).getCoreRootServiceIpc().phenotypeDBOverrideBooleanFlag(DIALER_PACKAGE_NAME, mFlagsListFiltered.get(holder.getAdapterPosition()).getFlagName(), isChecked);
+                mCoreRootServiceIpc.phenotypeDBOverrideBooleanFlag(mPhenotypePackageName, mFlagsListFiltered.get(holder.getAdapterPosition()).getFlagName(), isChecked);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -102,7 +114,6 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
                 return filterResults;
             }
 
-            @SuppressWarnings("unchecked")
             @SuppressLint("NotifyDataSetChanged")
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
