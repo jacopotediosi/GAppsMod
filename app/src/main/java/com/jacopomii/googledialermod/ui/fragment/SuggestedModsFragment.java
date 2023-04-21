@@ -160,6 +160,10 @@ public class SuggestedModsFragment extends Fragment {
 
         // GDialer
         try {
+            // Beta and Install buttons actions
+            binding.dialerAppHeader.getBetaButton().setOnClickListener(v -> openGooglePlay(requireContext(), GOOGLE_PLAY_BETA_LINK + DIALER_PACKAGE_NAME));
+            binding.dialerAppHeader.getInstallButton().setOnClickListener(v -> openGooglePlay(requireContext(), GOOGLE_PLAY_DETAILS_LINK + DIALER_PACKAGE_NAME));
+
             // Check if application is installed
             requireContext().getPackageManager().getApplicationInfo(DIALER_PACKAGE_NAME, 0);
 
@@ -238,13 +242,15 @@ public class SuggestedModsFragment extends Fragment {
             forceEnableCallScreenSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> dialerForceEnableCallScreen(isChecked));
             forceEnableCallScreenSwitch.setEnabled(true);
         } catch (PackageManager.NameNotFoundException e) {
-            binding.dialerBetaButton.setOnClickListener(v -> openGooglePlay(requireContext(), GOOGLE_PLAY_BETA_LINK + DIALER_PACKAGE_NAME));
-            binding.dialerInstallButton.setOnClickListener(v -> openGooglePlay(requireContext(), GOOGLE_PLAY_DETAILS_LINK + DIALER_PACKAGE_NAME));
             binding.dialerNotInstalledAlert.setVisibility(View.VISIBLE);
         }
 
         // GMessages
         try {
+            // Beta and Install buttons actions
+            binding.messagesAppHeader.getBetaButton().setOnClickListener(v -> openGooglePlay(requireContext(), GOOGLE_PLAY_BETA_LINK + MESSAGES_PACKAGE_NAME));
+            binding.messagesAppHeader.getInstallButton().setOnClickListener(v -> openGooglePlay(requireContext(), GOOGLE_PLAY_DETAILS_LINK + MESSAGES_PACKAGE_NAME));
+
             // Check if application is installed
             requireContext().getPackageManager().getApplicationInfo(MESSAGES_PACKAGE_NAME, 0);
 
@@ -260,8 +266,6 @@ public class SuggestedModsFragment extends Fragment {
             forceEnableMessageOrganizationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> messagesForceEnableMessageOrganization(isChecked));
             forceEnableMessageOrganizationSwitch.setEnabled(true);
         } catch (PackageManager.NameNotFoundException e) {
-            binding.messagesBetaButton.setOnClickListener(v -> openGooglePlay(requireContext(), GOOGLE_PLAY_BETA_LINK + MESSAGES_PACKAGE_NAME));
-            binding.messagesInstallButton.setOnClickListener(v -> openGooglePlay(requireContext(), GOOGLE_PLAY_DETAILS_LINK + MESSAGES_PACKAGE_NAME));
             binding.messagesNotInstalledAlert.setVisibility(View.VISIBLE);
         }
 

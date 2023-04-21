@@ -13,13 +13,13 @@
 
     <!-- Common -->
     <string name="all">All</string>
+    <string name="beta" translatable="false">Beta</string>
     <string name="continue_anyway">Continue anyway</string>
     <string name="disabled_only">Disabled only</string>
     <string name="done">Done</string>
     <string name="enabled_only">Enabled only</string>
     <string name="exit">Exit</string>
-    <string name="install_from_google_play">Install from Google Play</string>
-    <string name="join_beta_program">Join the Beta program</string>
+    <string name="install">Install</string>
     <string name="no">No</string>
     <string name="search">Search</string>
     <string name="yes">Yes</string>

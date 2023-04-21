@@ -10,8 +10,7 @@
     <string name="done">Hecho</string>
     <string name="enabled_only">Solo habitados</string>
     <string name="exit">Salir</string>
-    <string name="install_from_google_play">Instalar desde Google Play</string>
-    <string name="join_beta_program">Únete al programa Beta</string>
+    <string name="install">Instalar</string>
     <string name="no">No</string>
     <string name="search">Buscar</string>
     <string name="yes">Sí</string>

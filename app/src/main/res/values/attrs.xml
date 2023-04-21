@@ -7,5 +7,10 @@
         <attr name="enabled" format="boolean" />
     </declare-styleable>
 
+    <declare-styleable name="SuggestedModsAppHeader">
+        <!-- The app name. -->
+        <attr name="app_name" format="string" />
+    </declare-styleable>
+
     <attr name="colorAppbar" format="reference" />
 </resources>

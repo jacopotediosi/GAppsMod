@@ -121,7 +121,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                                 new MaterialAlertDialogBuilder(splashScreenActivity)
                                         .setCancelable(false)
                                         .setMessage(getString(R.string.phenotype_db_does_not_exist))
-                                        .setNegativeButton(R.string.install_from_google_play, (dialogInterface, i) -> openGooglePlay(splashScreenActivity, GOOGLE_PLAY_DETAILS_LINK + GMS_PACKAGE_NAME))
+                                        .setNegativeButton(R.string.install, (dialogInterface, i) -> openGooglePlay(splashScreenActivity, GOOGLE_PLAY_DETAILS_LINK + GMS_PACKAGE_NAME))
                                         .setPositiveButton(R.string.exit, (dialog, which) -> System.exit(0))
                                         .show());
                     }
