@@ -39,16 +39,14 @@ public class SplashScreenActivity extends AppCompatActivity {
         Shell.setDefaultBuilder(Shell.Builder.create().setFlags(Shell.FLAG_MOUNT_MASTER));
     }
 
-    private final SplashScreenActivity splashScreenActivity = this;
+    private final CountDownLatch mRootCheckPassed = new CountDownLatch(1);
+    private final CountDownLatch mCoreRootServiceConnected = new CountDownLatch(1);
+    private final CountDownLatch mPhenotypeCheckPassed = new CountDownLatch(1);
+    private final CountDownLatch mUpdateCheckFinished = new CountDownLatch(1);
 
-    private final CountDownLatch rootCheckPassed = new CountDownLatch(1);
-    private final CountDownLatch coreRootServiceConnected = new CountDownLatch(1);
-    private final CountDownLatch phenotypeCheckPassed = new CountDownLatch(1);
-    private final CountDownLatch updateCheckFinished = new CountDownLatch(1);
-
-    private boolean coreRootServiceBound = false;
-    private ServiceConnection coreRootServiceConnection;
-    private FileSystemManager coreRootServiceFSManager;
+    private boolean mCoreRootServiceBound = false;
+    private ServiceConnection mCoreRootServiceConnection;
+    private FileSystemManager mCoreRootServiceFSManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,30 +55,30 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         // Start CoreRootService connection
         Intent intent = new Intent(this, CoreRootService.class);
-        coreRootServiceConnection = new ServiceConnection() {
+        mCoreRootServiceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 // Set references to the remote coreRootService
-                coreRootServiceBound = true;
+                mCoreRootServiceBound = true;
                 ICoreRootService ipc = ICoreRootService.Stub.asInterface(service);
                 try {
-                    coreRootServiceFSManager = FileSystemManager.getRemote(ipc.getFileSystemService());
-                    coreRootServiceConnected.countDown();
+                    mCoreRootServiceFSManager = FileSystemManager.getRemote(ipc.getFileSystemService());
+                    mCoreRootServiceConnected.countDown();
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
 
                 // Update the UI
-                setCheckUIDone(R.id.circular_root_service, R.id.done_root_service, coreRootServiceConnected.getCount() == 0);
+                setCheckUIDone(R.id.circular_root_service, R.id.done_root_service, mCoreRootServiceConnected.getCount() == 0);
             }
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
-                coreRootServiceBound = false;
-                coreRootServiceFSManager = null;
+                mCoreRootServiceBound = false;
+                mCoreRootServiceFSManager = null;
             }
         };
-        RootService.bind(intent, coreRootServiceConnection);
+        RootService.bind(intent, mCoreRootServiceConnection);
 
         // Root permission check
         new Thread() {
@@ -88,10 +86,10 @@ public class SplashScreenActivity extends AppCompatActivity {
             public void run() {
                 // Check root
                 if (checkRoot()) {
-                    rootCheckPassed.countDown();
+                    mRootCheckPassed.countDown();
                 } else {
                     runOnUiThread(() ->
-                            new MaterialAlertDialogBuilder(splashScreenActivity)
+                            new MaterialAlertDialogBuilder(SplashScreenActivity.this)
                                     .setCancelable(false)
                                     .setMessage(R.string.root_access_denied)
                                     .setPositiveButton(R.string.exit, (dialog, i) -> System.exit(0))
@@ -99,7 +97,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 }
 
                 // Update the UI
-                setCheckUIDone(R.id.circular_root, R.id.done_root, rootCheckPassed.getCount() == 0);
+                setCheckUIDone(R.id.circular_root, R.id.done_root, mRootCheckPassed.getCount() == 0);
             }
         }.start();
 
@@ -109,25 +107,25 @@ public class SplashScreenActivity extends AppCompatActivity {
             public void run() {
                 try {
                     // Wait for root check to pass
-                    rootCheckPassed.await();
+                    mRootCheckPassed.await();
                     // Wait for coreRootService to connect
-                    coreRootServiceConnected.await();
+                    mCoreRootServiceConnected.await();
 
                     // Check the Phenotype DB
                     if (checkPhenotypeDB()) {
-                        phenotypeCheckPassed.countDown();
+                        mPhenotypeCheckPassed.countDown();
                     } else {
                         runOnUiThread(() ->
-                                new MaterialAlertDialogBuilder(splashScreenActivity)
+                                new MaterialAlertDialogBuilder(SplashScreenActivity.this)
                                         .setCancelable(false)
                                         .setMessage(getString(R.string.phenotype_db_does_not_exist))
-                                        .setNegativeButton(R.string.install, (dialogInterface, i) -> openGooglePlay(splashScreenActivity, GOOGLE_PLAY_DETAILS_LINK + GMS_ANDROID_PACKAGE_NAME))
+                                        .setNegativeButton(R.string.install, (dialogInterface, i) -> openGooglePlay(SplashScreenActivity.this, GOOGLE_PLAY_DETAILS_LINK + GMS_ANDROID_PACKAGE_NAME))
                                         .setPositiveButton(R.string.exit, (dialog, which) -> System.exit(0))
                                         .show());
                     }
 
                     // Update the UI
-                    setCheckUIDone(R.id.circular_phenotype, R.id.done_phenotype, phenotypeCheckPassed.getCount() == 0);
+                    setCheckUIDone(R.id.circular_phenotype, R.id.done_phenotype, mPhenotypeCheckPassed.getCount() == 0);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -139,23 +137,23 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // Check if updates are available
-                if (!checkUpdateAvailable(splashScreenActivity)) {
-                    updateCheckFinished.countDown();
+                if (!checkUpdateAvailable(SplashScreenActivity.this)) {
+                    mUpdateCheckFinished.countDown();
                 } else {
                     runOnUiThread(() ->
-                            new MaterialAlertDialogBuilder(splashScreenActivity)
+                            new MaterialAlertDialogBuilder(SplashScreenActivity.this)
                                     .setCancelable(false)
                                     .setMessage(R.string.new_version_alert)
                                     .setNegativeButton(
                                             R.string.github,
                                             (dialogInterface, i) -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_link) + "/releases")))
                                     )
-                                    .setPositiveButton(R.string.continue_anyway, (dialogInterface, i) -> updateCheckFinished.countDown())
+                                    .setPositiveButton(R.string.continue_anyway, (dialogInterface, i) -> mUpdateCheckFinished.countDown())
                                     .show());
                 }
 
                 // Update the UI
-                setCheckUIDone(R.id.circular_updates, R.id.done_updates, updateCheckFinished.getCount() == 0);
+                setCheckUIDone(R.id.circular_updates, R.id.done_updates, mUpdateCheckFinished.getCount() == 0);
             }
         }.start();
 
@@ -165,16 +163,16 @@ public class SplashScreenActivity extends AppCompatActivity {
             public void run() {
                 try {
                     // Wait for all checks to pass and for all operations to finish
-                    rootCheckPassed.await();
-                    coreRootServiceConnected.await();
-                    phenotypeCheckPassed.await();
-                    updateCheckFinished.await();
+                    mRootCheckPassed.await();
+                    mCoreRootServiceConnected.await();
+                    mPhenotypeCheckPassed.await();
+                    mUpdateCheckFinished.await();
 
                     // This is just for aesthetics: I don't want the splashscreen to be too fast
                     Thread.sleep(1000);
 
                     // Start the main activity
-                    Intent intent = new Intent(splashScreenActivity, MainActivity.class);
+                    Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 } catch (InterruptedException e) {
@@ -189,7 +187,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private boolean checkPhenotypeDB() {
-        return coreRootServiceFSManager.getFile(PHENOTYPE_DB).exists();
+        return mCoreRootServiceFSManager.getFile(PHENOTYPE_DB).exists();
     }
 
     private void setCheckUIDone(int circularID, int doneImageID, boolean success) {
@@ -204,8 +202,8 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if (coreRootServiceBound)
-            RootService.unbind(coreRootServiceConnection);
+        if (mCoreRootServiceBound)
+            RootService.unbind(mCoreRootServiceConnection);
         super.onDestroy();
     }
 }

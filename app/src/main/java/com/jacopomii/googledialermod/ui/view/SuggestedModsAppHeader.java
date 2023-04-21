@@ -17,31 +17,31 @@ import com.jacopomii.googledialermod.databinding.SuggestedModsAppHeaderBinding;
  * It includes a large title for the app name and two buttons "Beta" and "Install".
  */
 public class SuggestedModsAppHeader extends LinearLayout {
-    final SuggestedModsAppHeaderBinding binding;
+    final SuggestedModsAppHeaderBinding mBinding;
 
     public SuggestedModsAppHeader(Context context) {
         super(context);
 
-        binding = SuggestedModsAppHeaderBinding.inflate(LayoutInflater.from(context), this, true);
+        mBinding = SuggestedModsAppHeaderBinding.inflate(LayoutInflater.from(context), this, true);
     }
 
     public SuggestedModsAppHeader(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        binding = SuggestedModsAppHeaderBinding.inflate(LayoutInflater.from(context), this, true);
+        mBinding = SuggestedModsAppHeaderBinding.inflate(LayoutInflater.from(context), this, true);
 
         final TypedArray xmlAttrs = context.obtainStyledAttributes(attrs, R.styleable.SuggestedModsAppHeader);
         final String appName = xmlAttrs.getString(R.styleable.SuggestedModsAppHeader_app_name);
         xmlAttrs.recycle();
 
-        binding.appName.setText(appName);
+        mBinding.appName.setText(appName);
     }
 
     public MaterialButton getBetaButton() {
-        return binding.betaButton;
+        return mBinding.betaButton;
     }
 
     public MaterialButton getInstallButton() {
-        return binding.installButton;
+        return mBinding.installButton;
     }
 }

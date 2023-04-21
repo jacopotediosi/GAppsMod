@@ -24,12 +24,12 @@ import com.topjohnwu.superuser.nio.FileSystemManager;
 
 public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
-    private ActivityMainBinding binding;
+    private ActivityMainBinding mBinding;
 
-    private boolean coreRootServiceBound = false;
-    private ServiceConnection coreRootServiceConnection;
-    private ICoreRootService coreRootServiceIpc;
-    private FileSystemManager coreRootServiceFSManager;
+    private boolean mCoreRootServiceBound = false;
+    private ServiceConnection mCoreRootServiceConnection;
+    private ICoreRootService mCoreRootServiceIpc;
+    private FileSystemManager mCoreRootServiceFSManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,23 +39,23 @@ public class MainActivity extends AppCompatActivity {
 
         // Start CoreRootService connection
         Intent intent = new Intent(this, CoreRootService.class);
-        coreRootServiceConnection = new ServiceConnection() {
+        mCoreRootServiceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 try {
                     // Set references to the remote coreRootService
-                    coreRootServiceBound = true;
-                    coreRootServiceIpc = ICoreRootService.Stub.asInterface(service);
-                    coreRootServiceFSManager = FileSystemManager.getRemote(coreRootServiceIpc.getFileSystemService());
+                    mCoreRootServiceBound = true;
+                    mCoreRootServiceIpc = ICoreRootService.Stub.asInterface(service);
+                    mCoreRootServiceFSManager = FileSystemManager.getRemote(mCoreRootServiceIpc.getFileSystemService());
 
                     // Update UI
-                    binding = ActivityMainBinding.inflate(getLayoutInflater());
-                    setContentView(binding.getRoot());
+                    mBinding = ActivityMainBinding.inflate(getLayoutInflater());
+                    setContentView(mBinding.getRoot());
 
-                    setSupportActionBar(binding.toolbar);
+                    setSupportActionBar(mBinding.toolbar);
 
-                    DrawerLayout drawer = binding.drawerLayout;
-                    NavigationView navigationView = binding.navView;
+                    DrawerLayout drawer = mBinding.drawerLayout;
+                    NavigationView navigationView = mBinding.navView;
                     mAppBarConfiguration = new AppBarConfiguration.Builder(
                             R.id.nav_suggested_mods,
                             R.id.nav_boolean_mods,
@@ -73,20 +73,20 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
-                coreRootServiceBound = false;
-                coreRootServiceIpc = null;
-                coreRootServiceFSManager = null;
+                mCoreRootServiceBound = false;
+                mCoreRootServiceIpc = null;
+                mCoreRootServiceFSManager = null;
             }
         };
-        RootService.bind(intent, coreRootServiceConnection);
+        RootService.bind(intent, mCoreRootServiceConnection);
     }
 
     public FileSystemManager getCoreRootServiceFSManager() {
-        return coreRootServiceFSManager;
+        return mCoreRootServiceFSManager;
     }
 
     public ICoreRootService getCoreRootServiceIpc() {
-        return coreRootServiceIpc;
+        return mCoreRootServiceIpc;
     }
 
     @Override
@@ -98,16 +98,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (binding.drawerLayout.isOpen())
-            binding.drawerLayout.close();
+        if (mBinding.drawerLayout.isOpen())
+            mBinding.drawerLayout.close();
         else
             finishAffinity();
     }
 
     @Override
     protected void onDestroy() {
-        if (coreRootServiceBound)
-            RootService.unbind(coreRootServiceConnection);
+        if (mCoreRootServiceBound)
+            RootService.unbind(mCoreRootServiceConnection);
         super.onDestroy();
     }
 }

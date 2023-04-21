@@ -31,11 +31,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class BooleanModsFragment extends Fragment {
-    private FragmentBooleanModsBinding binding;
+    private FragmentBooleanModsBinding mBinding;
 
     private BooleanModsRecyclerViewAdapter mBooleanModsRecyclerViewAdapter;
 
-    private ICoreRootService coreRootServiceIpc;
+    private ICoreRootService mCoreRootServiceIpc;
 
     public BooleanModsFragment() {
     }
@@ -46,18 +46,18 @@ public class BooleanModsFragment extends Fragment {
 
         Activity activity = getActivity();
         if (activity instanceof MainActivity)
-            coreRootServiceIpc = ((MainActivity) activity).getCoreRootServiceIpc();
+            mCoreRootServiceIpc = ((MainActivity) activity).getCoreRootServiceIpc();
         else
             throw new RuntimeException("SuggestedModsFragment can be attached only to the MainActivity");
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentBooleanModsBinding.inflate(getLayoutInflater());
+        mBinding = FragmentBooleanModsBinding.inflate(getLayoutInflater());
 
-        FastScrollRecyclerView recyclerView = binding.recyclerView;
+        FastScrollRecyclerView recyclerView = mBinding.recyclerView;
 
-        mBooleanModsRecyclerViewAdapter = new BooleanModsRecyclerViewAdapter(getContext(), coreRootServiceIpc, DIALER_PHENOTYPE_PACKAGE_NAME);
+        mBooleanModsRecyclerViewAdapter = new BooleanModsRecyclerViewAdapter(getContext(), mCoreRootServiceIpc, DIALER_PHENOTYPE_PACKAGE_NAME);
 
         // Disable fast scroll if recyclerview is empty or changes to empty
         recyclerView.setFastScrollEnabled(mBooleanModsRecyclerViewAdapter.getItemCount() != 0);
@@ -74,14 +74,14 @@ public class BooleanModsFragment extends Fragment {
 
         setHasOptionsMenu(true);
 
-        return binding.getRoot();
+        return mBinding.getRoot();
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.search_menu, menu);
 
-        RadioGroup radioGroupSearch = binding.radioGroupSearch;
+        RadioGroup radioGroupSearch = mBinding.radioGroupSearch;
 
         MenuItem searchIcon = menu.findItem(R.id.menu_search_icon);
 
@@ -89,7 +89,7 @@ public class BooleanModsFragment extends Fragment {
         searchView.setQueryHint(getString(R.string.search));
 
         radioGroupSearch.setOnCheckedChangeListener((group, checkedId) -> {
-            RadioButton radioButtonChecked = binding.getRoot().findViewById(checkedId);
+            RadioButton radioButtonChecked = mBinding.getRoot().findViewById(checkedId);
             if (radioButtonChecked.isChecked()) {
                 try {
                     JSONObject filterConfig = new JSONObject();

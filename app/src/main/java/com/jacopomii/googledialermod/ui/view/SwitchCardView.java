@@ -16,29 +16,29 @@ import com.jacopomii.googledialermod.databinding.SwitchCardBinding;
  * The text will be rendered in a separate TextView from the switch to prevent accidentally clicking on the text from triggering the switch.
  */
 public class SwitchCardView extends LinearLayout {
-    final SwitchCardBinding binding;
+    final SwitchCardBinding mBinding;
 
     public SwitchCardView(Context context) {
         super(context);
 
-        binding = SwitchCardBinding.inflate(LayoutInflater.from(context), this, true);
+        mBinding = SwitchCardBinding.inflate(LayoutInflater.from(context), this, true);
     }
 
     public SwitchCardView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        binding = SwitchCardBinding.inflate(LayoutInflater.from(context), this, true);
+        mBinding = SwitchCardBinding.inflate(LayoutInflater.from(context), this, true);
 
         final TypedArray xmlAttrs = context.obtainStyledAttributes(attrs, R.styleable.SwitchCardView);
         final String text = xmlAttrs.getString(R.styleable.SwitchCardView_text);
         final boolean enabled = xmlAttrs.getBoolean(R.styleable.SwitchCardView_enabled, true);
         xmlAttrs.recycle();
 
-        binding.switchCardTextview.setText(text);
-        binding.switchCardSwitch.setEnabled(enabled);
+        mBinding.switchCardTextview.setText(text);
+        mBinding.switchCardSwitch.setEnabled(enabled);
     }
 
     public ProgrammaticMaterialSwitch getSwitch() {
-        return binding.switchCardSwitch;
+        return mBinding.switchCardSwitch;
     }
 }

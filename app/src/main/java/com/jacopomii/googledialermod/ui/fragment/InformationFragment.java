@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import com.jacopomii.googledialermod.databinding.FragmentInformationBinding;
 
 public class InformationFragment extends Fragment {
-    FragmentInformationBinding binding;
+    FragmentInformationBinding mBinding;
 
     public InformationFragment() {}
 
@@ -23,12 +23,12 @@ public class InformationFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentInformationBinding.inflate(getLayoutInflater());
+        mBinding = FragmentInformationBinding.inflate(getLayoutInflater());
 
         // Links aren't clickable workaround
-        binding.whatIsItExplanationBeta.setMovementMethod(LinkMovementMethod.getInstance());
-        binding.madeWithLoveByJacopoTediosi.setMovementMethod(LinkMovementMethod.getInstance());
+        mBinding.whatIsItExplanationBeta.setMovementMethod(LinkMovementMethod.getInstance());
+        mBinding.madeWithLoveByJacopoTediosi.setMovementMethod(LinkMovementMethod.getInstance());
 
-        return binding.getRoot();
+        return mBinding.getRoot();
     }
 }

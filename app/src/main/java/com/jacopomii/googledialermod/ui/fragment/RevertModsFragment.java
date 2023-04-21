@@ -24,10 +24,10 @@ import com.topjohnwu.superuser.nio.FileSystemManager;
 import es.dmoral.toasty.Toasty;
 
 public class RevertModsFragment extends Fragment {
-    FragmentRevertModsBinding binding;
+    FragmentRevertModsBinding mBinding;
 
-    private ICoreRootService coreRootServiceIpc;
-    private FileSystemManager coreRootServiceFSManager;
+    private ICoreRootService mCoreRootServiceIpc;
+    private FileSystemManager mCoreRootServiceFSManager;
 
     public RevertModsFragment() {}
 
@@ -37,8 +37,8 @@ public class RevertModsFragment extends Fragment {
 
         Activity activity = getActivity();
         if (activity instanceof MainActivity) {
-            coreRootServiceIpc = ((MainActivity) activity).getCoreRootServiceIpc();
-            coreRootServiceFSManager = ((MainActivity) activity).getCoreRootServiceFSManager();
+            mCoreRootServiceIpc = ((MainActivity) activity).getCoreRootServiceIpc();
+            mCoreRootServiceFSManager = ((MainActivity) activity).getCoreRootServiceFSManager();
         } else {
             throw new RuntimeException("RevertModsFragment can be attached only to the MainActivity");
         }
@@ -46,9 +46,9 @@ public class RevertModsFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentRevertModsBinding.inflate(getLayoutInflater());
+        mBinding = FragmentRevertModsBinding.inflate(getLayoutInflater());
 
-        binding.revertAllModsButton.setOnClickListener(v ->
+        mBinding.revertAllModsButton.setOnClickListener(v ->
                 new MaterialAlertDialogBuilder(requireContext())
                         .setMessage(R.string.revert_all_mods_alert)
                         .setNegativeButton(getString(R.string.no), (dialog, which) -> {
@@ -57,10 +57,10 @@ public class RevertModsFragment extends Fragment {
 
                             try {
                                 // Delete all flag overrides from Phenotype DB
-                                coreRootServiceIpc.phenotypeDBDeleteAllFlagOverrides();
+                                mCoreRootServiceIpc.phenotypeDBDeleteAllFlagOverrides();
 
                                 // Delete the com.google.android.dialer callrecordingprompt folder
-                                ExtendedFile callRecordingPromptFolder = coreRootServiceFSManager.getFile(DIALER_CALLRECORDINGPROMPT);
+                                ExtendedFile callRecordingPromptFolder = mCoreRootServiceFSManager.getFile(DIALER_CALLRECORDINGPROMPT);
                                 if (callRecordingPromptFolder.exists()) {
                                     //noinspection ResultOfMethodCallIgnored
                                     callRecordingPromptFolder.delete();
@@ -75,6 +75,6 @@ public class RevertModsFragment extends Fragment {
                         }).create().show()
         );
 
-        return binding.getRoot();
+        return mBinding.getRoot();
     }
 }
