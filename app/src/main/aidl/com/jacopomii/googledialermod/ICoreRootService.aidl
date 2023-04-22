@@ -7,7 +7,7 @@ interface ICoreRootService {
      * Query the Phenotype DB to get the android package name corresponding to a given {@code phenotypePackageName}.
      *
      * @param phenotypePackageName the Phenotype package name for which the corresponding Android package name is to be returned.
-     * @return the Android package name corresponding to the given {@code phenotypePackageName}.
+     * @return the Android package name corresponding to the specified {@code phenotypePackageName}. An empty string if the phenotypePackageName couldn't be found.
     */
     String phenotypeDBGetAndroidPackageNameByPhenotypePackageName(in String phenotypePackageName);
 
