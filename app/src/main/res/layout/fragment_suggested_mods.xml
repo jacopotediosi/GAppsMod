@@ -77,6 +77,13 @@
                 app:text="@string/force_enable_call_recording" />
 
             <com.jacopomii.googledialermod.ui.view.SwitchCardView
+                android:id="@+id/enable_direct_my_call"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:enabled="false"
+                app:text="@string/enable_direct_my_call" />
+
+            <com.jacopomii.googledialermod.ui.view.SwitchCardView
                 android:id="@+id/silence_call_recording_alerts_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -57,6 +57,17 @@ public class SuggestedModsFragment extends Fragment {
             "enable_tidepods_call_recording"
     };
 
+    // The following boolean flags enable Direct My Call as a feature
+    private final String[] ENABLE_DIRECT_MY_CALL_FLAGS = {
+            // Xatu is the internal codename for Direct My Call at Google
+            "enable_xatu",
+            // Enable all other flags because why not
+            "Xatu__xatu_enable_item_animator",
+            "Xatu__xatu_enable_show_ahead",
+            "xatu_enable_duplex_convi",
+            // I didn't include the "surveys" where Google asks you to rate the feature
+    };
+
     // The following extensionVal flags concern the announcement audio played when a call recording starts or ends
     private final String[] SILENCE_CALL_RECORDING_ALERTS_FLAGS = {
             // The following flag contains a protobuf list of countries where the use of embedded audio is enforced.
@@ -302,6 +313,16 @@ public class SuggestedModsFragment extends Fragment {
             // Remove flag overrides
             mDBFlagsSingleton.deleteFlagOverrides(ENABLE_CALL_SCREEN_FLAGS);
             mDBFlagsSingleton.deleteFlagOverrides(CALL_SCREEN_I18N_CONFIG_FLAG);
+        }
+    }
+
+    private void enableDirectMyCall(boolean enable) {
+        if (enable) {
+            for (String flag : ENABLE_DIRECT_MY_CALL_FLAGS) {
+                mDBFlagsSingleton.updateDBFlag(flag, true);
+            }
+        } else {
+            mDBFlagsSingleton.deleteFlagOverrides(ENABLE_DIRECT_MY_CALL_FLAGS);
         }
     }
 }
