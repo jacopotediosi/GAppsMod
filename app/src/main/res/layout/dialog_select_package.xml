@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/l_50"
+    android:paddingVertical="@dimen/l1">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/l_50"
+        android:text="@string/select_package"
+        android:textAlignment="viewStart"
+        android:textAppearance="?attr/textAppearanceTitleLarge" />
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/l_50"
+        app:iconifiedByDefault="false"
+        app:queryHint="@string/search_by_package_or_app"
+        app:searchIcon="@null" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.l4digital.fastscroll.FastScrollRecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:bubbleColor="?attr/colorSecondary"
+            app:bubbleSize="small"
+            app:bubbleTextColor="?attr/colorOnSecondary"
+            app:bubbleTextSize="15sp"
+            app:handleColor="?attr/colorSecondary"
+            app:hideScrollbar="false"
+            app:trackColor="?attr/colorSecondary" />
+    </FrameLayout>
+
+</LinearLayout>

@@ -72,6 +72,11 @@ public class CoreRootService extends RootService {
         }
 
         @Override
+        public Map<String, String> phenotypeDBGetAllPackageNames() {
+            return CoreRootService.this.phenotypeDBGetAllPackageNames();
+        }
+
+        @Override
         public String phenotypeDBGetAndroidPackageNameByPhenotypePackageName(String phenotypePackageName) {
             return CoreRootService.this.phenotypeDBGetAndroidPackageNameByPhenotypePackageName(phenotypePackageName);
         }
@@ -117,6 +122,23 @@ public class CoreRootService extends RootService {
         }
     }
 
+
+    public Map<String, String> phenotypeDBGetAllPackageNames() {
+        HashMap<String, String> map = new HashMap<>();
+
+        String sql = "SELECT Flags.packageName as phenotypePackageName, Packages.androidPackageName " +
+                "FROM Flags, Packages " +
+                "WHERE phenotypePackageName=Packages.packageName " +
+                "GROUP BY phenotypePackageName " +
+                "ORDER BY phenotypePackageName ASC";
+
+        try (Cursor cursor = phenotypeDB.rawQuery(sql, null)) {
+            while (cursor.moveToNext())
+                map.put(cursor.getString(0), cursor.getString(1));
+        }
+
+        return map;
+    }
 
     public String phenotypeDBGetAndroidPackageNameByPhenotypePackageName(String phenotypePackageName) {
         String androidPackageName = "";

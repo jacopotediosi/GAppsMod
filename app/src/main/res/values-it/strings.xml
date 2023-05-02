@@ -12,8 +12,14 @@
     <string name="exit">Esci</string>
     <string name="install">Installa</string>
     <string name="no">No</string>
-    <string name="search">Cerca</string>
     <string name="yes">Sì</string>
+    <string name="select_package">Seleziona un package</string>
+    <string name="unknown">Sconosciuto</string>
+
+    <!-- Search -->
+    <string name="search">Cerca</string>
+    <string name="search_by_flag">Cerca per flag</string>
+    <string name="search_by_package_or_app">Cerca per package o applicazione</string>
 
     <!-- Fragment titles -->
     <string name="boolean_mods">Mod booleane</string>

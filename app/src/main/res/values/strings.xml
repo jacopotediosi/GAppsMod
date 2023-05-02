@@ -21,8 +21,15 @@
     <string name="exit">Exit</string>
     <string name="install">Install</string>
     <string name="no">No</string>
-    <string name="search">Search</string>
     <string name="yes">Yes</string>
+    <string name="package_spinner_label" translatable="false">Package:</string>
+    <string name="select_package">Select package</string>
+    <string name="unknown">Unknown</string>
+
+    <!-- Search -->
+    <string name="search">Search</string>
+    <string name="search_by_flag">Search by flag</string>
+    <string name="search_by_package_or_app">Search by package or application</string>
 
     <!-- Fragment titles -->
     <string name="boolean_mods">Boolean mods</string>

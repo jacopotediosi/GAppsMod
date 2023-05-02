@@ -81,9 +81,10 @@ dependencies {
     // Protobuf
     implementation 'com.google.protobuf:protobuf-javalite:3.22.3'
 
-    // Apache Commons IO
+    // Apache Commons
     //noinspection GradleDependency
     implementation 'commons-io:commons-io:2.11.0'
+    implementation  "org.apache.commons:commons-lang3:3.12.0"
 
     // Navigation drawer
     def navigationVersion = '2.5.3'

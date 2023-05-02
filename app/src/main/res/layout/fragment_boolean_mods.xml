@@ -13,56 +13,90 @@
         android:background="?attr/colorAppbar"
         app:liftOnScroll="false">
 
-        <RadioGroup
-            android:id="@+id/radio_group_search"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/l_50"
-            android:checkedButton="@id/radiobutton_all"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            tools:visibility="visible">
+            android:layout_height="match_parent"
+            android:divider="?android:dividerHorizontal"
+            android:orientation="vertical"
+            android:showDividers="middle">
 
-            <RadioButton
-                android:id="@+id/radiobutton_all"
-                android:layout_width="wrap_content"
+            <RadioGroup
+                android:id="@+id/radio_group_search"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/l_75"
-                android:minHeight="0dp"
-                android:saveEnabled="false"
-                android:text="@string/all"
-                tools:ignore="TouchTargetSizeCheck" />
+                android:layout_marginVertical="@dimen/l_50"
+                android:checkedButton="@id/radiobutton_all"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                tools:visibility="visible">
 
-            <RadioButton
-                android:id="@+id/radiobutton_enabled"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/l_75"
-                android:minHeight="0dp"
-                android:saveEnabled="false"
-                android:text="@string/enabled_only"
-                tools:ignore="TouchTargetSizeCheck" />
+                <RadioButton
+                    android:id="@+id/radiobutton_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/l_75"
+                    android:minHeight="0dp"
+                    android:saveEnabled="false"
+                    android:text="@string/all"
+                    tools:ignore="TouchTargetSizeCheck" />
 
-            <RadioButton
-                android:id="@+id/radiobutton_disabled"
-                android:layout_width="wrap_content"
+                <RadioButton
+                    android:id="@+id/radiobutton_enabled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/l_75"
+                    android:minHeight="0dp"
+                    android:saveEnabled="false"
+                    android:text="@string/enabled_only"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+                <RadioButton
+                    android:id="@+id/radiobutton_disabled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/l_75"
+                    android:minHeight="0dp"
+                    android:saveEnabled="false"
+                    android:text="@string/disabled_only"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </RadioGroup>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/l_75"
-                android:minHeight="0dp"
-                android:saveEnabled="false"
-                android:text="@string/disabled_only"
-                tools:ignore="TouchTargetSizeCheck" />
-        </RadioGroup>
+                android:layout_marginVertical="@dimen/l_50"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="@dimen/l1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/l_50"
+                    android:text="@string/package_spinner_label" />
+
+                <TextView
+                    android:id="@+id/select_package"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:hint="@string/select_package"
+                    app:drawableEndCompat="@drawable/ic_arrow_down_24"
+                    app:drawableTint="?attr/colorControlNormal"
+                    tools:ignore="TextContrastCheck" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <com.l4digital.fastscroll.FastScrollRecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
@@ -72,6 +106,6 @@
             app:handleColor="?attr/colorSecondary"
             app:hideScrollbar="false"
             app:trackColor="?attr/colorSecondary" />
-    </RelativeLayout>
+    </FrameLayout>
 
 </LinearLayout>

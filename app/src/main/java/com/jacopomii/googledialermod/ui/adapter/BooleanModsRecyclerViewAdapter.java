@@ -27,27 +27,37 @@ import java.util.Map;
 import java.util.TreeMap;
 
 @SuppressWarnings("unchecked")
-public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<BooleanModsRecyclerViewAdapter.BooleanModsViewHolder> implements Filterable, FastScroller.SectionIndexer {
+public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<BooleanModsRecyclerViewAdapter.ViewHolder> implements Filterable, FastScroller.SectionIndexer {
     private final Context mContext;
 
-    private List<BooleanFlag> mFlagsList;
-    private List<BooleanFlag> mFlagsListFiltered;
-    private String mPhenotypePackageName;
+    private List<BooleanFlag> mFlagsList = new ArrayList<>();
+    private List<BooleanFlag> mFlagsListFiltered = new ArrayList<>();
+    private String mPhenotypePackageName = null;
+    private CharSequence mLastFilterPerformed = null;
 
     private final ICoreRootService mCoreRootServiceIpc;
 
-    public BooleanModsRecyclerViewAdapter(Context context, ICoreRootService coreRootServiceIpc, String phenotypePackageName) {
+    public BooleanModsRecyclerViewAdapter(Context context, ICoreRootService coreRootServiceIpc) {
         mContext = context;
         mCoreRootServiceIpc = coreRootServiceIpc;
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void selectPhenotypePackageName(String phenotypePackageName) {
         mPhenotypePackageName = phenotypePackageName;
 
         try {
             mFlagsList = new ArrayList<>();
-            TreeMap<String, Boolean> map = new TreeMap<String, Boolean>(coreRootServiceIpc.phenotypeDBGetBooleanFlagsOrOverridden(phenotypePackageName));
+            TreeMap<String, Boolean> map = new TreeMap<String, Boolean>(mCoreRootServiceIpc.phenotypeDBGetBooleanFlagsOrOverridden(phenotypePackageName));
             for (Map.Entry<String, Boolean> flag : map.entrySet())
                 mFlagsList.add(new BooleanFlag(flag.getKey(), flag.getValue()));
 
-            mFlagsListFiltered = mFlagsList;
+            if (mLastFilterPerformed != null) {
+                getFilter().filter(mLastFilterPerformed);
+            } else {
+                mFlagsListFiltered = mFlagsList;
+                notifyDataSetChanged();
+            }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -55,29 +65,35 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
 
     @NonNull
     @Override
-    public BooleanModsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // Initialize binding and viewHolder
         SwitchCardBinding binding = SwitchCardBinding.inflate(LayoutInflater.from(mContext), parent, false);
-        return new BooleanModsViewHolder(binding);
-    }
+        ViewHolder viewHolder = new ViewHolder(binding);
 
-    @Override
-    public void onBindViewHolder(@NonNull BooleanModsViewHolder holder, int position) {
-        // Update switch text
-        holder.mTextView.setText(mFlagsListFiltered.get(position).getFlagName());
+        // Set setOnCheckedChangeListener on list items
+        viewHolder.mSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            int position = viewHolder.getAdapterPosition();
 
-        // Update the switch checked status without triggering any existing listener
-        holder.mSwitch.setCheckedProgrammatically(mFlagsListFiltered.get(position).getFlagValue());
-
-        // Set the new onCheckedChange listener
-        holder.mSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mFlagsListFiltered.get(position).setFlagValue(isChecked);
             try {
-                mCoreRootServiceIpc.phenotypeDBOverrideBooleanFlag(mPhenotypePackageName, mFlagsListFiltered.get(holder.getAdapterPosition()).getFlagName(), isChecked);
+                mCoreRootServiceIpc.phenotypeDBOverrideBooleanFlag(mPhenotypePackageName, mFlagsListFiltered.get(position).getFlagName(), isChecked);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
             notifyItemChanged(position);
         });
+
+        // Return viewHolder
+        return viewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        // Update switch text
+        holder.mTextView.setText(mFlagsListFiltered.get(position).getFlagName());
+
+        // Update the switch checked status without triggering any existing listener
+        holder.mSwitch.setCheckedProgrammatically(mFlagsListFiltered.get(position).getFlagValue());
     }
 
     @Override
@@ -90,6 +106,8 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
+                mLastFilterPerformed = charSequence;
+
                 try {
                     JSONObject filterConfig = new JSONObject(charSequence.toString());
                     String key = filterConfig.getString("key");
@@ -128,11 +146,11 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
         return mFlagsListFiltered.get(position).getFlagName().substring(0, 1);
     }
 
-    public static class BooleanModsViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView mTextView;
         private final ProgrammaticMaterialSwitch mSwitch;
 
-        public BooleanModsViewHolder(SwitchCardBinding binding) {
+        public ViewHolder(SwitchCardBinding binding) {
             super(binding.getRoot());
             mTextView = binding.switchCardTextview;
             mSwitch = binding.switchCardSwitch;

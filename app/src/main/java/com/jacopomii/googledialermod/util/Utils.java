@@ -5,6 +5,8 @@ import static com.jacopomii.googledialermod.data.Constants.VENDING_ANDROID_PACKA
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 
 import com.android.volley.Request;
@@ -87,5 +89,27 @@ public class Utils {
             separator = ",";
         }
         return stringBuilder.toString();
+    }
+
+    /**
+     * This method returns, given an {@code androidPackageName}, the label of the corresponding
+     * application, or a localized string "Unknown" if the application is not installed.
+     *
+     * @param context            context.
+     * @param androidPackageName the Android package name of the application to get the label for.
+     * @return the application label if the application exists; The string {@code R.string.unknown} otherwise.
+     */
+    public static String getApplicationLabelOrUnknown(Context context, String androidPackageName) {
+        String applicationLabel = context.getString(R.string.unknown);
+
+        try {
+            PackageManager packageManager = context.getPackageManager();
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(androidPackageName, 0);
+            if (applicationInfo != null)
+                applicationLabel = (String) (packageManager.getApplicationLabel(applicationInfo));
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
+
+        return applicationLabel;
     }
 }
