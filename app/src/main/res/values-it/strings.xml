@@ -2,6 +2,7 @@
     <!-- GApp names, taken from https://play.google.com/store/apps/details?id=PACKAGE_NAME&hl=it -->
     <string name="dialer_app_name">Telefono Google</string>
     <string name="messages_app_name">Messaggi</string>
+    <string name="photos_app_name">Google Foto</string>
 
     <!-- Common -->
     <string name="all">Tutti</string>
@@ -34,11 +35,22 @@
     <string name="splash_screen_updates">Controllando gli aggiornamenti…</string>
 
     <!-- Suggested mods -->
+    <!-- Dialer -->
     <string name="choose_a_language_for_call_screen">Scegli una lingua per il call screen</string>
-    <string name="force_enable_call_screen">Abilita forzatamente il filtro chiamate (call screen)</string>
-    <string name="force_enable_call_recording">Abilita forzatamente la registrazione chiamate</string>
+    <string name="force_enable_call_recording">Forza l\'abilitazione della registrazione chiamate</string>
+    <string name="force_enable_call_screen">Forza l\'abilitazione del filtro chiamate (call screen)</string>
     <string name="silence_call_recording_alerts">Silenzia gli audio degli avvisi di registrazione chiamata (solo ${dialer_app_name} &lt;= 94.x)</string>
-    <string name="force_enable_message_organization">Abilita forzatamente l\'organizzazione dei messaggi</string>
+    <!-- Messages -->
+    <string name="force_enable_debug_menu">Forza l\'abilitazione del menu di debug</string>
+    <string name="force_enable_images_via_gphotos">Forza l\'abilitazione dell\'invio di immagini via ${photos_app_name}</string>
+    <string name="force_enable_marking_conversations_as_unread">Forza l\'abilitazione per segnare conversazioni come non lette</string>
+    <string name="force_enable_message_organization">Forza l\'abilitazione dell\'organizzazione dei messaggi (supersort)</string>
+    <string name="force_enable_nudges_and_birthdays">Forza l\'abilitazione di solleciti e promemoria compleanni (nudges)</string>
+    <string name="force_enable_smart_actions_in_notifications">Forza l\'abilitazione dei suggerimenti di risposta (smart reply) nelle notifiche</string>
+    <string name="force_enable_smart_compose_settings_menu">Forza l\'abilitazione del menu impostazioni scrittura intelligente (smart compose)</string>
+    <string name="force_enable_spotlights">Forza l\'abilitazione del menu impostazioni suggerimenti in evidenza (spotlights)</string>
+    <string name="force_enable_suggested_stickers_settings_menu">Forza l\'abilitazione del menu impostazioni adesivi consigliati</string>
+    <string name="force_enable_verified_sms">Forza l\'abilitazione del menu impostazioni SMS verificati</string>
 
     <!-- Revert mods -->
     <string name="revert_all_mods_alert">Vuoi davvero ripristinare tutte le mod applicate da ${app_name}?</string>

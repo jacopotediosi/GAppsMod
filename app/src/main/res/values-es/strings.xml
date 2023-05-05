@@ -2,6 +2,7 @@
     <!-- GApp names, taken from https://play.google.com/store/apps/details?id=PACKAGE_NAME&hl=es -->
     <string name="dialer_app_name">Teléfono de Google</string>
     <string name="messages_app_name">Mensajes de Google</string>
+    <string name="photos_app_name">Google Fotos</string>
 
     <!-- Common -->
     <string name="all">Todos</string>
@@ -34,11 +35,22 @@
     <string name="splash_screen_updates">Comprobando actualizaciones…</string>
 
     <!-- Suggested mods -->
+    <!-- Dialer -->
     <string name="choose_a_language_for_call_screen">Elija un idioma para la pantalla de llamadas</string>
-    <string name="force_enable_call_screen">Forzar habilitar pantalla de llamada</string>
     <string name="force_enable_call_recording">Forzar habilitar la grabación de llamadas</string>
+    <string name="force_enable_call_screen">Forzar habilitar pantalla de llamada (call screen)</string>
     <string name="silence_call_recording_alerts">Silenciar alertas de grabación de llamadas</string>
-    <string name="force_enable_message_organization">Forzar habilitar la organización de mensajes</string>
+    <!-- Messages -->
+    <string name="force_enable_debug_menu">Forzar habilitar el menú de depuración</string>
+    <string name="force_enable_images_via_gphotos">Forzar habilitar el envío de imágenes mediante ${photos_app_name}</string>
+    <string name="force_enable_marking_conversations_as_unread">Forzar habilitar el marcado de conversaciones como no leídas</string>
+    <string name="force_enable_message_organization">Forzar habilitar la organización de mensajes (supersort)</string>
+    <string name="force_enable_nudges_and_birthdays">Forzar habilitar recordatorios de mensajes (nudges)</string>
+    <string name="force_enable_smart_actions_in_notifications">Forzar habilitar acciones inteligentes (smart reply) en notificaciones</string>
+    <string name="force_enable_smart_compose_settings_menu">Forzar habilitar el menú de configuración de redacción inteligente (smart compose)</string>
+    <string name="force_enable_spotlights">Forzar habilitar menú de configuración de sugerencias (spotlights)</string>
+    <string name="force_enable_suggested_stickers_settings_menu">Forzar habilitar el menú de configuración de pegatinas sugeridas</string>
+    <string name="force_enable_verified_sms">Forzar habilitar el menú de configuración de SMS verificado</string>
 
     <!-- Revert mods -->
     <string name="revert_all_mods_alert">¿De verdad quieres revertir todas las modificaciones aplicadas por ${app_name}?</string>

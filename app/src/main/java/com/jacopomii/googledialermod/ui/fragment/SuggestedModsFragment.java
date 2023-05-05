@@ -1,8 +1,8 @@
 package com.jacopomii.googledialermod.ui.fragment;
 
 import static android.Manifest.permission.CAPTURE_AUDIO_OUTPUT;
-import static com.jacopomii.googledialermod.data.Constants.DIALER_CALLRECORDINGPROMPT;
 import static com.jacopomii.googledialermod.data.Constants.DIALER_ANDROID_PACKAGE_NAME;
+import static com.jacopomii.googledialermod.data.Constants.DIALER_CALLRECORDINGPROMPT;
 import static com.jacopomii.googledialermod.data.Constants.DIALER_PHENOTYPE_PACKAGE_NAME;
 import static com.jacopomii.googledialermod.data.Constants.GOOGLE_PLAY_BETA_LINK;
 import static com.jacopomii.googledialermod.data.Constants.GOOGLE_PLAY_DETAILS_LINK;
@@ -43,6 +43,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("FieldCanBeLocal")
@@ -52,7 +53,7 @@ public class SuggestedModsFragment extends Fragment {
     private ICoreRootService mCoreRootServiceIpc;
     private FileSystemManager mCoreRootServiceFSManager;
 
-    // The following boolean flags force enable Call Recording features in Dialer app
+    // The following boolean flags force-enable Call Recording features in Dialer app
     private final HashMap<String, Boolean> DIALER_ENABLE_CALL_RECORDING_FLAGS = new HashMap<String, Boolean>() {{
         // Enable Call Recording feature
         put("G__enable_call_recording", true);
@@ -88,7 +89,7 @@ public class SuggestedModsFragment extends Fragment {
     // Dialer versionCode 10681248 (94.x) is the last version in which we can silence call recording alerts. In newer versions Google patched our hack.
     private final int DIALER_SILENCE_CALL_RECORDING_ALERTS_MAX_VERSION = 10681248;
 
-    // The following boolean flags force enable Call Screen / Revelio features in Dialer app
+    // The following boolean flags force-enable Call Screen / Revelio features in Dialer app
     private final HashMap<String, Boolean> DIALER_ENABLE_CALL_SCREEN_FLAGS = new HashMap<String, Boolean>() {{
         // Enable Call Screen feature for both calls and video-calls
         put("G__speak_easy_enabled", true);
@@ -121,7 +122,17 @@ public class SuggestedModsFragment extends Fragment {
     // which matches the languages to be used for the Call Screen feature to the supported countries in Dialer app
     private final String DIALER_CALL_SCREEN_I18N_CONFIG_FLAG = "CallScreenI18n__call_screen_i18n_config";
 
-    // The following boolean flags force enable Message Organization (Super Sort) features in Messages app
+    // The following boolean flag force-enables debug menu in Messages app
+    private final HashMap<String, Boolean> MESSAGES_ENABLE_DEBUG_MENU_FLAGS = new HashMap<String, Boolean>() {{
+        put("bugle_phenotype__debug_menu_default_available", true);
+    }};
+
+    // The following boolean flag force-enables marking conversations as unread in Messages app
+    private final HashMap<String, Boolean> MESSAGES_ENABLE_MARKING_CONVERSATIONS_UNREAD_FLAGS = new HashMap<String, Boolean>() {{
+        put("bugle_phenotype__enable_mark_as_unread", true);
+    }};
+
+    // The following boolean flags force-enable Message Organization (Super Sort) features in Messages app
     private final HashMap<String, Boolean> MESSAGES_ENABLE_MESSAGE_ORGANIZATION_FLAGS = new HashMap<String, Boolean>() {{
         // Enable super sort
         put("bugle_phenotype__conversation_labels_enabled", true);
@@ -137,6 +148,60 @@ public class SuggestedModsFragment extends Fragment {
         put("bugle_phenotype__enable_supersort_annotators", true);
         // QPBC = Participant Based Quick Classification. I don't know how it works.
         put("bugle_phenotype__supersort_enable_qpbc", true);
+    }};
+
+    // The following boolean flag force-enables verified SMS settings menu in Messages app
+    private final HashMap<String, Boolean> MESSAGES_ENABLE_VERIFIED_SMS_FLAGS = new HashMap<String, Boolean>() {{
+        put("bugle_phenotype__enabled_verified_sms", true);
+    }};
+
+    // The following boolean flag force-enables sending images via GPhotos links in Messages app
+    private final HashMap<String, Boolean> MESSAGES_ENABLE_IMAGES_VIA_GPHOTOS_FLAGS = new HashMap<String, Boolean>() {{
+        put("bugle_phenotype__enable_google_photos_image_by_link", true);
+    }};
+
+    // The following boolean flags force-enable nudges and birthday reminders in Messages app
+    private final HashMap<String, Boolean> MESSAGES_ENABLE_NUDGES_FLAGS = new HashMap<String, Boolean>() {{
+        // Enable nudges and birthday reminders
+        put("bugle_phenotype__enable_nudge", true);
+        put("bugle_phenotype__enable_birthday_nudge", true);
+        put("bugle_phenotype__enable_birthday_suggestions", true);
+        // Enable banners
+        put("bugle_phenotype__enable_nudge_banner", true);
+        put("bugle_phenotype__enable_birthday_banner", true);
+        put("bugle_phenotype__enable_save_birthday_banner", true);
+        // Enable settings pages
+        put("bugle_phenotype__enable_birthday_nudge_setting", true);
+        put("bugle_phenotype__enable_birthday_banner_settings_button", true);
+        // Leave the settings menu lines separate
+        put("bugle_phenotype__combing_nudge_settings", false);
+    }};
+
+    // The following boolean flags force-enable spotlights suggestions settings menu in Messages app
+    private final HashMap<String, Boolean> MESSAGES_ENABLE_SPOTLIGHTS_FLAGS = new HashMap<String, Boolean>() {{
+        // Enable spotlights
+        put("bugle_phenotype__enable_spotlights", true);
+        // Enable spotlights settings page
+        put("bugle_phenotype__enable_spotlight_settings_page", true);
+        // Enable new settings page layout, otherwise it won't show up
+        put("bugle_phenotype__enable_smarts_settings_page_v2", true);
+        // Enable additional spotlights features
+        put("bugle_phenotype__enable_spotlights_google_search", true);
+    }};
+
+    // The following boolean flag force-enables smart compose (predictive writing) settings menu in Messages app
+    private final HashMap<String, Boolean> MESSAGES_ENABLE_SMART_COMPOSE_FLAGS = new HashMap<String, Boolean>() {{
+        put("bugle_phenotype__enable_smart_compose", true);
+    }};
+
+    // The following boolean flag force-enables smart actions (smart reply) in notifications in Messages app
+    private final HashMap<String, Boolean> MESSAGES_ENABLE_SMART_ACTIONS_IN_NOTIFICATIONS_FLAGS = new HashMap<String, Boolean>() {{
+        put("bugle_phenotype__enable_smart_actions_in_notifications", true);
+    }};
+
+    // The following boolean flag force-enables suggested stickers settings menu in Messages app
+    private final HashMap<String, Boolean> MESSAGES_ENABLE_SUGGESTED_STICKERS_FLAGS = new HashMap<String, Boolean>() {{
+        put("bugle_phenotype__sticker_suggestions_setting_enabled", true);
     }};
 
     public SuggestedModsFragment() {
@@ -172,21 +237,16 @@ public class SuggestedModsFragment extends Fragment {
             if (requireContext().getPackageManager().checkPermission(CAPTURE_AUDIO_OUTPUT, DIALER_ANDROID_PACKAGE_NAME) != PackageManager.PERMISSION_GRANTED)
                 mBinding.dialerPermissionAlert.setVisibility(View.VISIBLE);
 
-            // forceEnableCallRecordingSwitch
-            ProgrammaticMaterialSwitch forceEnableCallRecordingSwitch = mBinding.forceEnableCallRecordingCard.getSwitch();
-            boolean forceEnableCallRecordingSwitchChecked = false;
-            try {
-                forceEnableCallRecordingSwitchChecked = mCoreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(DIALER_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(DIALER_ENABLE_CALL_RECORDING_FLAGS.keySet()));
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-            forceEnableCallRecordingSwitch.setCheckedProgrammatically(forceEnableCallRecordingSwitchChecked);
-            forceEnableCallRecordingSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> dialerForceEnableCallRecording(isChecked));
-            forceEnableCallRecordingSwitch.setEnabled(true);
+            // dialerForceEnableCallRecordingSwitch
+            ProgrammaticMaterialSwitch dialerForceEnableCallRecordingSwitch = mBinding.dialerForceEnableCallRecording.getSwitch();
+            boolean dialerForceEnableCallRecordingSwitchChecked = modCheckAreAllFlagsOverridden(DIALER_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(DIALER_ENABLE_CALL_RECORDING_FLAGS.keySet()));
+            dialerForceEnableCallRecordingSwitch.setCheckedProgrammatically(dialerForceEnableCallRecordingSwitchChecked);
+            dialerForceEnableCallRecordingSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> modSetBooleanFlags(isChecked, DIALER_PHENOTYPE_PACKAGE_NAME, DIALER_ENABLE_CALL_RECORDING_FLAGS));
+            dialerForceEnableCallRecordingSwitch.setEnabled(true);
 
-            // silenceCallRecordingAlertsSwitch
-            ProgrammaticMaterialSwitch silenceCallRecordingAlertsSwitch = mBinding.silenceCallRecordingAlertsCard.getSwitch();
-            boolean mSilenceCallRecordingAlertsSwitchChecked = false;
+            // dialerSilenceCallRecordingAlertsSwitch
+            ProgrammaticMaterialSwitch dialerSilenceCallRecordingAlertsSwitch = mBinding.dialerSilenceCallRecordingAlerts.getSwitch();
+            boolean dialerSilenceCallRecordingAlertsSwitchChecked = false;
             try {
                 ExtendedFile startingVoiceFile = mCoreRootServiceFSManager.getFile(DIALER_CALLRECORDINGPROMPT, DIALER_CALLRECORDINGPROMPT_STARTING_VOICE_US);
                 ExtendedFile endingVoiceFile = mCoreRootServiceFSManager.getFile(DIALER_CALLRECORDINGPROMPT, DIALER_CALLRECORDINGPROMPT_STARTING_VOICE_US);
@@ -206,42 +266,36 @@ public class SuggestedModsFragment extends Fragment {
                     endingVoiceInputStream.close();
                     silentVoiceInputStream.close();
 
-                    mSilenceCallRecordingAlertsSwitchChecked = mCoreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(DIALER_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(DIALER_SILENCE_CALL_RECORDING_ALERTS_FLAGS.keySet())) &&
+                    dialerSilenceCallRecordingAlertsSwitchChecked = modCheckAreAllFlagsOverridden(DIALER_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(DIALER_SILENCE_CALL_RECORDING_ALERTS_FLAGS.keySet())) &&
                             isStartingVoiceSilenced && isEndingVoiceSilenced;
                 }
-            } catch (IOException | RemoteException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
             try {
-                // If Dialer version > SILENCE_CALL_RECORDING_ALERTS_MAX_VERSION the silenceCallRecordingAlertsSwitch must remain disabled
+                // If Dialer version > SILENCE_CALL_RECORDING_ALERTS_MAX_VERSION the dialerSilenceCallRecordingAlertsSwitch must remain disabled
                 if (requireContext().getPackageManager().getPackageInfo(DIALER_ANDROID_PACKAGE_NAME, 0).versionCode > DIALER_SILENCE_CALL_RECORDING_ALERTS_MAX_VERSION) {
-                    // If the silenceCallRecordingAlertsSwitch was enabled in previous versions of GoogleDialerMod, the silenceCallRecordingAlerts mod must be automatically disabled
-                    if (mSilenceCallRecordingAlertsSwitchChecked) {
+                    // If the dialerSilenceCallRecordingAlertsSwitch was enabled in previous versions of GoogleDialerMod, the silenceCallRecordingAlerts mod must be automatically disabled
+                    if (dialerSilenceCallRecordingAlertsSwitchChecked) {
                         dialerSilenceCallRecordingAlerts(false);
                     }
-                    // Otherwise, the silenceCallRecordingAlertsSwitch should be loaded as usual
+                    // Otherwise, the dialerSilenceCallRecordingAlertsSwitch should be loaded as usual
                 } else {
-                    silenceCallRecordingAlertsSwitch.setCheckedProgrammatically(mSilenceCallRecordingAlertsSwitchChecked);
-                    silenceCallRecordingAlertsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> dialerSilenceCallRecordingAlerts(isChecked));
-                    silenceCallRecordingAlertsSwitch.setEnabled(true);
+                    dialerSilenceCallRecordingAlertsSwitch.setCheckedProgrammatically(dialerSilenceCallRecordingAlertsSwitchChecked);
+                    dialerSilenceCallRecordingAlertsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> dialerSilenceCallRecordingAlerts(isChecked));
+                    dialerSilenceCallRecordingAlertsSwitch.setEnabled(true);
                 }
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
 
-            // forceEnableCallScreenSwitch
-            ProgrammaticMaterialSwitch forceEnableCallScreenSwitch = mBinding.forceEnableCallScreenCard.getSwitch();
-            boolean forceEnableCallScreenSwitchChecked = false;
-            try {
-                forceEnableCallScreenSwitchChecked = mCoreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(DIALER_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(DIALER_ENABLE_CALL_SCREEN_FLAGS.keySet())) &&
-                        mCoreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(DIALER_PHENOTYPE_PACKAGE_NAME, Collections.singletonList(DIALER_CALL_SCREEN_I18N_CONFIG_FLAG));
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-            forceEnableCallScreenSwitch.setCheckedProgrammatically(forceEnableCallScreenSwitchChecked);
-            forceEnableCallScreenSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> dialerForceEnableCallScreen(isChecked));
-            forceEnableCallScreenSwitch.setEnabled(true);
+            // dialerForceEnableCallScreenSwitch
+            ProgrammaticMaterialSwitch dialerForceEnableCallScreenSwitch = mBinding.dialerForceEnableCallScreen.getSwitch();
+            boolean dialerForceEnableCallScreenSwitchChecked = modCheckAreAllFlagsOverridden(DIALER_PHENOTYPE_PACKAGE_NAME, Collections.singletonList(DIALER_CALL_SCREEN_I18N_CONFIG_FLAG));
+            dialerForceEnableCallScreenSwitch.setCheckedProgrammatically(dialerForceEnableCallScreenSwitchChecked);
+            dialerForceEnableCallScreenSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> dialerForceEnableCallScreen(isChecked));
+            dialerForceEnableCallScreenSwitch.setEnabled(true);
         } catch (PackageManager.NameNotFoundException e) {
             mBinding.dialerNotInstalledAlert.setVisibility(View.VISIBLE);
         }
@@ -255,17 +309,75 @@ public class SuggestedModsFragment extends Fragment {
             // Check if application is installed
             requireContext().getPackageManager().getApplicationInfo(MESSAGES_ANDROID_PACKAGE_NAME, 0);
 
-            // forceEnableMessageOrganizationSwitch
-            ProgrammaticMaterialSwitch forceEnableMessageOrganizationSwitch = mBinding.forceEnableMessageOrganizationCard.getSwitch();
-            boolean forceEnableMessageOrganizationSwitchChecked = false;
-            try {
-                forceEnableMessageOrganizationSwitchChecked = mCoreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(MESSAGES_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(MESSAGES_ENABLE_MESSAGE_ORGANIZATION_FLAGS.keySet()));
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-            forceEnableMessageOrganizationSwitch.setCheckedProgrammatically(forceEnableMessageOrganizationSwitchChecked);
-            forceEnableMessageOrganizationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> messagesForceEnableMessageOrganization(isChecked));
-            forceEnableMessageOrganizationSwitch.setEnabled(true);
+            // messagesForceEnableDebugMenuSwitch
+            ProgrammaticMaterialSwitch messagesForceEnableDebugMenuSwitch = mBinding.messagesForceEnableDebugMenu.getSwitch();
+            boolean messagesForceEnableDebugMenuSwitchChecked = modCheckAreAllFlagsOverridden(MESSAGES_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(MESSAGES_ENABLE_DEBUG_MENU_FLAGS.keySet()));
+            messagesForceEnableDebugMenuSwitch.setCheckedProgrammatically(messagesForceEnableDebugMenuSwitchChecked);
+            messagesForceEnableDebugMenuSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> modSetBooleanFlags(isChecked, MESSAGES_PHENOTYPE_PACKAGE_NAME, MESSAGES_ENABLE_DEBUG_MENU_FLAGS));
+            messagesForceEnableDebugMenuSwitch.setEnabled(true);
+
+            // messagesForceEnableMarkingMessageThreadsUnreadSwitch
+            ProgrammaticMaterialSwitch messagesForceEnableMarkingMessageThreadsUnreadSwitch = mBinding.messagesForceEnableMarkingMessageThreadsUnread.getSwitch();
+            boolean messagesForceEnableMarkingMessageThreadsUnreadSwitchChecked = modCheckAreAllFlagsOverridden(MESSAGES_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(MESSAGES_ENABLE_MARKING_CONVERSATIONS_UNREAD_FLAGS.keySet()));
+            messagesForceEnableMarkingMessageThreadsUnreadSwitch.setCheckedProgrammatically(messagesForceEnableMarkingMessageThreadsUnreadSwitchChecked);
+            messagesForceEnableMarkingMessageThreadsUnreadSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> modSetBooleanFlags(isChecked, MESSAGES_PHENOTYPE_PACKAGE_NAME, MESSAGES_ENABLE_MARKING_CONVERSATIONS_UNREAD_FLAGS));
+            messagesForceEnableMarkingMessageThreadsUnreadSwitch.setEnabled(true);
+
+            // messagesForceEnableMessageOrganizationSwitch
+            ProgrammaticMaterialSwitch messagesForceEnableMessageOrganizationSwitch = mBinding.messagesForceEnableMessageOrganization.getSwitch();
+            boolean messagesForceEnableMessageOrganizationSwitchChecked = modCheckAreAllFlagsOverridden(MESSAGES_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(MESSAGES_ENABLE_MESSAGE_ORGANIZATION_FLAGS.keySet()));
+            messagesForceEnableMessageOrganizationSwitch.setCheckedProgrammatically(messagesForceEnableMessageOrganizationSwitchChecked);
+            messagesForceEnableMessageOrganizationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> modSetBooleanFlags(isChecked, MESSAGES_PHENOTYPE_PACKAGE_NAME, MESSAGES_ENABLE_MESSAGE_ORGANIZATION_FLAGS));
+            messagesForceEnableMessageOrganizationSwitch.setEnabled(true);
+
+            // messagesForceEnableVerifiedSmsSwitch
+            ProgrammaticMaterialSwitch messagesForceEnableVerifiedSmsSwitch = mBinding.messagesForceEnableVerifiedSms.getSwitch();
+            boolean messagesForceEnableVerifiedSmsSwitchChecked = modCheckAreAllFlagsOverridden(MESSAGES_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(MESSAGES_ENABLE_VERIFIED_SMS_FLAGS.keySet()));
+            messagesForceEnableVerifiedSmsSwitch.setCheckedProgrammatically(messagesForceEnableVerifiedSmsSwitchChecked);
+            messagesForceEnableVerifiedSmsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> modSetBooleanFlags(isChecked, MESSAGES_PHENOTYPE_PACKAGE_NAME, MESSAGES_ENABLE_VERIFIED_SMS_FLAGS));
+            messagesForceEnableVerifiedSmsSwitch.setEnabled(true);
+
+            // messagesForceEnableGphotosSwitch
+            ProgrammaticMaterialSwitch messagesForceEnableGphotosSwitch = mBinding.messagesForceEnableGphotos.getSwitch();
+            boolean messagesForceEnableGphotosSwitchChecked = modCheckAreAllFlagsOverridden(MESSAGES_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(MESSAGES_ENABLE_IMAGES_VIA_GPHOTOS_FLAGS.keySet()));
+            messagesForceEnableGphotosSwitch.setCheckedProgrammatically(messagesForceEnableGphotosSwitchChecked);
+            messagesForceEnableGphotosSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> modSetBooleanFlags(isChecked, MESSAGES_PHENOTYPE_PACKAGE_NAME, MESSAGES_ENABLE_IMAGES_VIA_GPHOTOS_FLAGS));
+            messagesForceEnableGphotosSwitch.setEnabled(true);
+
+            // messagesForceEnableNudgesSwitch
+            ProgrammaticMaterialSwitch messagesForceEnableNudgesSwitch = mBinding.messagesForceEnableNudges.getSwitch();
+            boolean messagesForceEnableNudgesSwitchChecked = modCheckAreAllFlagsOverridden(MESSAGES_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(MESSAGES_ENABLE_NUDGES_FLAGS.keySet()));
+            messagesForceEnableNudgesSwitch.setCheckedProgrammatically(messagesForceEnableNudgesSwitchChecked);
+            messagesForceEnableNudgesSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> modSetBooleanFlags(isChecked, MESSAGES_PHENOTYPE_PACKAGE_NAME, MESSAGES_ENABLE_NUDGES_FLAGS));
+            messagesForceEnableNudgesSwitch.setEnabled(true);
+
+            // messagesForceEnableSpotlightsSwitch
+            ProgrammaticMaterialSwitch messagesForceEnableSpotlightsSwitch = mBinding.messagesForceEnableSpotlights.getSwitch();
+            boolean messagesForceEnableSpotlightsSwitchChecked = modCheckAreAllFlagsOverridden(MESSAGES_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(MESSAGES_ENABLE_SPOTLIGHTS_FLAGS.keySet()));
+            messagesForceEnableSpotlightsSwitch.setCheckedProgrammatically(messagesForceEnableSpotlightsSwitchChecked);
+            messagesForceEnableSpotlightsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> modSetBooleanFlags(isChecked, MESSAGES_PHENOTYPE_PACKAGE_NAME, MESSAGES_ENABLE_SPOTLIGHTS_FLAGS));
+            messagesForceEnableSpotlightsSwitch.setEnabled(true);
+
+            // messagesForceEnableSmartComposeSwitch
+            ProgrammaticMaterialSwitch messagesForceEnableSmartComposeSwitch = mBinding.messagesForceEnableSmartCompose.getSwitch();
+            boolean messagesForceEnableSmartComposeSwitchChecked = modCheckAreAllFlagsOverridden(MESSAGES_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(MESSAGES_ENABLE_SMART_COMPOSE_FLAGS.keySet()));
+            messagesForceEnableSmartComposeSwitch.setCheckedProgrammatically(messagesForceEnableSmartComposeSwitchChecked);
+            messagesForceEnableSmartComposeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> modSetBooleanFlags(isChecked, MESSAGES_PHENOTYPE_PACKAGE_NAME, MESSAGES_ENABLE_SMART_COMPOSE_FLAGS));
+            messagesForceEnableSmartComposeSwitch.setEnabled(true);
+
+            // messagesForceEnableSmartActionsInNotificationsSwitch
+            ProgrammaticMaterialSwitch messagesForceEnableSmartActionsInNotificationsSwitch = mBinding.messagesForceEnableSmartActionsInNotifications.getSwitch();
+            boolean messagesForceEnableSmartActionsInNotificationsSwitchChecked = modCheckAreAllFlagsOverridden(MESSAGES_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(MESSAGES_ENABLE_SMART_ACTIONS_IN_NOTIFICATIONS_FLAGS.keySet()));
+            messagesForceEnableSmartActionsInNotificationsSwitch.setCheckedProgrammatically(messagesForceEnableSmartActionsInNotificationsSwitchChecked);
+            messagesForceEnableSmartActionsInNotificationsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> modSetBooleanFlags(isChecked, MESSAGES_PHENOTYPE_PACKAGE_NAME, MESSAGES_ENABLE_SMART_ACTIONS_IN_NOTIFICATIONS_FLAGS));
+            messagesForceEnableSmartActionsInNotificationsSwitch.setEnabled(true);
+
+            // messagesForceEnableSuggestedStickersSwitch
+            ProgrammaticMaterialSwitch messagesForceEnableSuggestedStickersSwitch = mBinding.messagesForceEnableSuggestedStickers.getSwitch();
+            boolean messagesForceEnableSuggestedStickersSwitchChecked = modCheckAreAllFlagsOverridden(MESSAGES_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(MESSAGES_ENABLE_SUGGESTED_STICKERS_FLAGS.keySet()));
+            messagesForceEnableSuggestedStickersSwitch.setCheckedProgrammatically(messagesForceEnableSuggestedStickersSwitchChecked);
+            messagesForceEnableSuggestedStickersSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> modSetBooleanFlags(isChecked, MESSAGES_PHENOTYPE_PACKAGE_NAME, MESSAGES_ENABLE_SUGGESTED_STICKERS_FLAGS));
+            messagesForceEnableSuggestedStickersSwitch.setEnabled(true);
         } catch (PackageManager.NameNotFoundException e) {
             mBinding.messagesNotInstalledAlert.setVisibility(View.VISIBLE);
         }
@@ -273,34 +385,57 @@ public class SuggestedModsFragment extends Fragment {
         return mBinding.getRoot();
     }
 
-    private void dialerForceEnableCallRecording(boolean enableMod) {
+    private boolean modCheckAreAllFlagsOverridden(String phenotypePackageName, List<String> flags) {
+        try {
+            return mCoreRootServiceIpc.phenotypeDBAreAllFlagsOverridden(phenotypePackageName, flags);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private void modSetBooleanFlags(boolean enableMod, String phenotypePackageName, HashMap<String, Boolean> flags) {
         if (enableMod) {
-            for (Map.Entry<String, Boolean> entry : DIALER_ENABLE_CALL_RECORDING_FLAGS.entrySet()) {
+            for (Map.Entry<String, Boolean> flag : flags.entrySet()) {
                 try {
-                    mCoreRootServiceIpc.phenotypeDBOverrideBooleanFlag(DIALER_PHENOTYPE_PACKAGE_NAME, entry.getKey(), entry.getValue());
+                    mCoreRootServiceIpc.phenotypeDBOverrideBooleanFlag(phenotypePackageName, flag.getKey(), flag.getValue());
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
             }
         } else {
-            // Delete flag overrides
-            try {
-                mCoreRootServiceIpc.phenotypeDBDeleteFlagOverrides(DIALER_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(DIALER_ENABLE_CALL_RECORDING_FLAGS.keySet()));
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
+            modDeleteFlagOverrides(phenotypePackageName, new ArrayList<>(flags.keySet()));
         }
     }
 
-    private void dialerSilenceCallRecordingAlerts(boolean enableMod) {
+    private void modSetStringFlags(boolean enableMod, String phenotypePackageName, HashMap<String, String> flags) {
         if (enableMod) {
-            for (Map.Entry<String, String> entry : DIALER_SILENCE_CALL_RECORDING_ALERTS_FLAGS.entrySet()) {
+            for (Map.Entry<String, String> flag : flags.entrySet()) {
                 try {
-                    mCoreRootServiceIpc.phenotypeDBOverrideStringFlag(DIALER_PHENOTYPE_PACKAGE_NAME, entry.getKey(), entry.getValue());
+                    mCoreRootServiceIpc.phenotypeDBOverrideStringFlag(phenotypePackageName, flag.getKey(), flag.getValue());
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
             }
+        } else {
+            modDeleteFlagOverrides(phenotypePackageName, new ArrayList<>(flags.keySet()));
+        }
+    }
+
+    private void modDeleteFlagOverrides(String phenotypePackageName, List<String> flags) {
+        try {
+            mCoreRootServiceIpc.phenotypeDBDeleteFlagOverrides(phenotypePackageName, flags);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void dialerSilenceCallRecordingAlerts(boolean enableMod) {
+        // Set flags (or delete overrides)
+        modSetStringFlags(enableMod, DIALER_PHENOTYPE_PACKAGE_NAME, DIALER_SILENCE_CALL_RECORDING_ALERTS_FLAGS);
+
+        // Apply additional mods
+        if (enableMod) {
             try {
                 // Create CALLRECORDINGPROMPT folder
                 ExtendedFile callRecordingPromptDir = mCoreRootServiceFSManager.getFile(DIALER_CALLRECORDINGPROMPT);
@@ -324,12 +459,6 @@ public class SuggestedModsFragment extends Fragment {
                 e.printStackTrace();
             }
         } else {
-            // Delete flag overrides
-            try {
-                mCoreRootServiceIpc.phenotypeDBDeleteFlagOverrides(DIALER_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(DIALER_SILENCE_CALL_RECORDING_ALERTS_FLAGS.keySet()));
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
             // Delete callrecordingprompt folder
             ExtendedFile callRecordingPromptFolder = mCoreRootServiceFSManager.getFile(DIALER_CALLRECORDINGPROMPT);
             if (callRecordingPromptFolder.exists()) {
@@ -349,15 +478,9 @@ public class SuggestedModsFragment extends Fragment {
                     .setSingleChoiceItems(supportedLanguages, chosenLanguageIndex[0], (dialog, which) -> chosenLanguageIndex[0] = which)
                     .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                         // Update boolean flags
-                        for (Map.Entry<String, Boolean> entry : DIALER_ENABLE_CALL_SCREEN_FLAGS.entrySet()) {
-                            try {
-                                mCoreRootServiceIpc.phenotypeDBOverrideBooleanFlag(DIALER_PHENOTYPE_PACKAGE_NAME, entry.getKey(), entry.getValue());
-                            } catch (RemoteException e) {
-                                e.printStackTrace();
-                            }
-                        }
+                        modSetBooleanFlags(true, DIALER_PHENOTYPE_PACKAGE_NAME, DIALER_ENABLE_CALL_SCREEN_FLAGS);
 
-                        // Override the call screen i18n config flag with the user desired language
+                        // Override the call screen i18n config extension flag with the user desired language
                         TelephonyManager telephonyManager = (TelephonyManager) requireActivity().getSystemService(Context.TELEPHONY_SERVICE);
                         String simCountryIso = telephonyManager.getSimCountryIso();
 
@@ -386,39 +509,12 @@ public class SuggestedModsFragment extends Fragment {
                         }
                     })
                     .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
-                    .setOnCancelListener(dialog -> mBinding.forceEnableCallScreenCard.getSwitch().setCheckedProgrammatically(false))
+                    .setOnCancelListener(dialog -> mBinding.dialerForceEnableCallScreen.getSwitch().setCheckedProgrammatically(false))
                     .show();
         } else {
             // Delete flag overrides
-            try {
-                mCoreRootServiceIpc.phenotypeDBDeleteFlagOverrides(DIALER_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(DIALER_ENABLE_CALL_SCREEN_FLAGS.keySet()));
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-            try {
-                mCoreRootServiceIpc.phenotypeDBDeleteFlagOverrides(DIALER_PHENOTYPE_PACKAGE_NAME, Collections.singletonList(DIALER_CALL_SCREEN_I18N_CONFIG_FLAG));
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void messagesForceEnableMessageOrganization(boolean enableMod) {
-        if (enableMod) {
-            for (Map.Entry<String, Boolean> entry : MESSAGES_ENABLE_MESSAGE_ORGANIZATION_FLAGS.entrySet()) {
-                try {
-                    mCoreRootServiceIpc.phenotypeDBOverrideBooleanFlag(MESSAGES_PHENOTYPE_PACKAGE_NAME, entry.getKey(), entry.getValue());
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            // Delete flag overrides
-            try {
-                mCoreRootServiceIpc.phenotypeDBDeleteFlagOverrides(MESSAGES_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(MESSAGES_ENABLE_MESSAGE_ORGANIZATION_FLAGS.keySet()));
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
+            modDeleteFlagOverrides(DIALER_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(DIALER_ENABLE_CALL_SCREEN_FLAGS.keySet()));
+            modDeleteFlagOverrides(DIALER_PHENOTYPE_PACKAGE_NAME, Collections.singletonList(DIALER_CALL_SCREEN_I18N_CONFIG_FLAG));
         }
     }
 }

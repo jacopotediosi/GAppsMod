@@ -2,6 +2,7 @@
     <!-- GApp names, taken from https://play.google.com/store/apps/details?id=PACKAGE_NAME&hl=fr -->
     <string name="dialer_app_name">Téléphone de Google</string>
     <string name="messages_app_name">Messages par Google</string>
+    <string name="photos_app_name">Google Photos</string>
 
     <!-- Common -->
     <string name="all">Tout</string>
@@ -34,11 +35,22 @@
     <string name="splash_screen_updates">Vérification des mises à jour…</string>
 
     <!-- Suggested mods -->
+    <!-- Dialer -->
     <string name="choose_a_language_for_call_screen">Choisissez une langue pour le filtrage d\'appels</string>
-    <string name="force_enable_call_screen">Forcer l\'activation du filtrage d\'appels</string>
     <string name="force_enable_call_recording">Forcer l\’activation de l\’enregistrement des appels</string>
+    <string name="force_enable_call_screen">Forcer l\'activation du filtrage d\'appels (call screen)</string>
     <string name="silence_call_recording_alerts">Mettre sous silence les alertes d\’enregistrement des appels (${dialer_app_name} &lt;= 94.x uniquement)</string>
-    <string name="force_enable_message_organization">Forcer l\'activation de l\'organisation des messages</string>
+    <!-- Messages -->
+    <string name="force_enable_debug_menu">Forcer l\'activation du menu de débogage</string>
+    <string name="force_enable_images_via_gphotos">Forcer l\'activation de l\'envoi d\'images via ${photos_app_name}</string>
+    <string name="force_enable_marking_conversations_as_unread">Forcer l\'activation du marquage des conversations comme non lues</string>
+    <string name="force_enable_message_organization">Forcer l\'activation de l\'organisation des messages (supersort)</string>
+    <string name="force_enable_nudges_and_birthdays">Forcer l\'activation des rappels automatiques des messages (nudges)</string>
+    <string name="force_enable_smart_actions_in_notifications">Forcer l\'activation des actions intelligentes (smart reply) dans les notifications</string>
+    <string name="force_enable_smart_compose_settings_menu">Forcer l\'activation du menu des paramètres de rédaction intelligente (smart compose)</string>
+    <string name="force_enable_spotlights">Forcer l\'activation du menu de paramétrage des suggestions d\'infos pratiques (spotlights)</string>
+    <string name="force_enable_suggested_stickers_settings_menu">Forcer l\'activation du menu des paramètres d\'autocollants suggérés</string>
+    <string name="force_enable_verified_sms">Forcer l\'activation du menu des paramètres SMS vérifiés</string>
 
     <!-- Revert mods -->
     <string name="revert_all_mods_alert">Voulez-vous vraiment annuler tous les mods appliqués par ${app_name}?</string>
