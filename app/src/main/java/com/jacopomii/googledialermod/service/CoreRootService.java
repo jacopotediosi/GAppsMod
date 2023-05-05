@@ -158,11 +158,11 @@ public class CoreRootService extends RootService {
 
         String sql = "SELECT DISTINCT name,boolVal " +
                 "FROM Flags " +
-                "WHERE packageName=? AND name NOT IN (SELECT name FROM FlagOverrides) AND user='' AND boolVal!='NULL' " +
+                "WHERE packageName=? AND name NOT IN (SELECT name FROM FlagOverrides WHERE packageName=?) AND user='' AND boolVal!='NULL' " +
                 "UNION ALL " +
                 "SELECT DISTINCT name,boolVal FROM FlagOverrides " +
                 "WHERE packageName=? AND user='' AND boolVal!='NULL'";
-        String[] selectionArgs = {phenotypePackageName, phenotypePackageName};
+        String[] selectionArgs = {phenotypePackageName, phenotypePackageName, phenotypePackageName};
 
         try (Cursor cursor = phenotypeDB.rawQuery(sql, selectionArgs)) {
             while (cursor.moveToNext())
