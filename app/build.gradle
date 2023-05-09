@@ -36,7 +36,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    compileSdk 33
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "com.jacopomii.googledialermod"
