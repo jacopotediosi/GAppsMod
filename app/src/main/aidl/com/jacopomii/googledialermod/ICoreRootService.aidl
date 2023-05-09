@@ -11,6 +11,13 @@ interface ICoreRootService {
     Map phenotypeDBGetAllPackageNames();
 
     /**
+    * Query the Phenotype DB to get a list of all package names that have at least one Flag overridden.
+    *
+    * @return a {@code HashMap} in the format "Phenotype package name" => "Android package name".
+    */
+    Map phenotypeDBGetAllOverriddenPackageNames();
+
+    /**
      * Query the Phenotype DB to get the android package name corresponding to a given {@code phenotypePackageName}.
      *
      * @param phenotypePackageName the Phenotype package name for which the corresponding Android package name is to be returned.
@@ -37,7 +44,7 @@ interface ICoreRootService {
 
     /**
      * Remove all flag overrides from the Phenotype DB by truncating the FlagOverrides table.
-     * It also clears from the filesystem the Phenotype cache of all applications for which a suggested mod exists.
+     * It also clears from the filesystem the Phenotype cache of all applications for which at least one flag was overridden.
      */
     void phenotypeDBDeleteAllFlagOverrides();
 

@@ -1,8 +1,6 @@
 package com.jacopomii.googledialermod.service;
 
 import static com.jacopomii.googledialermod.data.Constants.DATA_DATA_PREFIX;
-import static com.jacopomii.googledialermod.data.Constants.DIALER_PHENOTYPE_PACKAGE_NAME;
-import static com.jacopomii.googledialermod.data.Constants.MESSAGES_PHENOTYPE_PACKAGE_NAME;
 import static com.jacopomii.googledialermod.data.Constants.PHENOTYPE_DB;
 import static com.jacopomii.googledialermod.util.Utils.createInQueryString;
 import static org.sqlite.database.sqlite.SQLiteDatabase.OPEN_READWRITE;
@@ -31,6 +29,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @SuppressWarnings("SameParameterValue")
 public class CoreRootService extends RootService {
@@ -74,6 +73,11 @@ public class CoreRootService extends RootService {
         @Override
         public Map<String, String> phenotypeDBGetAllPackageNames() {
             return CoreRootService.this.phenotypeDBGetAllPackageNames();
+        }
+
+        @Override
+        public Map<String, String> phenotypeDBGetAllOverriddenPackageNames() {
+            return CoreRootService.this.phenotypeDBGetAllOverriddenPackageNames();
         }
 
         @Override
@@ -123,7 +127,7 @@ public class CoreRootService extends RootService {
     }
 
 
-    public Map<String, String> phenotypeDBGetAllPackageNames() {
+    private Map<String, String> phenotypeDBGetAllPackageNames() {
         HashMap<String, String> map = new HashMap<>();
 
         String sql = "SELECT Flags.packageName as phenotypePackageName, Packages.androidPackageName " +
@@ -140,7 +144,24 @@ public class CoreRootService extends RootService {
         return map;
     }
 
-    public String phenotypeDBGetAndroidPackageNameByPhenotypePackageName(String phenotypePackageName) {
+    private Map<String, String> phenotypeDBGetAllOverriddenPackageNames() {
+        HashMap<String, String> map = new HashMap<>();
+
+        String sql = "SELECT FlagOverrides.packageName as phenotypePackageName, Packages.androidPackageName " +
+                "FROM FlagOverrides, Packages " +
+                "WHERE phenotypePackageName=Packages.packageName " +
+                "GROUP BY phenotypePackageName " +
+                "ORDER BY phenotypePackageName ASC";
+
+        try (Cursor cursor = phenotypeDB.rawQuery(sql, null)) {
+            while (cursor.moveToNext())
+                map.put(cursor.getString(0), cursor.getString(1));
+        }
+
+        return map;
+    }
+
+    private String phenotypeDBGetAndroidPackageNameByPhenotypePackageName(String phenotypePackageName) {
         String androidPackageName = "";
 
         String sql = "SELECT androidPackageName FROM Packages WHERE packageName=? LIMIT 1";
@@ -187,11 +208,16 @@ public class CoreRootService extends RootService {
         return areAllFlagsOverridden;
     }
 
-    private void phenotypeDBDeleteAllFlagOverrides(boolean deleteSuggestedPackagesPhenotypeCache) {
+    private void phenotypeDBDeleteAllFlagOverrides(boolean deletePackagePhenotypeCache) {
+        Set<String> overriddenPhenotypePackageNames = phenotypeDBGetAllOverriddenPackageNames().keySet();
+
         phenotypeDB.delete("FlagOverrides", null, null);
 
-        if (deleteSuggestedPackagesPhenotypeCache)
-            killSuggestedPackagesAndDeletePhenotypeCaches();
+        if (deletePackagePhenotypeCache) {
+            for (String phenotypePackageName : overriddenPhenotypePackageNames) {
+                killPackageAndDeletePhenotypeCache(phenotypePackageName);
+            }
+        }
     }
 
     private void phenotypeDBDeleteAllFlagOverridesByPhenotypePackageName(String phenotypePackageName, boolean deletePackagePhenotypeCache) {
@@ -292,13 +318,6 @@ public class CoreRootService extends RootService {
             } catch (IOException | IllegalArgumentException e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    private void killSuggestedPackagesAndDeletePhenotypeCaches() {
-        String[] suggestedPhenotypePackageNames = {DIALER_PHENOTYPE_PACKAGE_NAME, MESSAGES_PHENOTYPE_PACKAGE_NAME};
-        for (String phenotypePackageName : suggestedPhenotypePackageNames) {
-            killPackageAndDeletePhenotypeCache(phenotypePackageName);
         }
     }
 }
