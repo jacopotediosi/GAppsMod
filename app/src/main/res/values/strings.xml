@@ -4,7 +4,7 @@
 
     <!-- Github and links -->
     <string name="github" translatable="false">Github</string>
-    <string name="github_api_link" translatable="false">https://api.github.com/repos/jacopotediosi/GoogleDialerMod</string>
+    <string name="github_api_link" translatable="false">https://api.github.com/repos/jacopotediosi/GAppsMod</string>
     <string name="github_link" translatable="false">https://github.com/jacopotediosi/GoogleDialerMod</string>
 
     <!-- GApp names, taken from https://play.google.com/store/apps/details?id=PACKAGE_NAME&hl=en -->
