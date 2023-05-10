@@ -26,7 +26,6 @@ public class InformationFragment extends Fragment {
         mBinding = FragmentInformationBinding.inflate(getLayoutInflater());
 
         // Links aren't clickable workaround
-        mBinding.whatIsItExplanationBeta.setMovementMethod(LinkMovementMethod.getInstance());
         mBinding.madeWithLoveByJacopoTediosi.setMovementMethod(LinkMovementMethod.getInstance());
 
         return mBinding.getRoot();

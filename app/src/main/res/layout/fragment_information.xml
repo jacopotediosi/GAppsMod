@@ -23,19 +23,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:justificationMode="inter_word"
-            android:paddingBottom="@dimen/l_75"
-            android:text="@string/what_is_it_explanation"
-            android:textAlignment="viewStart"
-            tools:ignore="VisualLintLongText"
-            tools:targetApi="o" />
-
-        <TextView
-            android:id="@+id/what_is_it_explanation_beta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:justificationMode="inter_word"
             android:paddingBottom="@dimen/l1"
-            android:text="@string/what_is_it_explanation_beta"
+            android:text="@string/what_is_it_explanation"
             android:textAlignment="viewStart"
             tools:ignore="VisualLintLongText"
             tools:targetApi="o" />
@@ -88,7 +77,7 @@
             android:id="@+id/made_with_love_by_jacopo_tediosi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/made_with_love_by_jacopo_tediosi"
+            android:text="@string/made_with_love_by"
             android:textAlignment="viewStart" />
 
     </LinearLayout>

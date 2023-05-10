@@ -74,12 +74,11 @@
     <!-- Information -->
     <string name="credits">Credits</string>
     <string name="how_it_works">How it works</string>
-    <string name="how_it_works_explanation">The patches applied by ${app_name} survive the updates of application ${dialer_app_name} over time, even after uninstalling the app.\nMods are therefore to be considered permanent, but they can be easily reverted using the \"${revert_mods}\" feature.\nThere is no need to keep this app installed after applying the desired changes.\n\nAfter applying changes, you may need to forcibly reopen and close the ${dialer_app_name} app a couple of times before they take effect.</string>
-    <string name="if_bug_found_open_github_issue">If you think you\'ve found any bugs please open an issue on Github</string>
-    <string name="made_with_love_by_jacopo_tediosi">Made with ❤ by <a href="https://github.com/jacopotediosi">Jacopo Tediosi</a></string>
+    <string name="how_it_works_explanation">The patches applied by ${app_name} survive Google Apps updates over time, even after uninstalling and reinstalling them.\nMods are therefore to be considered permanent, but they can be easily reverted from the \"${revert_mods}\" section of the sidebar menu.\nThere is no need to keep this app installed after applying the desired mods.\n\nAfter applying changes, you may have to force close and reopen the Google app you are trying to mod a few times before they take effect.</string>
+    <string name="if_bug_found_open_github_issue">If you think you\'ve found any bugs please open an issue on Github:</string>
+    <string name="made_with_love_by">Made with ❤ by <a href="https://github.com/jacopotediosi">Jacopo Tediosi</a> (and other amazing contributors)</string>
     <string name="what_is_app_name">What is ${app_name}</string>
-    <string name="what_is_it_explanation">${app_name} is an app that allows, using root privileges, to modify the values contained in the Google Play Services "Phenotype" database, thus altering the behavior of the ${dialer_app_name} app to unlock experimental or blocked features in some countries.</string>
-    <string name="what_is_it_explanation_beta">Always make sure you are using the <a href="https://play.google.com/store/apps/details?id=com.google.android.dialer">latest Dialer beta version available on the Play Store</a>, to take advantage of the latest features.</string>
+    <string name="what_is_it_explanation">${app_name} is an app that allows, using root privileges, to modify the values contained in "Phenotype" database of Google Play Services, thus altering the behavior of Google Apps (such as {$dialer_app_name} and {$messages_app_name}) to unlock experimental features or features that are only available in certain countries or devices.</string>
 
     <!-- Warning and error messages -->
     <string name="an_error_has_occurred">An error has occurred</string>

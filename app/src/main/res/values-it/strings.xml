@@ -64,12 +64,11 @@
     <!-- Information -->
     <string name="credits">Crediti</string>
     <string name="how_it_works">Come funziona</string>
-    <string name="how_it_works_explanation">Le patch applicate da ${app_name} resistono nel tempo agli aggiornamenti dell\'applicazione ${dialer_app_name}, anche dopo la disinstallazione dell\'app.\nTali modifiche sono da considerarsi quindi permanenti, ma si possono facilmente annullare premendo tramite la funzione \"${revert_mods}\".\nNon è necessario tenere installata questa app dopo aver applicato le mod desiderate.\n\nDopo aver applicato modifiche, potrebbe essere necessario riaprire e chiudere forzatamente un paio di volte l\'app ${dialer_app_name} prima che abbiano effetto.</string>
-    <string name="if_bug_found_open_github_issue">Se credi di aver trovato dei bug per favore apri una issue su Github</string>
-    <string name="made_with_love_by_jacopo_tediosi">Creato con ❤ da <a href="https://github.com/jacopotediosi">Jacopo Tediosi</a></string>
+    <string name="how_it_works_explanation">Le mod applicate da ${app_name} resistono nel tempo agli aggiornamenti delle applicazioni Google, anche dopo la una loro eventuale disinstallazione e reinstallazione.\nTali modifiche sono da considerarsi quindi permanenti, ma si possono facilmente annullare tramite la sezione \"${revert_mods}\" del menù laterale.\nNon è necessario tenere installata questa app dopo aver applicato le mod desiderate.\n\nDopo aver apportato cambiamenti, prima che abbiano effetto, potrebbe essere necessario chiudere forzatamente e riaprire un paio di volte l\'app che si sta cercando di modificare.</string>
+    <string name="if_bug_found_open_github_issue">Se credi di aver trovato dei bug per favore apri una issue su Github:</string>
+    <string name="made_with_love_by">Creato con ❤ da <a href="https://github.com/jacopotediosi">Jacopo Tediosi</a> (e altri fantastici collaboratori)</string>
     <string name="what_is_app_name">Che cos\'è ${app_name}</string>
-    <string name="what_is_it_explanation">${app_name} è una app che permette, sfruttando i privilegi di root, di modificare i valori contenuti nel database "Phenotype" di Google Play Services, alterando così il comportamento dell\'app ${dialer_app_name} per sbloccarne funzionalità sperimentali o bloccate in alcuni stati.</string>
-    <string name="what_is_it_explanation_beta">Assicurati sempre di star utilizzando <a href="https://play.google.com/store/apps/details?id=com.google.android.dialer">l\'ultima beta del Dialer disponibile sul Play Store</a>, per usufruire delle più recenti funzioni.</string>
+    <string name="what_is_it_explanation">${app_name} è una app che permette, sfruttando i privilegi di root, di modificare i valori contenuti nel database "Phenotype" di Google Play Services, alterando così il comportamento delle applicazioni Google (come ad esempio {$dialer_app_name} e {$messages_app_name}) per sbloccarne funzionalità sperimentali o disponibili solo per alcuni stati o dispositivi.</string>
 
     <!-- Warning and error messages -->
     <string name="an_error_has_occurred">Si è verificato un errore</string>

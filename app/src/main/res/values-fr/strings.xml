@@ -64,12 +64,12 @@
     <!-- Information -->
     <string name="credits">Crédits</string>
     <string name="how_it_works">Comment ça fonctionne</string>
-    <string name="how_it_works_explanation">Le correctif appliqué par ${app_name} survivent aux mises à jour de l\'application ${dialer_app_name} au fil du temps, même après avoir désinstallé l\application.\nLes correctifs sont donc considérés comme étants permanents, mais ils peuvent être facilement annulés à l\'aide du \"${revert_mods}\" fonctionnalité.\nIl n\’y a pas de nécessitée à conserver cette application installée après avoir appliqué les changements désirés.\n\nAprès avoir appliqué les changements, il est tout à fait possible que vous soyez forcer de réouvrir et fermer l\’application ${dialer_app_name} à plusieures reprises avant que ceux-ci ne prennent effet.</string>
-    <string name="if_bug_found_open_github_issue">Si vous pensez avoir trouver un bug, veuillez ouvrir un ticket sur Github.</string>
-    <string name="made_with_love_by_jacopo_tediosi">Fait avec ❤ par <a href="https://github.com/jacopotediosi">Jacopo Tediosi</a></string>
+    <string name="how_it_works_explanation">Le modifications appliquées par ${app_name} résistent dans le temps aux mises à jour des applications Google, même après une éventuelle désinstallation et réinstallation de celles-ci.\nCes modifications doivent donc être considérées comme permanentes, mais elles peuvent facilement être annulées via la section "${revert_mods}" du menu latéral.\nIl n\'est pas nécessaire de conserver cette application installée après avoir appliqué les modifications souhaitées.\n\nAprès avoir effectué des changements, il pourrait être nécessaire de forcer la fermeture et la réouverture de l\'application que vous essayez de modifier plusieurs fois avant que les modifications ne prennent effet.</string>
+    <string name="if_bug_found_open_github_issue">Si vous pensez avoir trouver un bug, veuillez ouvrir un ticket sur Github:</string>
+    <string name="made_with_love_by">Fait avec ❤ par <a href="https://github.com/jacopotediosi">Jacopo Tediosi</a> (et d\'autres super contributeurs)</string>
     <string name="what_is_app_name">Qu\'est-ce que ${app_name}</string>
-    <string name="what_is_it_explanation">${app_name} est une application qui autorise, en utilisant les privilèges d\’accès à la racine, de modifier les valeures présentes dans la base de données "Phenotype" des Services Google Play, modifiant ainsi le comportement de l\’application ${dialer_app_name} pour débloquer des fonctionnalités expérimentales ou bloquées dans certains pays.</string>
-    <string name="what_is_it_explanation_beta">Soyez sûr d’utiliser le <a href="https://play.google.com/store/apps/details?id=com.google.android.dialer"> dernière version Beta du Téléphone disponible sur le Play Store</a>, pour obtenir les avantages des dernières fonctionnalités.</string>
+    <string name="what_is_it_explanation">${app_name} est une application qui permet, en utilisant les privilèges de root, de modifier les valeurs contenues dans la base de données "Phenotype" de Google Play Services, modifiant ainsi le comportement des applications Google (comme par exemple {$dialer_app_name} et {$messages_app_name}) pour débloquer des fonctionnalités expérimentales ou disponibles uniquement dans certains pays ou appareils.</string>
+
 
     <!-- Warning and error messages -->
     <string name="an_error_has_occurred">Une erreur est survenue</string>
