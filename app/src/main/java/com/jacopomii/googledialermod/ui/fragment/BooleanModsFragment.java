@@ -1,5 +1,7 @@
 package com.jacopomii.googledialermod.ui.fragment;
 
+import static com.jacopomii.googledialermod.util.Utils.showSelectPackageDialog;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,23 +16,18 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.jacopomii.googledialermod.ICoreRootService;
 import com.jacopomii.googledialermod.R;
-import com.jacopomii.googledialermod.databinding.DialogSelectPackageBinding;
 import com.jacopomii.googledialermod.databinding.FragmentBooleanModsBinding;
 import com.jacopomii.googledialermod.ui.activity.MainActivity;
 import com.jacopomii.googledialermod.ui.adapter.BooleanModsRecyclerViewAdapter;
-import com.jacopomii.googledialermod.ui.adapter.SelectPackageRecyclerViewAdapter;
 import com.l4digital.fastscroll.FastScrollRecyclerView;
 
 import org.json.JSONException;
@@ -70,76 +67,18 @@ public class BooleanModsFragment extends Fragment {
         // Select package
         TextView selectPackage = mBinding.selectPackage;
 
-        // Select package OnClick
+        // Select package onClick
         selectPackage.setOnClickListener(v -> {
-            // Dialog builder
-            MaterialAlertDialogBuilder selectPackageDialogBuilder = new MaterialAlertDialogBuilder(requireContext());
+            showSelectPackageDialog(getContext(), mCoreRootServiceIpc, item -> {
+                // Select package dialog onItemClickListener
+                // The item received by the listener here is the Phenotype package name chosen by the user
 
-            // Inflate dialog layout
-            DialogSelectPackageBinding dialogSelectPackageBinding = DialogSelectPackageBinding.inflate(getLayoutInflater());
-            selectPackageDialogBuilder.setView(dialogSelectPackageBinding.getRoot());
+                // Update the select package textview
+                selectPackage.setText((String) item);
 
-            // Create dialog
-            AlertDialog selectPackageDialog = selectPackageDialogBuilder.create();
-
-            // Set dialog custom height and width
-            selectPackageDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-
-            // Dialog components
-            SearchView selectPackageSearchView = dialogSelectPackageBinding.searchview;
-            FastScrollRecyclerView selectPackageRecyclerView = dialogSelectPackageBinding.recyclerview;
-
-            // Initialize the dialog adapter
-            SelectPackageRecyclerViewAdapter selectPackageRecyclerViewAdapter = new SelectPackageRecyclerViewAdapter(
-                    getContext(),
-                    mCoreRootServiceIpc,
-                    item -> {
-                        // Dialog onItemClickListener
-                        // The item received by the listener here is the Phenotype package name chosen by the user
-
-                        // Update the select package textview
-                        selectPackage.setText((String) item);
-
-                        // Update the selectPackageRecyclerView adapter
-                        mFlagsRecyclerViewAdapter.selectPhenotypePackageName((String) item);
-
-                        // Dismiss dialog
-                        selectPackageDialog.dismiss();
-                    });
-
-            // Disable fast scroll if the selectPackageRecyclerView is empty or changes to empty
-            selectPackageRecyclerView.setFastScrollEnabled(selectPackageRecyclerViewAdapter.getItemCount() != 0);
-            selectPackageRecyclerViewAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-                @Override
-                public void onChanged() {
-                    super.onChanged();
-                    selectPackageRecyclerView.setFastScrollEnabled(selectPackageRecyclerViewAdapter.getItemCount() != 0);
-                }
+                // Update the selectPackageRecyclerView adapter
+                mFlagsRecyclerViewAdapter.selectPhenotypePackageName((String) item);
             });
-
-            // Set the dialog selectPackageRecyclerView LayoutManager and Adapter
-            selectPackageRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            selectPackageRecyclerView.setAdapter(selectPackageRecyclerViewAdapter);
-
-            // Add list dividers to the selectPackageRecyclerView
-            selectPackageRecyclerView.addItemDecoration(new DividerItemDecoration(selectPackageRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
-
-            // Dialog filter
-            selectPackageSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    return false;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    selectPackageRecyclerViewAdapter.getFilter().filter(newText);
-                    return false;
-                }
-            });
-
-            // Show dialog
-            selectPackageDialog.show();
         });
 
 

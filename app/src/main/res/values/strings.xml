@@ -22,6 +22,7 @@
     <string name="exit">Exit</string>
     <string name="install">Install</string>
     <string name="no">No</string>
+    <string name="or">Or</string>
     <string name="yes">Yes</string>
     <string name="package_spinner_label" translatable="false">Package:</string>
     <string name="select_package">Select package</string>
@@ -63,9 +64,12 @@
     <string name="force_enable_verified_sms">Force enable verified SMS settings menu</string>
 
     <!-- Revert mods -->
-    <string name="revert_all_mods_alert">Do you really want to revert all mods applied by ${app_name}?</string>
-    <string name="revert_all_mods_button">Revert all mods</string>
-    <string name="revert_all_mods_text">Press the button below to revert all mods applied by ${app_name}</string>
+    <string name="revert_mods_for_all_packages">Revert mods for all packages</string>
+    <string name="revert_mods_for_all_packages_confirm">Do you really want to revert all mods?</string>
+    <string name="revert_mods_for_all_packages_explanation">Press the button below to revert all mods applied to all packages.</string>
+    <string name="revert_mods_for_the_selected_package">Revert mods for the selected package</string>
+    <string name="revert_mods_for_the_selected_package_confirm">Do you really want to revert mods for the package %1$s?</string>
+    <string name="revert_mods_for_the_selected_package_explanation">Select a package and press the button below to revert mods applied to that specific package.</string>
 
     <!-- Information -->
     <string name="credits">Credits</string>

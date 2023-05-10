@@ -13,6 +13,7 @@
     <string name="exit">Salir</string>
     <string name="install">Instalar</string>
     <string name="no">No</string>
+    <string name="or">O</string>
     <string name="yes">Sí</string>
     <string name="select_package">Seleccione un package</string>
     <string name="unknown">Ignoto</string>
@@ -53,9 +54,12 @@
     <string name="force_enable_verified_sms">Forzar habilitar el menú de configuración de SMS verificado</string>
 
     <!-- Revert mods -->
-    <string name="revert_all_mods_alert">¿De verdad quieres revertir todas las modificaciones aplicadas por ${app_name}?</string>
-    <string name="revert_all_mods_button">Revertir todos los mods</string>
-    <string name="revert_all_mods_text">Presione el botón de abajo para revertir todas las modificaciones aplicadas por ${app_name}</string>
+    <string name="revert_mods_for_all_packages">Revertir mods para todos los packages</string>
+    <string name="revert_mods_for_all_packages_confirm">¿De verdad quieres revertir todas las modificaciones?</string>
+    <string name="revert_mods_for_all_packages_explanation">Presione el botón a continuación para revertir todas las modificaciones aplicadas a todos los packages.</string>
+    <string name="revert_mods_for_the_selected_package">Revertir mods para el package seleccionado</string>
+    <string name="revert_mods_for_the_selected_package_confirm">¿Realmente desea revertir las modificaciones del package %1$s?</string>
+    <string name="revert_mods_for_the_selected_package_explanation">Seleccione un paquete y presione el botón a continuación para revertir las modificaciones aplicadas a ese package específico.</string>
 
     <!-- Information -->
     <string name="credits">Creditos</string>

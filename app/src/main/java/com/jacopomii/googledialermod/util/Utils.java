@@ -8,15 +8,28 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.jacopomii.googledialermod.BuildConfig;
+import com.jacopomii.googledialermod.ICoreRootService;
 import com.jacopomii.googledialermod.R;
 import com.jacopomii.googledialermod.data.Version;
+import com.jacopomii.googledialermod.databinding.DialogSelectPackageBinding;
+import com.jacopomii.googledialermod.ui.adapter.SelectPackageRecyclerViewAdapter;
+import com.l4digital.fastscroll.FastScrollRecyclerView;
 
 import org.json.JSONObject;
 
@@ -111,5 +124,78 @@ public class Utils {
         }
 
         return applicationLabel;
+    }
+
+    /**
+     * Show the "Select Package" dialog, a custom view to select package names contained in the
+     * Phenotype DB with search and fastscroll features.
+     *
+     * @param context             context.
+     * @param coreRootServiceIpc  a {@code ICoreRootService} instance.
+     * @param onItemClickListener an implementation of the {@code OnItemClickListener} interface,
+     *                            to perform actions after the user has selected a package.
+     *                            The received item is a string containing the selected Phenotype
+     *                            (not Android) package name.
+     */
+    public static void showSelectPackageDialog(Context context, ICoreRootService coreRootServiceIpc, OnItemClickListener onItemClickListener) {
+        // Dialog builder
+        MaterialAlertDialogBuilder selectPackageDialogBuilder = new MaterialAlertDialogBuilder(context);
+
+        // Inflate dialog layout
+        DialogSelectPackageBinding dialogSelectPackageBinding = DialogSelectPackageBinding.inflate(LayoutInflater.from(context));
+        selectPackageDialogBuilder.setView(dialogSelectPackageBinding.getRoot());
+
+        // Create dialog
+        AlertDialog selectPackageDialog = selectPackageDialogBuilder.create();
+
+        // Set dialog custom height and width
+        selectPackageDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        // Dialog components
+        SearchView selectPackageSearchView = dialogSelectPackageBinding.searchview;
+        FastScrollRecyclerView selectPackageRecyclerView = dialogSelectPackageBinding.recyclerview;
+
+        // Initialize the dialog adapter
+        SelectPackageRecyclerViewAdapter selectPackageRecyclerViewAdapter = new SelectPackageRecyclerViewAdapter(context, coreRootServiceIpc, item -> {
+            // Pass the received item to the caller onItemClickListener
+            onItemClickListener.onItemClick(item);
+
+            // Dismiss dialog
+            selectPackageDialog.dismiss();
+        });
+
+        // Disable fast scroll if the selectPackageRecyclerView is empty or changes to empty
+        selectPackageRecyclerView.setFastScrollEnabled(selectPackageRecyclerViewAdapter.getItemCount() != 0);
+        selectPackageRecyclerViewAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                selectPackageRecyclerView.setFastScrollEnabled(selectPackageRecyclerViewAdapter.getItemCount() != 0);
+            }
+        });
+
+        // Set the dialog selectPackageRecyclerView LayoutManager and Adapter
+        selectPackageRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        selectPackageRecyclerView.setAdapter(selectPackageRecyclerViewAdapter);
+
+        // Add list dividers to the selectPackageRecyclerView
+        selectPackageRecyclerView.addItemDecoration(new DividerItemDecoration(selectPackageRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
+
+        // Dialog filter
+        selectPackageSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                selectPackageRecyclerViewAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+        // Show dialog
+        selectPackageDialog.show();
     }
 }

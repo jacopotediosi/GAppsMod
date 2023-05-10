@@ -13,6 +13,7 @@
     <string name="exit">Sortir</string>
     <string name="install">Installer</string>
     <string name="no">Non</string>
+    <string name="or">Ou</string>
     <string name="yes">Oui</string>
     <string name="select_package">Sélectionnez un package</string>
     <string name="unknown">Inconnu</string>
@@ -53,9 +54,12 @@
     <string name="force_enable_verified_sms">Forcer l\'activation du menu des paramètres SMS vérifiés</string>
 
     <!-- Revert mods -->
-    <string name="revert_all_mods_alert">Voulez-vous vraiment annuler tous les mods appliqués par ${app_name}?</string>
-    <string name="revert_all_mods_button">Annuler tous les mods</string>
-    <string name="revert_all_mods_text">Appuyez sur le bouton ci-dessous pour annuler tous les mods appliqués par ${app_name}</string>
+    <string name="revert_mods_for_all_packages">Annuler les mods pour tous les packages</string>
+    <string name="revert_mods_for_all_packages_confirm">Voulez-vous vraiment annuler tous les mods?</string>
+    <string name="revert_mods_for_all_packages_explanation">Appuyez sur le bouton ci-dessous pour annuler tous les mods appliqués à tous les packages.</string>
+    <string name="revert_mods_for_the_selected_package">Annuler les mods pour le package sélectionné</string>
+    <string name="revert_mods_for_the_selected_package_confirm">Voulez-vous vraiment annuler les mods pour le package %1$s?</string>
+    <string name="revert_mods_for_the_selected_package_explanation">Sélectionnez un package et appuyez sur le bouton ci-dessous pour annuler les mods appliqués à ce package spécifique.</string>
 
     <!-- Information -->
     <string name="credits">Crédits</string>

@@ -13,6 +13,7 @@
     <string name="exit">Esci</string>
     <string name="install">Installa</string>
     <string name="no">No</string>
+    <string name="or">Oppure</string>
     <string name="yes">Sì</string>
     <string name="select_package">Seleziona un package</string>
     <string name="unknown">Sconosciuto</string>
@@ -25,7 +26,7 @@
     <!-- Fragment titles -->
     <string name="boolean_mods">Mod booleane</string>
     <string name="information">Informazioni</string>
-    <string name="revert_mods">Ripristina mod</string>
+    <string name="revert_mods">Rimuovi mod</string>
     <string name="suggested_mods">Mod suggerite</string>
 
     <!-- Splash screen -->
@@ -53,9 +54,12 @@
     <string name="force_enable_verified_sms">Forza l\'abilitazione del menu impostazioni SMS verificati</string>
 
     <!-- Revert mods -->
-    <string name="revert_all_mods_alert">Vuoi davvero ripristinare tutte le mod applicate da ${app_name}?</string>
-    <string name="revert_all_mods_button">Ripristina tutte le mod</string>
-    <string name="revert_all_mods_text">Premi il pulsante sottostante per ripristinare tutte le mod applicate da ${app_name}</string>
+    <string name="revert_mods_for_all_packages">Rimuovi le mod per tutti i package</string>
+    <string name="revert_mods_for_all_packages_confirm">Vuoi davvero rimuovere tutte le mod?</string>
+    <string name="revert_mods_for_all_packages_explanation">Premi il bottone sottostante per rimuovere le mod applicate a tutti i package.</string>
+    <string name="revert_mods_for_the_selected_package">Rimuovi le mod per il package selezionato</string>
+    <string name="revert_mods_for_the_selected_package_confirm">Vuoi davvero rimuovere le mod per il package %1$s?</string>
+    <string name="revert_mods_for_the_selected_package_explanation">Seleziona un package e premi il bottone sottostante per rimuovere le mod applicate a quello specifico package.</string>
 
     <!-- Information -->
     <string name="credits">Crediti</string>

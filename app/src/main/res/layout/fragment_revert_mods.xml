@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,12 +13,63 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/revert_all_mods_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/l1"
             android:justificationMode="inter_word"
-            android:text="@string/revert_all_mods_text"
+            android:text="@string/revert_mods_for_the_selected_package_explanation"
+            android:textAlignment="viewStart"
+            tools:targetApi="o" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/l1_5"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/l_50"
+                android:text="@string/package_spinner_label" />
+
+            <TextView
+                android:id="@+id/select_package"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:hint="@string/select_package"
+                app:drawableEndCompat="@drawable/ic_arrow_down_24"
+                app:drawableTint="?attr/colorControlNormal"
+                tools:ignore="TextContrastCheck" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/revert_mods_selected_package_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/l1_5"
+            android:backgroundTint="?attr/colorError"
+            android:enabled="false"
+            android:text="@string/revert_mods_for_the_selected_package"
+            android:textColor="?attr/colorOnError"
+            tools:ignore="VisualLintButtonSize" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/l2"
+            android:text="@string/or"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/l1_5"
+            android:justificationMode="inter_word"
+            android:text="@string/revert_mods_for_all_packages_explanation"
             android:textAlignment="viewStart"
             tools:targetApi="o" />
 
@@ -26,7 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="?attr/colorError"
-            android:text="@string/revert_all_mods_button"
+            android:text="@string/revert_mods_for_all_packages"
             android:textColor="?attr/colorOnError"
             tools:ignore="VisualLintButtonSize" />
     </LinearLayout>
