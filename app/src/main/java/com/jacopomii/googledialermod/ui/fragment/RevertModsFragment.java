@@ -24,6 +24,8 @@ import com.jacopomii.googledialermod.ui.activity.MainActivity;
 import com.topjohnwu.superuser.nio.ExtendedFile;
 import com.topjohnwu.superuser.nio.FileSystemManager;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import es.dmoral.toasty.Toasty;
 
 public class RevertModsFragment extends Fragment {
@@ -57,18 +59,35 @@ public class RevertModsFragment extends Fragment {
         // Select package for revert mods for specific package
         TextView selectPackage = mBinding.selectPackage;
 
+        // Initialize the selectPackageDialogOpened
+        AtomicBoolean selectPackageDialogOpened = new AtomicBoolean(false);
+
         // Select package onClick
         selectPackage.setOnClickListener(v -> {
-            showSelectPackageDialog(getContext(), mCoreRootServiceIpc, item -> {
-                // Select package dialog onItemClickListener
-                // The item received by the listener here is the Phenotype package name chosen by the user
+            // If the select package dialog isn't already opened
+            if (!selectPackageDialogOpened.get()) {
+                // Set the selectPackageDialogOpened to true
+                selectPackageDialogOpened.set(true);
 
-                // Update the select package textview
-                selectPackage.setText((String) item);
+                // Show the select package dialog
+                showSelectPackageDialog(
+                        getContext(),
+                        mCoreRootServiceIpc,
+                        item -> {
+                            // The item received by the listener here is the Phenotype package name chosen by the user
 
-                // Enable the revertModsSelectedPackageButton
-                mBinding.revertModsSelectedPackageButton.setEnabled(true);
-            });
+                            // Update the select package textview
+                            selectPackage.setText((String) item);
+
+                            // Enable the revertModsSelectedPackageButton
+                            mBinding.revertModsSelectedPackageButton.setEnabled(true);
+
+                        },
+                        dialog -> {
+                            // Set the selectPackageDialogOpened to false dismissing the dialog
+                            selectPackageDialogOpened.set(false);
+                        });
+            }
         });
 
 

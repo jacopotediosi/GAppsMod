@@ -4,6 +4,7 @@ import static com.jacopomii.googledialermod.data.Constants.VENDING_ANDROID_PACKA
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -137,7 +138,7 @@ public class Utils {
      *                            The received item is a string containing the selected Phenotype
      *                            (not Android) package name.
      */
-    public static void showSelectPackageDialog(Context context, ICoreRootService coreRootServiceIpc, OnItemClickListener onItemClickListener) {
+    public static void showSelectPackageDialog(Context context, ICoreRootService coreRootServiceIpc, OnItemClickListener onItemClickListener, DialogInterface.OnDismissListener onDismissListener) {
         // Dialog builder
         MaterialAlertDialogBuilder selectPackageDialogBuilder = new MaterialAlertDialogBuilder(context);
 
@@ -150,6 +151,9 @@ public class Utils {
 
         // Set dialog custom height and width
         selectPackageDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        // Set dialog onDismissListener
+        selectPackageDialog.setOnDismissListener(onDismissListener);
 
         // Dialog components
         SearchView selectPackageSearchView = dialogSelectPackageBinding.searchview;
