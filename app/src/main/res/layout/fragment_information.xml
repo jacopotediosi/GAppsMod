@@ -3,13 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/margin_generic"
+    android:clipToPadding="false"
+    android:fitsSystemWindows="true"
     tools:context=".ui.fragment.SuggestedModsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="@dimen/margin_generic">
 
         <TextView
             android:layout_width="match_parent"

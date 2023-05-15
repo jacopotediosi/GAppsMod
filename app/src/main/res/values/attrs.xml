@@ -15,6 +15,4 @@
     <declare-styleable name="ViewStyle">
         <attr name="colorError" format="color" />
     </declare-styleable>
-
-    <attr name="colorAppbar" format="reference" />
 </resources>

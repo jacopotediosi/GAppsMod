@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Override application light theme on API 27+ (because on lower versions light navigation bar is
+    not supported) to set status bar and navigation bar color to transparent -->
+    <style name="AppTheme" parent="BaseTheme">
+        <!-- Set status bar transparent and light -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+        <!-- Set navigation bar transparent and light -->
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightNavigationBar">true</item>
+    </style>
+</resources>

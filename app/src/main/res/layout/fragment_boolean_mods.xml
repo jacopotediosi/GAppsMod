@@ -10,7 +10,6 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorAppbar"
         app:liftOnScroll="false">
 
         <LinearLayout
@@ -100,7 +99,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:padding="@dimen/margin_generic"
+            android:fitsSystemWindows="true"
             app:bubbleColor="?attr/colorSecondary"
             app:bubbleTextColor="?attr/colorOnSecondary"
             app:handleColor="?attr/colorSecondary"

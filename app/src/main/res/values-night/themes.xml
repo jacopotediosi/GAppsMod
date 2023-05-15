@@ -2,8 +2,9 @@
 <resources>
     <!-- Application dark theme -->
     <style name="AppTheme" parent="BaseTheme">
-        <!-- Set statusBar color to transparent -->
+        <!-- Set status bar and navigation bar color to transparent -->
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
     <!-- Application dark base theme -->
@@ -34,8 +35,5 @@
         <item name="colorOnSurfaceInverse">@color/md_theme_dark_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/md_theme_dark_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/md_theme_dark_inversePrimary</item>
-
-        <!-- Custom dark appbar -->
-        <item name="colorAppbar">@color/md_theme_dark_appbar</item>
     </style>
 </resources>

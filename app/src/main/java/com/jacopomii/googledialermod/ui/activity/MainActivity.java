@@ -8,13 +8,17 @@ import android.os.IBinder;
 import android.os.RemoteException;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.google.android.material.navigation.NavigationView;
 import com.jacopomii.googledialermod.ICoreRootService;
 import com.jacopomii.googledialermod.R;
 import com.jacopomii.googledialermod.databinding.ActivityMainBinding;
@@ -37,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
         // by this activity) are restored before the RootService is started, causing NPE.
         super.onCreate(null);
 
+        // Enable edge-to-edge: allows drawing under system bars, preventing Android from
+        // automatically applying the fitSystemWindows property to the root view.
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+
         // Start CoreRootService connection
         Intent intent = new Intent(this, CoreRootService.class);
         mCoreRootServiceConnection = new ServiceConnection() {
@@ -48,14 +56,15 @@ public class MainActivity extends AppCompatActivity {
                     mCoreRootServiceIpc = ICoreRootService.Stub.asInterface(service);
                     mCoreRootServiceFSManager = FileSystemManager.getRemote(mCoreRootServiceIpc.getFileSystemService());
 
-                    // Update UI
+                    // Inflate the activity layout and set the content view
                     mBinding = ActivityMainBinding.inflate(getLayoutInflater());
                     setContentView(mBinding.getRoot());
 
+                    // Set the toolbar
                     setSupportActionBar(mBinding.toolbar);
 
+                    // Set the drawer
                     DrawerLayout drawer = mBinding.drawerLayout;
-                    NavigationView navigationView = mBinding.navView;
                     mAppBarConfiguration = new AppBarConfiguration.Builder(
                             R.id.nav_suggested_mods,
                             R.id.nav_boolean_mods,
@@ -63,9 +72,25 @@ public class MainActivity extends AppCompatActivity {
                             R.id.nav_information
                     ).setOpenableLayout(drawer).build();
 
-                    NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment);
-                    NavigationUI.setupActionBarWithNavController(MainActivity.this, navController, mAppBarConfiguration);
-                    NavigationUI.setupWithNavController(navigationView, navController);
+                    // Pass through the window insets to the navHostFragment child views, except the top system bar
+                    ViewCompat.setOnApplyWindowInsetsListener(mBinding.navHostFragment, (view, insets) -> {
+                        WindowInsetsCompat insetsCompat = new WindowInsetsCompat.Builder(insets)
+                                .setInsets(WindowInsetsCompat.Type.systemBars(), Insets.of(
+                                        insets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime()).left,
+                                        0,
+                                        insets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime()).right,
+                                        insets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime()).bottom))
+                                .build();
+                        return ViewCompat.onApplyWindowInsets(view, insetsCompat);
+                    });
+
+                    // Set the navigation controller
+                    NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(mBinding.navHostFragment.getId());
+                    if (navHostFragment != null) {
+                        NavController navController = navHostFragment.getNavController();
+                        NavigationUI.setupActionBarWithNavController(MainActivity.this, navController, mAppBarConfiguration);
+                        NavigationUI.setupWithNavController(mBinding.navView, navController);
+                    }
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
