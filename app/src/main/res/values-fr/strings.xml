@@ -68,7 +68,7 @@
     <string name="if_bug_found_open_github_issue">Si vous pensez avoir trouver un bug, veuillez ouvrir un ticket sur Github:</string>
     <string name="made_with_love_by">Fait avec ❤ par <a href="https://github.com/jacopotediosi">Jacopo Tediosi</a> (et d\'autres super contributeurs)</string>
     <string name="what_is_app_name">Qu\'est-ce que ${app_name}</string>
-    <string name="what_is_it_explanation">${app_name} est une application qui permet, en utilisant les privilèges de root, de modifier les valeurs contenues dans la base de données "Phenotype" de Google Play Services, modifiant ainsi le comportement des applications Google (comme par exemple {$dialer_app_name} et {$messages_app_name}) pour débloquer des fonctionnalités expérimentales ou disponibles uniquement dans certains pays ou appareils.</string>
+    <string name="what_is_it_explanation">${app_name} est une application qui permet, en utilisant les privilèges de root, de modifier les valeurs contenues dans la base de données "Phenotype" de Google Play Services, modifiant ainsi le comportement des applications Google (comme par exemple ${dialer_app_name} et ${messages_app_name}) pour débloquer des fonctionnalités expérimentales ou disponibles uniquement dans certains pays ou appareils.</string>
 
 
     <!-- Warning and error messages -->

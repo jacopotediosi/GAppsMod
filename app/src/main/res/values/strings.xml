@@ -78,7 +78,7 @@
     <string name="if_bug_found_open_github_issue">If you think you\'ve found any bugs please open an issue on Github:</string>
     <string name="made_with_love_by">Made with ❤ by <a href="https://github.com/jacopotediosi">Jacopo Tediosi</a> (and other amazing contributors)</string>
     <string name="what_is_app_name">What is ${app_name}</string>
-    <string name="what_is_it_explanation">${app_name} is an app that allows, using root privileges, to modify the values contained in "Phenotype" database of Google Play Services, thus altering the behavior of Google Apps (such as {$dialer_app_name} and {$messages_app_name}) to unlock experimental features or features that are only available in certain countries or devices.</string>
+    <string name="what_is_it_explanation">${app_name} is an app that allows, using root privileges, to modify the values contained in "Phenotype" database of Google Play Services, thus altering the behavior of Google Apps (such as ${dialer_app_name} and ${messages_app_name}) to unlock experimental features or features that are only available in certain countries or devices.</string>
 
     <!-- Warning and error messages -->
     <string name="an_error_has_occurred">An error has occurred</string>
