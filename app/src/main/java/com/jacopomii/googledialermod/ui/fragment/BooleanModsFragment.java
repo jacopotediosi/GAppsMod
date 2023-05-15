@@ -3,6 +3,7 @@ package com.jacopomii.googledialermod.ui.fragment;
 import static com.jacopomii.googledialermod.util.Utils.showSelectPackageDialog;
 
 import android.app.Activity;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -116,6 +117,24 @@ public class BooleanModsFragment extends Fragment {
             public void onChanged() {
                 super.onChanged();
                 flagsRecyclerView.setFastScrollEnabled(mFlagsRecyclerViewAdapter.getItemCount() != 0);
+            }
+        });
+
+        // Set flagsRecyclerView items padding
+        flagsRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                int padding = (int) getResources().getDimension(R.dimen.margin_generic);
+
+                int itemPosition = parent.getChildAdapterPosition(view);
+
+                if (itemPosition == 0)
+                    outRect.top = padding;
+                else if (itemPosition == mFlagsRecyclerViewAdapter.getItemCount() - 1)
+                    outRect.bottom = padding;
+
+                outRect.left = padding;
+                outRect.right = padding;
             }
         });
 
