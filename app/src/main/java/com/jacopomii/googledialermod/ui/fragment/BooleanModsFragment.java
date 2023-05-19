@@ -180,7 +180,7 @@ public class BooleanModsFragment extends Fragment {
 
                     @Override
                     public boolean onMenuItemActionCollapse(MenuItem item) {
-                        radioGroupSearch.check(R.id.radiobutton_all);
+                        radioGroupSearch.check(mBinding.radiobuttonAll.getId());
                         radioGroupSearch.setVisibility(View.GONE);
                         requireActivity().invalidateOptionsMenu();
                         return true;
@@ -214,9 +214,9 @@ public class BooleanModsFragment extends Fragment {
             filterConfig.put("key", query);
 
             int radioGroupSearchCheckedButtonId = mBinding.radioGroupSearch.getCheckedRadioButtonId();
-            if (radioGroupSearchCheckedButtonId == R.id.radiobutton_enabled)
+            if (radioGroupSearchCheckedButtonId == mBinding.radiobuttonEnabled.getId())
                 filterConfig.put("mode", "enabled_only");
-            else if (radioGroupSearchCheckedButtonId == R.id.radiobutton_disabled)
+            else if (radioGroupSearchCheckedButtonId == mBinding.radiobuttonDisabled.getId())
                 filterConfig.put("mode", "disabled_only");
             else
                 filterConfig.put("mode", "all");

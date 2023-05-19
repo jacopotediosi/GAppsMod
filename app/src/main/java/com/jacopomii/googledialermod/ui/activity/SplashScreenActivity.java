@@ -24,6 +24,7 @@ import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.jacopomii.googledialermod.BuildConfig;
 import com.jacopomii.googledialermod.ICoreRootService;
 import com.jacopomii.googledialermod.R;
+import com.jacopomii.googledialermod.databinding.ActivitySplashScreenBinding;
 import com.jacopomii.googledialermod.service.CoreRootService;
 import com.topjohnwu.superuser.Shell;
 import com.topjohnwu.superuser.ipc.RootService;
@@ -39,6 +40,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         Shell.setDefaultBuilder(Shell.Builder.create().setFlags(Shell.FLAG_MOUNT_MASTER));
     }
 
+    private ActivitySplashScreenBinding mBinding;
+
     private final CountDownLatch mRootCheckPassed = new CountDownLatch(1);
     private final CountDownLatch mCoreRootServiceConnected = new CountDownLatch(1);
     private final CountDownLatch mPhenotypeCheckPassed = new CountDownLatch(1);
@@ -51,6 +54,9 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Inflate the activity layout and set the content view
+        mBinding = ActivitySplashScreenBinding.inflate(getLayoutInflater());
         setContentView(R.layout.activity_splash_screen);
 
         // Start CoreRootService connection
@@ -69,7 +75,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 }
 
                 // Update the UI
-                setCheckUIDone(R.id.circular_root_service, R.id.done_root_service, mCoreRootServiceConnected.getCount() == 0);
+                setCheckUIDone(mBinding.circularRootService.getId(), mBinding.doneRootService.getId(), mCoreRootServiceConnected.getCount() == 0);
             }
 
             @Override
@@ -97,7 +103,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 }
 
                 // Update the UI
-                setCheckUIDone(R.id.circular_root, R.id.done_root, mRootCheckPassed.getCount() == 0);
+                setCheckUIDone(mBinding.circularRoot.getId(), mBinding.doneRoot.getId(), mRootCheckPassed.getCount() == 0);
             }
         }.start();
 
@@ -125,7 +131,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     }
 
                     // Update the UI
-                    setCheckUIDone(R.id.circular_phenotype, R.id.done_phenotype, mPhenotypeCheckPassed.getCount() == 0);
+                    setCheckUIDone(mBinding.circularPhenotype.getId(), mBinding.donePhenotype.getId(), mPhenotypeCheckPassed.getCount() == 0);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -153,7 +159,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 }
 
                 // Update the UI
-                setCheckUIDone(R.id.circular_updates, R.id.done_updates, mUpdateCheckFinished.getCount() == 0);
+                setCheckUIDone(mBinding.circularUpdates.getId(), mBinding.doneUpdates.getId(), mUpdateCheckFinished.getCount() == 0);
             }
         }.start();
 
