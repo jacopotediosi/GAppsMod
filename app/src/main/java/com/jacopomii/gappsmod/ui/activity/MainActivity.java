@@ -1,4 +1,4 @@
-package com.jacopomii.googledialermod.ui.activity;
+package com.jacopomii.gappsmod.ui.activity;
 
 import android.content.ComponentName;
 import android.content.Intent;
@@ -19,10 +19,10 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.jacopomii.googledialermod.ICoreRootService;
-import com.jacopomii.googledialermod.R;
-import com.jacopomii.googledialermod.databinding.ActivityMainBinding;
-import com.jacopomii.googledialermod.service.CoreRootService;
+import com.jacopomii.gappsmod.ICoreRootService;
+import com.jacopomii.gappsmod.R;
+import com.jacopomii.gappsmod.databinding.ActivityMainBinding;
+import com.jacopomii.gappsmod.service.CoreRootService;
 import com.topjohnwu.superuser.ipc.RootService;
 import com.topjohnwu.superuser.nio.FileSystemManager;
 

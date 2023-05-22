@@ -1,15 +1,15 @@
-# GoogleDialerMod
+# GAppsMod (ex GoogleDialerMod)
 The ultimate All-In-One Utility to tweak Google applications.
 
 
 ## Downloads:
- - Please visit the [GoogleDialerMod Release Page](https://github.com/jacopotediosi/GoogleDialerMod/releases)
+ - Please visit the [GAppsMod Release Page](https://github.com/jacopotediosi/GAppsMod/releases)
 
 
 ## How do I use it?
 - Always make sure you're using the latest beta version of the Google apps you want to tweak to take advantage of the latest features
-- Allow root access to GoogleDialerMod, apply any mods you want, then force close and reopen Google apps a few times for them to take effect
-- There is no need to keep GoogleDialerMod installed after applying the desired mods, because they (should) survive Google applications updates / reinstalls over time
+- Allow root access to GAppsMod, apply any mods you want, then force close and reopen Google apps a few times for them to take effect
+- There is no need to keep GAppsMod installed after applying the desired mods, because they (should) survive Google applications updates / reinstalls over time
 
 
 ## How does it work?
@@ -17,7 +17,7 @@ In every Android device there is a database, called Phenotype.db, managed by Goo
 
 Some of those flags concern applications core functionalities, while others pertain to hidden or upcoming features that have not yet been released.
 
-What GoogleDialerMod does is execute SQLite queries on that database and override the configuration files of Google applications to enable or modify their functionality at will.
+What GAppsMod does is execute SQLite queries on that database and override the configuration files of Google applications to enable or modify their functionality at will.
 
 
 ## Features:
@@ -48,7 +48,7 @@ And much more coming soon :)
 
 
 ## Demo
-![Demo GIF](https://github.com/jacopotediosi/GoogleDialerMod/assets/20026524/5b13c935-4b12-46ac-b67d-0182004c8ac0)
+![Demo GIF](https://github.com/jacopotediosi/GAppsMod/assets/20026524/5b13c935-4b12-46ac-b67d-0182004c8ac0)
 
 
 ## Troubleshooting:
@@ -57,5 +57,5 @@ And much more coming soon :)
 
 
 ## Credits:
-- Thanks to [Gabriele Rizzo aka shmykelsa](https://github.com/shmykelsa), [Jen94](https://github.com/jen94) and [SAAX by agentdr8](https://gitlab.com/agentdr8/saax) for their [AA-Tweaker](https://github.com/shmykelsa/AA-Tweaker) app, which inspired me making GoogleDialerMod
+- Thanks to [Gabriele Rizzo aka shmykelsa](https://github.com/shmykelsa), [Jen94](https://github.com/jen94) and [SAAX by agentdr8](https://gitlab.com/agentdr8/saax) for their [AA-Tweaker](https://github.com/shmykelsa/AA-Tweaker) app, which inspired me making GAppsMod
 - [Libsu](https://github.com/topjohnwu/libsu) by [topjohnwu](https://github.com/topjohnwu)

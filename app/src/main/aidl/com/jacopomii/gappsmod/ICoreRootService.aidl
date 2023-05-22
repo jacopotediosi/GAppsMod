@@ -1,4 +1,4 @@
-package com.jacopomii.googledialermod;
+package com.jacopomii.gappsmod;
 
 interface ICoreRootService {
     IBinder getFileSystemService();

@@ -1,4 +1,4 @@
-package com.jacopomii.googledialermod.ui.view;
+package com.jacopomii.gappsmod.ui.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -8,8 +8,8 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
-import com.jacopomii.googledialermod.R;
-import com.jacopomii.googledialermod.databinding.SwitchCardBinding;
+import com.jacopomii.gappsmod.R;
+import com.jacopomii.gappsmod.databinding.SwitchCardBinding;
 
 /**
  * A card that contains a text and a switch on a single line.

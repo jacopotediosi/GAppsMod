@@ -14,7 +14,7 @@
         android:orientation="vertical"
         android:padding="@dimen/margin_generic">
 
-        <com.jacopomii.googledialermod.ui.view.SuggestedModsAppHeader
+        <com.jacopomii.gappsmod.ui.view.SuggestedModsAppHeader
             android:id="@+id/dialer_app_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -71,21 +71,21 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.jacopomii.googledialermod.ui.view.SwitchCardView
+            <com.jacopomii.gappsmod.ui.view.SwitchCardView
                 android:id="@+id/dialer_force_enable_call_recording"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:enabled="false"
                 app:text="@string/force_enable_call_recording" />
 
-            <com.jacopomii.googledialermod.ui.view.SwitchCardView
+            <com.jacopomii.gappsmod.ui.view.SwitchCardView
                 android:id="@+id/dialer_silence_call_recording_alerts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:enabled="false"
                 app:text="@string/silence_call_recording_alerts" />
 
-            <com.jacopomii.googledialermod.ui.view.SwitchCardView
+            <com.jacopomii.gappsmod.ui.view.SwitchCardView
                 android:id="@+id/dialer_force_enable_call_screen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
 
         </LinearLayout>
 
-        <com.jacopomii.googledialermod.ui.view.SuggestedModsAppHeader
+        <com.jacopomii.gappsmod.ui.view.SuggestedModsAppHeader
             android:id="@+id/messages_app_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -136,77 +136,77 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.jacopomii.googledialermod.ui.view.SwitchCardView
+            <com.jacopomii.gappsmod.ui.view.SwitchCardView
                 android:id="@+id/messages_force_enable_debug_menu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:enabled="false"
                 app:text="@string/force_enable_debug_menu" />
 
-            <com.jacopomii.googledialermod.ui.view.SwitchCardView
+            <com.jacopomii.gappsmod.ui.view.SwitchCardView
                 android:id="@+id/messages_force_enable_message_organization"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:enabled="false"
                 app:text="@string/force_enable_message_organization" />
 
-            <com.jacopomii.googledialermod.ui.view.SwitchCardView
+            <com.jacopomii.gappsmod.ui.view.SwitchCardView
                 android:id="@+id/messages_force_enable_marking_message_threads_unread"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:enabled="false"
                 app:text="@string/force_enable_marking_conversations_as_unread" />
 
-            <com.jacopomii.googledialermod.ui.view.SwitchCardView
+            <com.jacopomii.gappsmod.ui.view.SwitchCardView
                 android:id="@+id/messages_force_enable_verified_sms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:enabled="false"
                 app:text="@string/force_enable_verified_sms" />
 
-            <com.jacopomii.googledialermod.ui.view.SwitchCardView
+            <com.jacopomii.gappsmod.ui.view.SwitchCardView
                 android:id="@+id/messages_force_enable_gphotos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:enabled="false"
                 app:text="@string/force_enable_images_via_gphotos" />
 
-            <com.jacopomii.googledialermod.ui.view.SwitchCardView
+            <com.jacopomii.gappsmod.ui.view.SwitchCardView
                 android:id="@+id/messages_force_enable_nudges"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:enabled="false"
                 app:text="@string/force_enable_nudges_and_birthdays" />
 
-            <com.jacopomii.googledialermod.ui.view.SwitchCardView
+            <com.jacopomii.gappsmod.ui.view.SwitchCardView
                 android:id="@+id/messages_force_enable_spotlights"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:enabled="false"
                 app:text="@string/force_enable_spotlights" />
 
-            <com.jacopomii.googledialermod.ui.view.SwitchCardView
+            <com.jacopomii.gappsmod.ui.view.SwitchCardView
                 android:id="@+id/messages_force_enable_smart_compose"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:enabled="false"
                 app:text="@string/force_enable_smart_compose_settings_menu" />
 
-            <com.jacopomii.googledialermod.ui.view.SwitchCardView
+            <com.jacopomii.gappsmod.ui.view.SwitchCardView
                 android:id="@+id/messages_force_enable_magic_compose"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:enabled="false"
                 app:text="@string/force_enable_magic_compose" />
 
-            <com.jacopomii.googledialermod.ui.view.SwitchCardView
+            <com.jacopomii.gappsmod.ui.view.SwitchCardView
                 android:id="@+id/messages_force_enable_smart_actions_in_notifications"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:enabled="false"
                 app:text="@string/force_enable_smart_actions_in_notifications" />
 
-            <com.jacopomii.googledialermod.ui.view.SwitchCardView
+            <com.jacopomii.gappsmod.ui.view.SwitchCardView
                 android:id="@+id/messages_force_enable_suggested_stickers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

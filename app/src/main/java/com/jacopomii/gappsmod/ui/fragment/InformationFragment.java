@@ -1,4 +1,4 @@
-package com.jacopomii.googledialermod.ui.fragment;
+package com.jacopomii.gappsmod.ui.fragment;
 
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.jacopomii.googledialermod.databinding.FragmentInformationBinding;
+import com.jacopomii.gappsmod.databinding.FragmentInformationBinding;
 
 public class InformationFragment extends Fragment {
     FragmentInformationBinding mBinding;

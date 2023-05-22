@@ -1,6 +1,6 @@
-package com.jacopomii.googledialermod.util;
+package com.jacopomii.gappsmod.util;
 
-import static com.jacopomii.googledialermod.data.Constants.VENDING_ANDROID_PACKAGE_NAME;
+import static com.jacopomii.gappsmod.data.Constants.VENDING_ANDROID_PACKAGE_NAME;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -26,12 +26,12 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.jacopomii.googledialermod.BuildConfig;
-import com.jacopomii.googledialermod.ICoreRootService;
-import com.jacopomii.googledialermod.R;
-import com.jacopomii.googledialermod.data.Version;
-import com.jacopomii.googledialermod.databinding.DialogSelectPackageBinding;
-import com.jacopomii.googledialermod.ui.adapter.SelectPackageRecyclerViewAdapter;
+import com.jacopomii.gappsmod.BuildConfig;
+import com.jacopomii.gappsmod.ICoreRootService;
+import com.jacopomii.gappsmod.R;
+import com.jacopomii.gappsmod.data.Version;
+import com.jacopomii.gappsmod.databinding.DialogSelectPackageBinding;
+import com.jacopomii.gappsmod.ui.adapter.SelectPackageRecyclerViewAdapter;
 import com.l4digital.fastscroll.FastScrollRecyclerView;
 
 import org.json.JSONObject;

@@ -1,4 +1,4 @@
-package com.jacopomii.googledialermod.ui.view;
+package com.jacopomii.gappsmod.ui.view;
 
 import android.content.Context;
 import android.util.AttributeSet;

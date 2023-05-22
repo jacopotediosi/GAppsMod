@@ -1,10 +1,10 @@
-package com.jacopomii.googledialermod.ui.activity;
+package com.jacopomii.gappsmod.ui.activity;
 
-import static com.jacopomii.googledialermod.data.Constants.GMS_ANDROID_PACKAGE_NAME;
-import static com.jacopomii.googledialermod.data.Constants.GOOGLE_PLAY_DETAILS_LINK;
-import static com.jacopomii.googledialermod.data.Constants.PHENOTYPE_DB;
-import static com.jacopomii.googledialermod.util.Utils.checkUpdateAvailable;
-import static com.jacopomii.googledialermod.util.Utils.openGooglePlay;
+import static com.jacopomii.gappsmod.data.Constants.GMS_ANDROID_PACKAGE_NAME;
+import static com.jacopomii.gappsmod.data.Constants.GOOGLE_PLAY_DETAILS_LINK;
+import static com.jacopomii.gappsmod.data.Constants.PHENOTYPE_DB;
+import static com.jacopomii.gappsmod.util.Utils.checkUpdateAvailable;
+import static com.jacopomii.gappsmod.util.Utils.openGooglePlay;
 
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
@@ -21,11 +21,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
-import com.jacopomii.googledialermod.BuildConfig;
-import com.jacopomii.googledialermod.ICoreRootService;
-import com.jacopomii.googledialermod.R;
-import com.jacopomii.googledialermod.databinding.ActivitySplashScreenBinding;
-import com.jacopomii.googledialermod.service.CoreRootService;
+import com.jacopomii.gappsmod.BuildConfig;
+import com.jacopomii.gappsmod.ICoreRootService;
+import com.jacopomii.gappsmod.R;
+import com.jacopomii.gappsmod.databinding.ActivitySplashScreenBinding;
+import com.jacopomii.gappsmod.service.CoreRootService;
 import com.topjohnwu.superuser.Shell;
 import com.topjohnwu.superuser.ipc.RootService;
 import com.topjohnwu.superuser.nio.FileSystemManager;

@@ -7,25 +7,25 @@
 
     <fragment
         android:id="@+id/nav_suggested_mods"
-        android:name="com.jacopomii.googledialermod.ui.fragment.SuggestedModsFragment"
+        android:name="com.jacopomii.gappsmod.ui.fragment.SuggestedModsFragment"
         android:label="@string/suggested_mods"
         tools:layout="@layout/fragment_suggested_mods" />
 
     <fragment
         android:id="@+id/nav_boolean_mods"
-        android:name="com.jacopomii.googledialermod.ui.fragment.BooleanModsFragment"
+        android:name="com.jacopomii.gappsmod.ui.fragment.BooleanModsFragment"
         android:label="@string/boolean_mods"
         tools:layout="@layout/fragment_boolean_mods" />
 
     <fragment
         android:id="@+id/nav_revert_mods"
-        android:name="com.jacopomii.googledialermod.ui.fragment.RevertModsFragment"
+        android:name="com.jacopomii.gappsmod.ui.fragment.RevertModsFragment"
         android:label="@string/revert_mods"
         tools:layout="@layout/fragment_revert_mods" />
 
     <fragment
         android:id="@+id/nav_information"
-        android:name="com.jacopomii.googledialermod.ui.fragment.InformationFragment"
+        android:name="com.jacopomii.gappsmod.ui.fragment.InformationFragment"
         android:label="@string/information"
         tools:layout="@layout/fragment_information" />
 </navigation>

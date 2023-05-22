@@ -1,11 +1,11 @@
 <resources>
     <!-- App name -->
-    <string name="app_name" translatable="false">GoogleDialerMod</string>
+    <string name="app_name" translatable="false">GAppsMod</string>
 
     <!-- Github and links -->
     <string name="github" translatable="false">Github</string>
     <string name="github_api_link" translatable="false">https://api.github.com/repos/jacopotediosi/GAppsMod</string>
-    <string name="github_link" translatable="false">https://github.com/jacopotediosi/GoogleDialerMod</string>
+    <string name="github_link" translatable="false">https://github.com/jacopotediosi/GAppsMod</string>
 
     <!-- GApp names, taken from https://play.google.com/store/apps/details?id=PACKAGE_NAME&hl=en -->
     <string name="dialer_app_name">Phone by Google</string>

@@ -6,5 +6,5 @@ dependencyResolutionManagement {
         maven { url 'https://jitpack.io' }
     }
 }
-rootProject.name = "GoogleDialerMod"
+rootProject.name = "GAppsMod"
 include ':app'

@@ -25,7 +25,7 @@
             android:textAlignment="viewStart"
             tools:ignore="LabelFor" />
 
-        <com.jacopomii.googledialermod.ui.view.ProgrammaticMaterialSwitch
+        <com.jacopomii.gappsmod.ui.view.ProgrammaticMaterialSwitch
             android:id="@+id/switch_card_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

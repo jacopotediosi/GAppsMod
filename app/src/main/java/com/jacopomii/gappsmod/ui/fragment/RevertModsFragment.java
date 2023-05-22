@@ -1,8 +1,8 @@
-package com.jacopomii.googledialermod.ui.fragment;
+package com.jacopomii.gappsmod.ui.fragment;
 
-import static com.jacopomii.googledialermod.data.Constants.DIALER_CALLRECORDINGPROMPT;
-import static com.jacopomii.googledialermod.data.Constants.DIALER_PHENOTYPE_PACKAGE_NAME;
-import static com.jacopomii.googledialermod.util.Utils.showSelectPackageDialog;
+import static com.jacopomii.gappsmod.data.Constants.DIALER_CALLRECORDINGPROMPT;
+import static com.jacopomii.gappsmod.data.Constants.DIALER_PHENOTYPE_PACKAGE_NAME;
+import static com.jacopomii.gappsmod.util.Utils.showSelectPackageDialog;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -17,10 +17,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.jacopomii.googledialermod.ICoreRootService;
-import com.jacopomii.googledialermod.R;
-import com.jacopomii.googledialermod.databinding.FragmentRevertModsBinding;
-import com.jacopomii.googledialermod.ui.activity.MainActivity;
+import com.jacopomii.gappsmod.ICoreRootService;
+import com.jacopomii.gappsmod.R;
+import com.jacopomii.gappsmod.databinding.FragmentRevertModsBinding;
+import com.jacopomii.gappsmod.ui.activity.MainActivity;
 import com.topjohnwu.superuser.nio.ExtendedFile;
 import com.topjohnwu.superuser.nio.FileSystemManager;
 

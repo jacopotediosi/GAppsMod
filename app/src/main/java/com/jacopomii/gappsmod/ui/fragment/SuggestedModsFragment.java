@@ -1,15 +1,15 @@
-package com.jacopomii.googledialermod.ui.fragment;
+package com.jacopomii.gappsmod.ui.fragment;
 
 import static android.Manifest.permission.CAPTURE_AUDIO_OUTPUT;
-import static com.jacopomii.googledialermod.data.Constants.DIALER_ANDROID_PACKAGE_NAME;
-import static com.jacopomii.googledialermod.data.Constants.DIALER_CALLRECORDINGPROMPT;
-import static com.jacopomii.googledialermod.data.Constants.DIALER_PHENOTYPE_PACKAGE_NAME;
-import static com.jacopomii.googledialermod.data.Constants.GOOGLE_PLAY_BETA_LINK;
-import static com.jacopomii.googledialermod.data.Constants.GOOGLE_PLAY_DETAILS_LINK;
-import static com.jacopomii.googledialermod.data.Constants.MESSAGES_ANDROID_PACKAGE_NAME;
-import static com.jacopomii.googledialermod.data.Constants.MESSAGES_PHENOTYPE_PACKAGE_NAME;
-import static com.jacopomii.googledialermod.util.Utils.copyFile;
-import static com.jacopomii.googledialermod.util.Utils.openGooglePlay;
+import static com.jacopomii.gappsmod.data.Constants.DIALER_ANDROID_PACKAGE_NAME;
+import static com.jacopomii.gappsmod.data.Constants.DIALER_CALLRECORDINGPROMPT;
+import static com.jacopomii.gappsmod.data.Constants.DIALER_PHENOTYPE_PACKAGE_NAME;
+import static com.jacopomii.gappsmod.data.Constants.GOOGLE_PLAY_BETA_LINK;
+import static com.jacopomii.gappsmod.data.Constants.GOOGLE_PLAY_DETAILS_LINK;
+import static com.jacopomii.gappsmod.data.Constants.MESSAGES_ANDROID_PACKAGE_NAME;
+import static com.jacopomii.gappsmod.data.Constants.MESSAGES_PHENOTYPE_PACKAGE_NAME;
+import static com.jacopomii.gappsmod.util.Utils.copyFile;
+import static com.jacopomii.gappsmod.util.Utils.openGooglePlay;
 
 import android.app.Activity;
 import android.content.Context;
@@ -26,12 +26,12 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.protobuf.ByteString;
-import com.jacopomii.googledialermod.ICoreRootService;
-import com.jacopomii.googledialermod.R;
-import com.jacopomii.googledialermod.databinding.FragmentSuggestedModsBinding;
-import com.jacopomii.googledialermod.protos.Call_screen_i18n_config;
-import com.jacopomii.googledialermod.ui.activity.MainActivity;
-import com.jacopomii.googledialermod.ui.view.ProgrammaticMaterialSwitch;
+import com.jacopomii.gappsmod.ICoreRootService;
+import com.jacopomii.gappsmod.R;
+import com.jacopomii.gappsmod.databinding.FragmentSuggestedModsBinding;
+import com.jacopomii.gappsmod.protos.Call_screen_i18n_config;
+import com.jacopomii.gappsmod.ui.activity.MainActivity;
+import com.jacopomii.gappsmod.ui.view.ProgrammaticMaterialSwitch;
 import com.topjohnwu.superuser.Shell;
 import com.topjohnwu.superuser.nio.ExtendedFile;
 import com.topjohnwu.superuser.nio.FileSystemManager;
@@ -288,7 +288,7 @@ public class SuggestedModsFragment extends Fragment {
             try {
                 // If Dialer version > SILENCE_CALL_RECORDING_ALERTS_MAX_VERSION the dialerSilenceCallRecordingAlertsSwitch must remain disabled
                 if (requireContext().getPackageManager().getPackageInfo(DIALER_ANDROID_PACKAGE_NAME, 0).versionCode > DIALER_SILENCE_CALL_RECORDING_ALERTS_MAX_VERSION) {
-                    // If the dialerSilenceCallRecordingAlertsSwitch was enabled in previous versions of GoogleDialerMod, the silenceCallRecordingAlerts mod must be automatically disabled
+                    // If the dialerSilenceCallRecordingAlertsSwitch was enabled in previous versions of GAppsMod, the silenceCallRecordingAlerts mod must be automatically disabled
                     if (dialerSilenceCallRecordingAlertsSwitchChecked) {
                         dialerSilenceCallRecordingAlerts(false);
                     }

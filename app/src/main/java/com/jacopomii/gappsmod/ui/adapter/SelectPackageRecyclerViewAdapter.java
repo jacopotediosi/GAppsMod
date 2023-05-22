@@ -1,6 +1,6 @@
-package com.jacopomii.googledialermod.ui.adapter;
+package com.jacopomii.gappsmod.ui.adapter;
 
-import static com.jacopomii.googledialermod.util.Utils.getApplicationLabelOrUnknown;
+import static com.jacopomii.gappsmod.util.Utils.getApplicationLabelOrUnknown;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -21,11 +21,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.jacopomii.googledialermod.ICoreRootService;
-import com.jacopomii.googledialermod.R;
-import com.jacopomii.googledialermod.data.PhenotypeDBPackageName;
-import com.jacopomii.googledialermod.databinding.PackageRowBinding;
-import com.jacopomii.googledialermod.util.OnItemClickListener;
+import com.jacopomii.gappsmod.ICoreRootService;
+import com.jacopomii.gappsmod.R;
+import com.jacopomii.gappsmod.data.PhenotypeDBPackageName;
+import com.jacopomii.gappsmod.databinding.PackageRowBinding;
+import com.jacopomii.gappsmod.util.OnItemClickListener;
 import com.l4digital.fastscroll.FastScroller;
 
 import org.apache.commons.lang3.StringUtils;

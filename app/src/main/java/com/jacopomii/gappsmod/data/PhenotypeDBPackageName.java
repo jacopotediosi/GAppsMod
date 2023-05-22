@@ -1,4 +1,4 @@
-package com.jacopomii.googledialermod.data;
+package com.jacopomii.gappsmod.data;
 
 public class PhenotypeDBPackageName {
     private final String mPhenotypePackageName;

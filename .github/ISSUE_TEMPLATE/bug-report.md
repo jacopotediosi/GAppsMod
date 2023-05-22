@@ -38,8 +38,8 @@ assignees: ''
 
 - Installed Magisk / other SU Manager version: 
 
-[NOTE]: # ( Paste below the output of the `adb shell "dumpsys package com.jacopomii.googledialermod | grep version"` command )
-- Installed GoogleDialerMod version:
+[NOTE]: # ( Paste below the output of the `adb shell "dumpsys package com.jacopomii.gappsmod | grep version"` command )
+- Installed GAppsMod version:
 
 
 [NOTE]: # ( Paste below the output of the `adb shell "dumpsys package com.google.android.dialer | grep version"` command )

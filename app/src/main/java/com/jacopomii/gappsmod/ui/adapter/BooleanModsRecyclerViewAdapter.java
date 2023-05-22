@@ -1,4 +1,4 @@
-package com.jacopomii.googledialermod.ui.adapter;
+package com.jacopomii.gappsmod.ui.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,10 +12,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.jacopomii.googledialermod.ICoreRootService;
-import com.jacopomii.googledialermod.data.BooleanFlag;
-import com.jacopomii.googledialermod.databinding.SwitchCardBinding;
-import com.jacopomii.googledialermod.ui.view.ProgrammaticMaterialSwitch;
+import com.jacopomii.gappsmod.ICoreRootService;
+import com.jacopomii.gappsmod.data.BooleanFlag;
+import com.jacopomii.gappsmod.databinding.SwitchCardBinding;
+import com.jacopomii.gappsmod.ui.view.ProgrammaticMaterialSwitch;
 import com.l4digital.fastscroll.FastScroller;
 
 import org.json.JSONException;

@@ -1,6 +1,6 @@
-package com.jacopomii.googledialermod.ui.fragment;
+package com.jacopomii.gappsmod.ui.fragment;
 
-import static com.jacopomii.googledialermod.util.Utils.showSelectPackageDialog;
+import static com.jacopomii.gappsmod.util.Utils.showSelectPackageDialog;
 
 import android.app.Activity;
 import android.graphics.Rect;
@@ -24,11 +24,11 @@ import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.jacopomii.googledialermod.ICoreRootService;
-import com.jacopomii.googledialermod.R;
-import com.jacopomii.googledialermod.databinding.FragmentBooleanModsBinding;
-import com.jacopomii.googledialermod.ui.activity.MainActivity;
-import com.jacopomii.googledialermod.ui.adapter.BooleanModsRecyclerViewAdapter;
+import com.jacopomii.gappsmod.ICoreRootService;
+import com.jacopomii.gappsmod.R;
+import com.jacopomii.gappsmod.databinding.FragmentBooleanModsBinding;
+import com.jacopomii.gappsmod.ui.activity.MainActivity;
+import com.jacopomii.gappsmod.ui.adapter.BooleanModsRecyclerViewAdapter;
 import com.l4digital.fastscroll.FastScrollRecyclerView;
 
 import org.json.JSONException;

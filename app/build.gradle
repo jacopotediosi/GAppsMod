@@ -39,7 +39,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.jacopomii.googledialermod"
+        applicationId "com.jacopomii.gappsmod"
         minSdk 21
         targetSdk 33
         versionCode 300
@@ -59,7 +59,7 @@ android {
         aidl true
         buildConfig = true
     }
-    namespace 'com.jacopomii.googledialermod'
+    namespace 'com.jacopomii.gappsmod'
 }
 
 dependencies {

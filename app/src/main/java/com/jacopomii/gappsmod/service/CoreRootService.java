@@ -1,8 +1,8 @@
-package com.jacopomii.googledialermod.service;
+package com.jacopomii.gappsmod.service;
 
-import static com.jacopomii.googledialermod.data.Constants.DATA_DATA_PREFIX;
-import static com.jacopomii.googledialermod.data.Constants.PHENOTYPE_DB;
-import static com.jacopomii.googledialermod.util.Utils.createInQueryString;
+import static com.jacopomii.gappsmod.data.Constants.DATA_DATA_PREFIX;
+import static com.jacopomii.gappsmod.data.Constants.PHENOTYPE_DB;
+import static com.jacopomii.gappsmod.util.Utils.createInQueryString;
 import static org.sqlite.database.sqlite.SQLiteDatabase.OPEN_READWRITE;
 import static org.sqlite.database.sqlite.SQLiteDatabase.openDatabase;
 
@@ -14,7 +14,7 @@ import android.os.Process;
 
 import androidx.annotation.NonNull;
 
-import com.jacopomii.googledialermod.ICoreRootService;
+import com.jacopomii.gappsmod.ICoreRootService;
 import com.topjohnwu.superuser.Shell;
 import com.topjohnwu.superuser.ipc.RootService;
 import com.topjohnwu.superuser.nio.ExtendedFile;

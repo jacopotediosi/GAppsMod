@@ -1,4 +1,4 @@
-package com.jacopomii.googledialermod.util;
+package com.jacopomii.gappsmod.util;
 
 /**
  * A generic interface to handle clicks on recyclerview rows.

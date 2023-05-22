@@ -1,4 +1,4 @@
-package com.jacopomii.googledialermod.data;
+package com.jacopomii.gappsmod.data;
 
 public class Version implements Comparable<Version> {
     private final String mVersion;

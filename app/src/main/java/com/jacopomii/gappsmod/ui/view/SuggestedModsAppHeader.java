@@ -1,4 +1,4 @@
-package com.jacopomii.googledialermod.ui.view;
+package com.jacopomii.gappsmod.ui.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -9,8 +9,8 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.button.MaterialButton;
-import com.jacopomii.googledialermod.R;
-import com.jacopomii.googledialermod.databinding.SuggestedModsAppHeaderBinding;
+import com.jacopomii.gappsmod.R;
+import com.jacopomii.gappsmod.databinding.SuggestedModsAppHeaderBinding;
 
 /**
  * The application name header used by the Suggested Mods fragment.
