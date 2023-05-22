@@ -34,7 +34,7 @@ assignees: ''
 
 - ROM and Android version: 
 
-- Is Google Dialer installed as system app: 
+- Is the Google app you are trying to tweak (e.g., Phone by Google) installed as system app: yes/no
 
 - Installed Magisk / other SU Manager version: 
 
@@ -42,8 +42,8 @@ assignees: ''
 - Installed GAppsMod version:
 
 
-[NOTE]: # ( Paste below the output of the `adb shell "dumpsys package com.google.android.dialer | grep version"` command )
-- Installed Google Dialer version:
+[NOTE]: # ( Paste below the output of the `adb shell "dumpsys package REPLACE_WITH_PACKAGENAME | grep version"` command )
+- The version of the Google app you are trying to tweak (e.g., Phone by Google):
 
 
 [NOTE]: # ( Paste below the output of the `adb shell "getprop | grep locale"` command )
@@ -56,7 +56,7 @@ assignees: ''
 
 ## Logcat
 [NOTE]: # ( 
-Launch the Dialer in Debug mode using the `adb shell "am start -D com.google.android.dialer"` command.
+Launch the Google app you are trying to tweak (e.g., Phone by Google) in Debug mode using the `adb shell "am start -D REPLACE_WITH_PACKAGENAME"` command.
 Open another terminal and use the `adb logcat > logs.txt` command to start capturing logs.
 Perform the necessary steps to replicate the bug, then press CTRL+C to stop capturing logs.
 Attach below the resulting logs.txt file.
