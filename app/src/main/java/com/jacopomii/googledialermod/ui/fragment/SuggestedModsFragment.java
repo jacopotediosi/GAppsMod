@@ -194,6 +194,18 @@ public class SuggestedModsFragment extends Fragment {
         put("bugle_phenotype__enable_smart_compose", true);
     }};
 
+    // The following boolean flags force-enable magic compose (draft suggestions with Bard AI) in Messages app
+    private final HashMap<String, Boolean> MESSAGES_ENABLE_MAGIC_COMPOSE_FLAGS = new HashMap<String, Boolean>() {{
+        // Enable magic compose view
+        put("bugle_phenotype__enable_magic_compose_view", true);
+        // Idk what is it, but it has to be true to effectively enable magic compose
+        put("bugle_phenotype__enable_combined_magic_compose", true);
+        // Enable all additional functionalities for magic compose (e.g., feedback and multiple writing styles)
+        put("bugle_phenotype__enable_additional_functionalities_for_magic_compose", true);
+        // Enable magic compose also in xms
+        put("bugle_phenotype__magic_compose_enabled_in_xms", true);
+    }};
+
     // The following boolean flag force-enables smart actions (smart reply) in notifications in Messages app
     private final HashMap<String, Boolean> MESSAGES_ENABLE_SMART_ACTIONS_IN_NOTIFICATIONS_FLAGS = new HashMap<String, Boolean>() {{
         put("bugle_phenotype__enable_smart_actions_in_notifications", true);
@@ -364,6 +376,13 @@ public class SuggestedModsFragment extends Fragment {
             messagesForceEnableSmartComposeSwitch.setCheckedProgrammatically(messagesForceEnableSmartComposeSwitchChecked);
             messagesForceEnableSmartComposeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> modSetBooleanFlags(isChecked, MESSAGES_PHENOTYPE_PACKAGE_NAME, MESSAGES_ENABLE_SMART_COMPOSE_FLAGS));
             messagesForceEnableSmartComposeSwitch.setEnabled(true);
+
+            // messagesForceEnableMagicComposeSwitch
+            ProgrammaticMaterialSwitch messagesForceEnableMagicComposeSwitch = mBinding.messagesForceEnableMagicCompose.getSwitch();
+            boolean messagesForceEnableMagicComposeSwitchChecked = modCheckAreAllFlagsOverridden(MESSAGES_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(MESSAGES_ENABLE_MAGIC_COMPOSE_FLAGS.keySet()));
+            messagesForceEnableMagicComposeSwitch.setCheckedProgrammatically(messagesForceEnableMagicComposeSwitchChecked);
+            messagesForceEnableMagicComposeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> modSetBooleanFlags(isChecked, MESSAGES_PHENOTYPE_PACKAGE_NAME, MESSAGES_ENABLE_MAGIC_COMPOSE_FLAGS));
+            messagesForceEnableMagicComposeSwitch.setEnabled(true);
 
             // messagesForceEnableSmartActionsInNotificationsSwitch
             ProgrammaticMaterialSwitch messagesForceEnableSmartActionsInNotificationsSwitch = mBinding.messagesForceEnableSmartActionsInNotifications.getSwitch();

@@ -45,6 +45,7 @@
     <!-- Messages -->
     <string name="force_enable_debug_menu">Forza l\'abilitazione del menu di debug</string>
     <string name="force_enable_images_via_gphotos">Forza l\'abilitazione dell\'invio di immagini via ${photos_app_name}</string>
+    <string name="force_enable_magic_compose">Forza l\'abilitazione di magic compose (suggerimenti di scrittura con l\'AI Bard)</string>
     <string name="force_enable_marking_conversations_as_unread">Forza l\'abilitazione per segnare conversazioni come non lette</string>
     <string name="force_enable_message_organization">Forza l\'abilitazione dell\'organizzazione dei messaggi (supersort)</string>
     <string name="force_enable_nudges_and_birthdays">Forza l\'abilitazione di solleciti e promemoria compleanni (nudges)</string>

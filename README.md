@@ -41,6 +41,7 @@ What GoogleDialerMod does is execute SQLite queries on that database and overrid
     - Force **enable verified SMS** settings menu ([ref](https://support.google.com/messages/answer/9326240))
     - Force **enable always sending images by Google Photos links in SMS** ([ref](https://9to5google.com/2022/02/19/messages-google-photos/))
     - Force **enable nudges and birthday reminders** ([ref](https://support.google.com/messages/answer/11555591))
+    - Force **enable Bard AI draft suggestions** ("magic compose") ([ref](https://9to5google.com/2023/05/05/google-messages-magic-compose-ai/))
     - Force enable smart features: **spotlights suggestions** ([ref](https://9to5google.com/2023/02/02/google-messages-assistant/)), **stickers suggestions**, **smart compose** ([ref](https://9to5google.com/2020/06/30/gboard-android-smart-compose-google-messages/)), **smart actions (smart reply) in notifications**
 
 And much more coming soon :)

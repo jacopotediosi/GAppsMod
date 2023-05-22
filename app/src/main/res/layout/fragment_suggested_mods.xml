@@ -193,6 +193,13 @@
                 app:text="@string/force_enable_smart_compose_settings_menu" />
 
             <com.jacopomii.googledialermod.ui.view.SwitchCardView
+                android:id="@+id/messages_force_enable_magic_compose"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:enabled="false"
+                app:text="@string/force_enable_magic_compose" />
+
+            <com.jacopomii.googledialermod.ui.view.SwitchCardView
                 android:id="@+id/messages_force_enable_smart_actions_in_notifications"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -55,6 +55,7 @@
     <!-- Messages -->
     <string name="force_enable_debug_menu">Force enable debug menu</string>
     <string name="force_enable_images_via_gphotos">Force enable sending images via ${photos_app_name}</string>
+    <string name="force_enable_magic_compose">Force enable magic compose (draft suggestions with Bard AI)</string>
     <string name="force_enable_marking_conversations_as_unread">Force enable marking conversations as unread</string>
     <string name="force_enable_message_organization">Force enable message organization (supersort)</string>
     <string name="force_enable_nudges_and_birthdays">Force enable nudges and birthday reminders</string>

@@ -45,6 +45,7 @@
     <!-- Messages -->
     <string name="force_enable_debug_menu">Forzar habilitar el menú de depuración</string>
     <string name="force_enable_images_via_gphotos">Forzar habilitar el envío de imágenes mediante ${photos_app_name}</string>
+    <string name="force_enable_magic_compose">Force enable Magic Compose (sugerencias de escritura con AI Bard)</string>
     <string name="force_enable_marking_conversations_as_unread">Forzar habilitar el marcado de conversaciones como no leídas</string>
     <string name="force_enable_message_organization">Forzar habilitar la organización de mensajes (supersort)</string>
     <string name="force_enable_nudges_and_birthdays">Forzar habilitar recordatorios de mensajes (nudges)</string>
