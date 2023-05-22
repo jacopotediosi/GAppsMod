@@ -42,8 +42,8 @@ android {
         applicationId "com.jacopomii.gappsmod"
         minSdk 21
         targetSdk 33
-        versionCode 300
-        versionName "3.00"
+        versionCode 400
+        versionName "4.00"
     }
 
     buildTypes {
