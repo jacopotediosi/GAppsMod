@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.CheckBox;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
@@ -128,6 +129,10 @@ public class Utils {
         return applicationLabel;
     }
 
+    // Static variables for showSelectPackageDialog()
+    private static CharSequence lastPackageSearched = null;
+    private static Boolean lastPackageSearchedRemember = true;
+
     /**
      * Show the "Select Package" dialog, a custom view to select package names contained in the
      * Phenotype DB with search and fastscroll features.
@@ -160,6 +165,7 @@ public class Utils {
         // Dialog components
         SearchView selectPackageSearchView = dialogSelectPackageBinding.searchview;
         FastScrollRecyclerView selectPackageRecyclerView = dialogSelectPackageBinding.recyclerview;
+        CheckBox SelectPackageRememberCheckbox = dialogSelectPackageBinding.remembercheckbox;
 
         // Initialize the dialog adapter
         SelectPackageRecyclerViewAdapter selectPackageRecyclerViewAdapter = new SelectPackageRecyclerViewAdapter(context, coreRootServiceIpc, item -> {
@@ -196,10 +202,20 @@ public class Utils {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                lastPackageSearched = newText;
                 selectPackageRecyclerViewAdapter.getFilter().filter(newText);
                 return false;
             }
         });
+
+        // Remember last package searched
+        SelectPackageRememberCheckbox.setChecked(lastPackageSearchedRemember);
+        SelectPackageRememberCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            lastPackageSearchedRemember = isChecked;
+            lastPackageSearched = selectPackageSearchView.getQuery();
+        });
+        if (lastPackageSearched != null && lastPackageSearchedRemember)
+            selectPackageSearchView.setQuery(lastPackageSearched, true);
 
         // Show dialog
         selectPackageDialog.show();

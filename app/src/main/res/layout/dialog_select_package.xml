@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -15,14 +16,43 @@
         android:textAlignment="viewStart"
         android:textAppearance="?attr/textAppearanceTitleLarge" />
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/searchview"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/l_50"
-        app:iconifiedByDefault="false"
-        app:queryHint="@string/search_by_package_or_app"
-        app:searchIcon="@null" />
+        android:gravity="center_vertical">
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/l_50"
+            android:layout_weight="1"
+            app:iconifiedByDefault="false"
+            app:queryHint="@string/search_by_package_or_app"
+            app:searchIcon="@null" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <CheckBox
+                android:id="@+id/remembercheckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="0dp"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/remember"
+                app:srcCompat="@drawable/ic_save_24"
+                app:tint="?attr/colorControlNormal" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"

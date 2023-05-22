@@ -25,6 +25,7 @@
     <string name="or">Or</string>
     <string name="yes">Yes</string>
     <string name="package_spinner_label" translatable="false">Package:</string>
+    <string name="remember">Remember</string>
     <string name="select_package">Select package</string>
     <string name="unknown">Unknown</string>
 
