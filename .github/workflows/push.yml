@@ -1,0 +1,65 @@
+name: Assemble on push
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '.github/**'
+      - '**.md'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+          fetch-depth: 0
+          
+      - name: Gradle wrapper validation
+        uses: gradle/wrapper-validation-action@v1
+    
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+        
+      - name: Write keystore parameters
+        run: |
+          echo keystore.password='${{ secrets.KEYSTORE_PASSWORD }}' >> local.properties
+          echo keystore.alias='${{ secrets.KEYSTORE_ALIAS }}' >> local.properties
+          echo keystore.alias_password='${{ secrets.KEYSTORE_ALIAS_PASSWORD }}' >> local.properties
+          echo keystore.path=`pwd`/keystore.jks >> local.properties
+          echo "${{ secrets.KEYSTORE_KEY }}" | base64 --decode > keystore.jks
+
+      - name: Assemble
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: assemble
+
+      - name: Get short commit hash
+        run: |
+          echo "LATEST_COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Upload debug
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ github.event.repository.name }}-${{ env.LATEST_COMMIT_HASH }}-debug.apk
+          path: "app/build/outputs/apk/debug/app-debug.apk"
+
+      - name: Upload release
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ github.event.repository.name }}-${{ env.LATEST_COMMIT_HASH }}-release.apk
+          path: "app/build/outputs/apk/release/app-release.apk"

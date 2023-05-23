@@ -4,11 +4,10 @@ plugins {
     id 'com.likethesalad.stem'
 }
 
-// Remember to config your keystore settings in local.properties or in the below lines
-def keyfile = file('C:/keystore.jks')
-def keystorePSW = 'CHANGEME'
-def keystoreAlias = 'CHANGEME'
-def keystoreAliasPSW = 'CHANGEME'
+def keyfile
+def keystorePSW
+def keystoreAlias
+def keystoreAliasPSW
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
@@ -19,9 +18,17 @@ if (keystoreFilepath) {
     keystorePSW = properties.getProperty("keystore.password")
     keystoreAlias = properties.getProperty("keystore.alias")
     keystoreAliasPSW = properties.getProperty("keystore.alias_password")
+} else {
+    // Remember to config your keystore settings in local.properties or in the below lines
+    keyfile = file('C:/keystore.jks')
+    keystorePSW = 'CHANGEME'
+    keystoreAlias = 'CHANGEME'
+    keystoreAliasPSW = 'CHANGEME'
 }
 
 android {
+    compileSdk 33
+
     signingConfigs {
         release {
             storeFile keyfile
@@ -35,8 +42,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
-    compileSdk 33
 
     defaultConfig {
         applicationId "com.jacopomii.gappsmod"
