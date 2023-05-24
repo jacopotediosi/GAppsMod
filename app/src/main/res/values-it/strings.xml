@@ -31,7 +31,7 @@
     <string name="suggested_mods">Mod suggerite</string>
 
     <!-- Splash screen -->
-    <string name="splash_screen_phenotype">Controllando il Phenotype DB…</string>
+    <string name="splash_screen_phenotype_gms">Controllando il Phenotype DB…</string>
     <string name="splash_screen_root">Controllando i permessi di root…</string>
     <string name="splash_screen_root_service">Connettendo al servizio root…</string>
     <string name="splash_screen_updates">Controllando gli aggiornamenti…</string>
@@ -77,6 +77,6 @@
     <string name="app_not_installed_error">Sembra che l\'applicazione non sia installata.</string>
     <string name="dialer_permission_alert">${dialer_app_name} non è installato come app di sistema e pertanto non dispone del permesso CAPTURE_AUDIO_OUTPUT.\nAlcune funzioni, come la registrazione chiamate, potrebbero non funzionare.</string>
     <string name="new_version_alert">E\' disponibile una nuova versione di ${app_name}.\n\nPuoi scaricarla dalla pagina Releases di Github.</string>
-    <string name="phenotype_db_does_not_exist">Sembra che non esista il Phenotype DB.\n\nInstalla Google Play Services da Google Play e riprova.</string>
+    <string name="phenotype_db_does_not_exist_gms">Sembra che non esista il Phenotype DB.\n\nInstalla Google Play Services da Google Play e riprova.</string>
     <string name="root_access_denied">Impossibile ottenere i permessi di root. Per favore consenti l\'accesso root.</string>
 </resources>

@@ -2,7 +2,7 @@ package com.jacopomii.gappsmod.ui.activity;
 
 import static com.jacopomii.gappsmod.data.Constants.GMS_ANDROID_PACKAGE_NAME;
 import static com.jacopomii.gappsmod.data.Constants.GOOGLE_PLAY_DETAILS_LINK;
-import static com.jacopomii.gappsmod.data.Constants.PHENOTYPE_DB;
+import static com.jacopomii.gappsmod.data.Constants.GMS_PHENOTYPE_DB;
 import static com.jacopomii.gappsmod.util.Utils.checkUpdateAvailable;
 import static com.jacopomii.gappsmod.util.Utils.openGooglePlay;
 
@@ -44,7 +44,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private final CountDownLatch mRootCheckPassed = new CountDownLatch(1);
     private final CountDownLatch mCoreRootServiceConnected = new CountDownLatch(1);
-    private final CountDownLatch mPhenotypeCheckPassed = new CountDownLatch(1);
+    private final CountDownLatch mGMSPhenotypeCheckPassed = new CountDownLatch(1);
     private final CountDownLatch mUpdateCheckFinished = new CountDownLatch(1);
 
     private boolean mCoreRootServiceBound = false;
@@ -107,7 +107,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
         }.start();
 
-        // Phenotype DB check
+        // GMS Phenotype DB check
         new Thread() {
             @Override
             public void run() {
@@ -117,21 +117,22 @@ public class SplashScreenActivity extends AppCompatActivity {
                     // Wait for coreRootService to connect
                     mCoreRootServiceConnected.await();
 
-                    // Check the Phenotype DB
-                    if (checkPhenotypeDB()) {
-                        mPhenotypeCheckPassed.countDown();
+                    // Check the GMS Phenotype DB
+                    if (checkGMSPhenotypeDB()) {
+                        mGMSPhenotypeCheckPassed.countDown();
                     } else {
                         runOnUiThread(() ->
                                 new MaterialAlertDialogBuilder(SplashScreenActivity.this)
                                         .setCancelable(false)
-                                        .setMessage(getString(R.string.phenotype_db_does_not_exist))
-                                        .setNegativeButton(R.string.install, (dialogInterface, i) -> openGooglePlay(SplashScreenActivity.this, GOOGLE_PLAY_DETAILS_LINK + GMS_ANDROID_PACKAGE_NAME))
-                                        .setPositiveButton(R.string.exit, (dialog, which) -> System.exit(0))
+                                        .setMessage(getString(R.string.phenotype_db_does_not_exist_gms))
+                                        .setPositiveButton(R.string.install, (dialogInterface, i) -> openGooglePlay(SplashScreenActivity.this, GOOGLE_PLAY_DETAILS_LINK + GMS_ANDROID_PACKAGE_NAME))
+                                        .setNegativeButton(R.string.exit, (dialog, which) -> System.exit(0))
+                                        .setNeutralButton(R.string.continue_anyway, (dialogInterface, i) -> mGMSPhenotypeCheckPassed.countDown())
                                         .show());
                     }
 
                     // Update the UI
-                    setCheckUIDone(mBinding.circularPhenotype.getId(), mBinding.donePhenotype.getId(), mPhenotypeCheckPassed.getCount() == 0);
+                    setCheckUIDone(mBinding.circularPhenotypeGms.getId(), mBinding.donePhenotypeGms.getId(), mGMSPhenotypeCheckPassed.getCount() == 0);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -150,11 +151,11 @@ public class SplashScreenActivity extends AppCompatActivity {
                             new MaterialAlertDialogBuilder(SplashScreenActivity.this)
                                     .setCancelable(false)
                                     .setMessage(R.string.new_version_alert)
-                                    .setNegativeButton(
+                                    .setPositiveButton(
                                             R.string.github,
                                             (dialogInterface, i) -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_link) + "/releases")))
                                     )
-                                    .setPositiveButton(R.string.continue_anyway, (dialogInterface, i) -> mUpdateCheckFinished.countDown())
+                                    .setNegativeButton(R.string.continue_anyway, (dialogInterface, i) -> mUpdateCheckFinished.countDown())
                                     .show());
                 }
 
@@ -171,7 +172,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     // Wait for all checks to pass and for all operations to finish
                     mRootCheckPassed.await();
                     mCoreRootServiceConnected.await();
-                    mPhenotypeCheckPassed.await();
+                    mGMSPhenotypeCheckPassed.await();
                     mUpdateCheckFinished.await();
 
                     // This is just for aesthetics: I don't want the splashscreen to be too fast
@@ -192,8 +193,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         return Shell.getShell().isRoot();
     }
 
-    private boolean checkPhenotypeDB() {
-        return mCoreRootServiceFSManager.getFile(PHENOTYPE_DB).exists();
+    private boolean checkGMSPhenotypeDB() {
+        return mCoreRootServiceFSManager.getFile(GMS_PHENOTYPE_DB).exists();
     }
 
     private void setCheckUIDone(int circularID, int doneImageID, boolean success) {

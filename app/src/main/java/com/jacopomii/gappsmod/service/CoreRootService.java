@@ -1,7 +1,9 @@
 package com.jacopomii.gappsmod.service;
 
 import static com.jacopomii.gappsmod.data.Constants.DATA_DATA_PREFIX;
-import static com.jacopomii.gappsmod.data.Constants.PHENOTYPE_DB;
+import static com.jacopomii.gappsmod.data.Constants.GMS_PHENOTYPE_DB;
+import static com.jacopomii.gappsmod.data.Constants.VENDING_ANDROID_PACKAGE_NAME;
+import static com.jacopomii.gappsmod.data.Constants.VENDING_PHENOTYPE_DB;
 import static com.jacopomii.gappsmod.util.Utils.createInQueryString;
 import static org.sqlite.database.sqlite.SQLiteDatabase.OPEN_READWRITE;
 import static org.sqlite.database.sqlite.SQLiteDatabase.openDatabase;
@@ -41,26 +43,38 @@ public class CoreRootService extends RootService {
             System.loadLibrary("sqliteX");
     }
 
-    private SQLiteDatabase phenotypeDB;
+    private SQLiteDatabase GMSPhenotypeDB = null;
+    private SQLiteDatabase VendingPhenotypeDB = null;
 
     @Override
     public IBinder onBind(@NonNull Intent intent) {
-        phenotypeDB = openDatabase(PHENOTYPE_DB, null, OPEN_READWRITE);
+        try {
+            GMSPhenotypeDB = openDatabase(GMS_PHENOTYPE_DB, null, OPEN_READWRITE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            VendingPhenotypeDB = openDatabase(VENDING_PHENOTYPE_DB, null, OPEN_READWRITE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return new CoreRootServiceIPC();
     }
 
     @Override
     public boolean onUnbind(@NonNull Intent intent) {
-        if (phenotypeDB.isOpen())
-            phenotypeDB.close();
+        if (GMSPhenotypeDB != null && GMSPhenotypeDB.isOpen()) GMSPhenotypeDB.close();
+        if (VendingPhenotypeDB != null && VendingPhenotypeDB.isOpen()) VendingPhenotypeDB.close();
         super.onUnbind(intent);
         return false;
     }
 
     @Override
     public void onDestroy() {
-        if (phenotypeDB.isOpen())
-            phenotypeDB.close();
+        if (GMSPhenotypeDB != null && GMSPhenotypeDB.isOpen()) GMSPhenotypeDB.close();
+        if (VendingPhenotypeDB != null && VendingPhenotypeDB.isOpen()) VendingPhenotypeDB.close();
         super.onDestroy();
     }
 
@@ -136,9 +150,22 @@ public class CoreRootService extends RootService {
                 "GROUP BY phenotypePackageName " +
                 "ORDER BY phenotypePackageName ASC";
 
-        try (Cursor cursor = phenotypeDB.rawQuery(sql, null)) {
-            while (cursor.moveToNext())
-                map.put(cursor.getString(0), cursor.getString(1));
+        try {
+            try (Cursor cursor = GMSPhenotypeDB.rawQuery(sql, null)) {
+                while (cursor.moveToNext())
+                    map.put(cursor.getString(0), cursor.getString(1));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            try (Cursor cursor = VendingPhenotypeDB.rawQuery(sql, null)) {
+                while (cursor.moveToNext())
+                    map.put(cursor.getString(0), cursor.getString(1));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return map;
@@ -153,30 +180,47 @@ public class CoreRootService extends RootService {
                 "GROUP BY phenotypePackageName " +
                 "ORDER BY phenotypePackageName ASC";
 
-        try (Cursor cursor = phenotypeDB.rawQuery(sql, null)) {
-            while (cursor.moveToNext())
-                map.put(cursor.getString(0), cursor.getString(1));
+        try {
+            try (Cursor cursor = GMSPhenotypeDB.rawQuery(sql, null)) {
+                while (cursor.moveToNext())
+                    map.put(cursor.getString(0), cursor.getString(1));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            try (Cursor cursor = VendingPhenotypeDB.rawQuery(sql, null)) {
+                while (cursor.moveToNext())
+                    map.put(cursor.getString(0), cursor.getString(1));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return map;
     }
 
     private String phenotypeDBGetAndroidPackageNameByPhenotypePackageName(String phenotypePackageName) {
-        String androidPackageName = "";
-
+        SQLiteDatabase phenotypeDB = getPhenotypeDBByPhenotypePackageName(phenotypePackageName);
         String sql = "SELECT androidPackageName FROM Packages WHERE packageName=? LIMIT 1";
         String[] selectionArgs = {phenotypePackageName};
 
-        try (Cursor cursor = phenotypeDB.rawQuery(sql, selectionArgs)) {
-            if (cursor.moveToFirst()) androidPackageName = cursor.getString(0);
+        try {
+            try (Cursor cursor = phenotypeDB.rawQuery(sql, selectionArgs)) {
+                if (cursor.moveToFirst()) return cursor.getString(0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        return androidPackageName;
+        return "";
     }
 
     private Map<String, Boolean> phenotypeDBGetBooleanFlagsOrOverridden(String phenotypePackageName) {
         HashMap<String, Boolean> map = new HashMap<>();
 
+        SQLiteDatabase phenotypeDB = getPhenotypeDBByPhenotypePackageName(phenotypePackageName);
         String sql = "SELECT DISTINCT name,boolVal " +
                 "FROM Flags " +
                 "WHERE packageName=? AND name NOT IN (SELECT name FROM FlagOverrides WHERE packageName=?) AND user='' AND boolVal!='NULL' " +
@@ -185,24 +229,33 @@ public class CoreRootService extends RootService {
                 "WHERE packageName=? AND user='' AND boolVal!='NULL'";
         String[] selectionArgs = {phenotypePackageName, phenotypePackageName, phenotypePackageName};
 
-        try (Cursor cursor = phenotypeDB.rawQuery(sql, selectionArgs)) {
-            while (cursor.moveToNext())
-                map.put(cursor.getString(0), cursor.getInt(1) != 0);
+        try {
+            try (Cursor cursor = phenotypeDB.rawQuery(sql, selectionArgs)) {
+                while (cursor.moveToNext())
+                    map.put(cursor.getString(0), cursor.getInt(1) != 0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return map;
     }
 
     private boolean phenotypeDBAreAllFlagsOverridden(String phenotypePackageName, List<String> flags) {
-        boolean areAllFlagsOverridden;
+        boolean areAllFlagsOverridden = false;
 
+        SQLiteDatabase phenotypeDB = getPhenotypeDBByPhenotypePackageName(phenotypePackageName);
         String sql = "SELECT DISTINCT name FROM FlagOverrides WHERE packageName=? AND name IN (" + createInQueryString(flags.size()) + ")";
         List<String> selectionArgs = new ArrayList<>();
         selectionArgs.add(phenotypePackageName);
         selectionArgs.addAll(flags);
 
-        try (Cursor cursor = phenotypeDB.rawQuery(sql, selectionArgs.toArray(new String[0]))) {
-            areAllFlagsOverridden = cursor.getCount() == flags.size();
+        try {
+            try (Cursor cursor = phenotypeDB.rawQuery(sql, selectionArgs.toArray(new String[0]))) {
+                areAllFlagsOverridden = cursor.getCount() == flags.size();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return areAllFlagsOverridden;
@@ -211,7 +264,17 @@ public class CoreRootService extends RootService {
     private void phenotypeDBDeleteAllFlagOverrides(boolean deletePackagePhenotypeCache) {
         Set<String> overriddenPhenotypePackageNames = phenotypeDBGetAllOverriddenPackageNames().keySet();
 
-        phenotypeDB.delete("FlagOverrides", null, null);
+        try {
+            GMSPhenotypeDB.delete("FlagOverrides", null, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            VendingPhenotypeDB.delete("FlagOverrides", null, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (deletePackagePhenotypeCache) {
             for (String phenotypePackageName : overriddenPhenotypePackageNames) {
@@ -221,18 +284,30 @@ public class CoreRootService extends RootService {
     }
 
     private void phenotypeDBDeleteAllFlagOverridesByPhenotypePackageName(String phenotypePackageName, boolean deletePackagePhenotypeCache) {
-        phenotypeDB.delete("FlagOverrides", "packageName=?", new String[]{phenotypePackageName});
+        SQLiteDatabase phenotypeDB = getPhenotypeDBByPhenotypePackageName(phenotypePackageName);
+
+        try {
+            phenotypeDB.delete("FlagOverrides", "packageName=?", new String[]{phenotypePackageName});
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (deletePackagePhenotypeCache)
             killPackageAndDeletePhenotypeCache(phenotypePackageName);
     }
 
     private void phenotypeDBDeleteFlagOverrides(String phenotypePackageName, List<String> flags, boolean deletePackagePhenotypeCache) {
+        SQLiteDatabase phenotypeDB = getPhenotypeDBByPhenotypePackageName(phenotypePackageName);
         String whereClause = "packageName=? AND name IN (" + createInQueryString(flags.size()) + ")";
         List<String> whereArgs = new ArrayList<>();
         whereArgs.add(phenotypePackageName);
         whereArgs.addAll(flags);
-        phenotypeDB.delete("FlagOverrides", whereClause, whereArgs.toArray(new String[0]));
+
+        try {
+            phenotypeDB.delete("FlagOverrides", whereClause, whereArgs.toArray(new String[0]));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (deletePackagePhenotypeCache)
             killPackageAndDeletePhenotypeCache(phenotypePackageName);
@@ -241,20 +316,25 @@ public class CoreRootService extends RootService {
     private void phenotypeDBOverrideBooleanFlag(String phenotypePackageName, String flag, boolean value, boolean deletePackagePhenotypeCache) {
         phenotypeDBDeleteFlagOverrides(phenotypePackageName, Collections.singletonList(flag), false);
 
+        SQLiteDatabase phenotypeDB = getPhenotypeDBByPhenotypePackageName(phenotypePackageName);
         String sql = "SELECT DISTINCT user FROM Flags WHERE packageName = ?";
         String[] selectionArgs = {phenotypePackageName};
 
-        try (Cursor cursor = phenotypeDB.rawQuery(sql, selectionArgs)) {
-            while (cursor.moveToNext()) {
-                ContentValues contentValues = new ContentValues();
-                contentValues.put("packageName", phenotypePackageName);
-                contentValues.put("flagType", 0);
-                contentValues.put("name", flag);
-                contentValues.put("user", cursor.getString(0));
-                contentValues.put("boolVal", (value ? "1" : "0"));
-                contentValues.put("committed", 0);
-                phenotypeDB.insertWithOnConflict("FlagOverrides", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+        try {
+            try (Cursor cursor = phenotypeDB.rawQuery(sql, selectionArgs)) {
+                while (cursor.moveToNext()) {
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put("packageName", phenotypePackageName);
+                    contentValues.put("flagType", 0);
+                    contentValues.put("name", flag);
+                    contentValues.put("user", cursor.getString(0));
+                    contentValues.put("boolVal", (value ? "1" : "0"));
+                    contentValues.put("committed", 0);
+                    phenotypeDB.insertWithOnConflict("FlagOverrides", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         if (deletePackagePhenotypeCache)
@@ -264,20 +344,25 @@ public class CoreRootService extends RootService {
     private void phenotypeDBOverrideExtensionFlag(String phenotypePackageName, String flag, byte[] value, boolean deletePackagePhenotypeCache) {
         phenotypeDBDeleteFlagOverrides(phenotypePackageName, Collections.singletonList(flag), false);
 
+        SQLiteDatabase phenotypeDB = getPhenotypeDBByPhenotypePackageName(phenotypePackageName);
         String sql = "SELECT DISTINCT user FROM Flags WHERE packageName = ?";
         String[] selectionArgs = {phenotypePackageName};
 
-        try (Cursor cursor = phenotypeDB.rawQuery(sql, selectionArgs)) {
-            while (cursor.moveToNext()) {
-                ContentValues contentValues = new ContentValues();
-                contentValues.put("packageName", phenotypePackageName);
-                contentValues.put("flagType", 0);
-                contentValues.put("name", flag);
-                contentValues.put("user", cursor.getString(0));
-                contentValues.put("extensionVal", value);
-                contentValues.put("committed", 0);
-                phenotypeDB.insertWithOnConflict("FlagOverrides", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+        try {
+            try (Cursor cursor = phenotypeDB.rawQuery(sql, selectionArgs)) {
+                while (cursor.moveToNext()) {
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put("packageName", phenotypePackageName);
+                    contentValues.put("flagType", 0);
+                    contentValues.put("name", flag);
+                    contentValues.put("user", cursor.getString(0));
+                    contentValues.put("extensionVal", value);
+                    contentValues.put("committed", 0);
+                    phenotypeDB.insertWithOnConflict("FlagOverrides", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         if (deletePackagePhenotypeCache)
@@ -287,36 +372,76 @@ public class CoreRootService extends RootService {
     private void phenotypeDBOverrideStringFlag(String phenotypePackageName, String flag, String value, boolean deletePackagePhenotypeCache) {
         phenotypeDBDeleteFlagOverrides(phenotypePackageName, Collections.singletonList(flag), false);
 
+        SQLiteDatabase phenotypeDB = getPhenotypeDBByPhenotypePackageName(phenotypePackageName);
         String sql = "SELECT DISTINCT user FROM Flags WHERE packageName = ?";
         String[] selectionArgs = {phenotypePackageName};
 
-        try (Cursor cursor = phenotypeDB.rawQuery(sql, selectionArgs)) {
-            while (cursor.moveToNext()) {
-                ContentValues contentValues = new ContentValues();
-                contentValues.put("packageName", phenotypePackageName);
-                contentValues.put("flagType", 0);
-                contentValues.put("name", flag);
-                contentValues.put("user", cursor.getString(0));
-                contentValues.put("stringVal", value);
-                contentValues.put("committed", 0);
-                phenotypeDB.insertWithOnConflict("FlagOverrides", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+        try {
+            try (Cursor cursor = phenotypeDB.rawQuery(sql, selectionArgs)) {
+                while (cursor.moveToNext()) {
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put("packageName", phenotypePackageName);
+                    contentValues.put("flagType", 0);
+                    contentValues.put("name", flag);
+                    contentValues.put("user", cursor.getString(0));
+                    contentValues.put("stringVal", value);
+                    contentValues.put("committed", 0);
+                    phenotypeDB.insertWithOnConflict("FlagOverrides", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         if (deletePackagePhenotypeCache)
             killPackageAndDeletePhenotypeCache(phenotypePackageName);
     }
 
+    /**
+     * Get the correct database (GMS or Vending) based on the {@code phenotypePackageName}.
+     *
+     * @param phenotypePackageName the Phenotype (not Android) package name for which to get the Phenotype DB.
+     * @return a {@code SQLiteDatabase} reference to the GMS or Vending Phenotype DB. The returned object may be null if there was an error opening the database.
+     */
+    private SQLiteDatabase getPhenotypeDBByPhenotypePackageName(String phenotypePackageName) {
+        if (phenotypePackageName.equals("com.google.android.finsky.regular") || phenotypePackageName.equals("com.google.android.finsky.stable")) {
+            return VendingPhenotypeDB;
+        } else {
+            return GMSPhenotypeDB;
+        }
+    }
+
+    /**
+     * Kill and delete the Phenotype cache files of the Android application corresponding to the given {@code phenotypePackageName}.
+     *
+     * @param phenotypePackageName the Phenotype (not Android) package name to kill and to delete the Phenotype cache files for.
+     */
     private void killPackageAndDeletePhenotypeCache(String phenotypePackageName) {
         String androidPackageName = phenotypeDBGetAndroidPackageNameByPhenotypePackageName(phenotypePackageName);
 
+        // Kill the android application corresponding to the phenotypePackageName
         Shell.cmd("am kill all " + androidPackageName).exec();
+
+        // Delete application phenotype Cache
         ExtendedFile phenotypeCache = FileSystemManager.getLocal().getFile(DATA_DATA_PREFIX + androidPackageName + "/files/phenotype");
         if (phenotypeCache.exists()) {
             try {
                 FileUtils.deleteDirectory(phenotypeCache);
             } catch (IOException | IllegalArgumentException e) {
                 e.printStackTrace();
+            }
+        }
+
+        // If the application is Vending, additional cache files need to be deleted
+        if (androidPackageName.equals(VENDING_ANDROID_PACKAGE_NAME)) {
+            ExtendedFile[] VendingFiles = FileSystemManager.getLocal().getFile(DATA_DATA_PREFIX + androidPackageName + "/files").listFiles();
+            if (VendingFiles != null) {
+                for (ExtendedFile file : VendingFiles) {
+                    if (file.getName().startsWith("experiment-flags")) {
+                        //noinspection ResultOfMethodCallIgnored
+                        file.delete();
+                    }
+                }
             }
         }
     }

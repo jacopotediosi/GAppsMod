@@ -31,7 +31,7 @@
     <string name="suggested_mods">Mods suggérés</string>
 
     <!-- Splash screen -->
-    <string name="splash_screen_phenotype">Vérification de la base de données Phenotype…</string>
+    <string name="splash_screen_phenotype_gms">Vérification de la base de données Phenotype…</string>
     <string name="splash_screen_root">Vérification des permissions racine…</string>
     <string name="splash_screen_root_service">Connexion au service racine…</string>
     <string name="splash_screen_updates">Vérification des mises à jour…</string>
@@ -78,6 +78,6 @@
     <string name="app_not_installed_error">Il semble que l\'application ne soit pas installée.</string>
     <string name="dialer_permission_alert">${dialer_app_name} n\'est pas installé en tant qu\'application système et ne dispose donc pas de l\'autorisation CAPTURE_AUDIO_OUTPUT.\nCertaines fonctionnalités, telles que l\'enregistrement des appels, peuvent ne pas fonctionner.</string>
     <string name="new_version_alert">Une nouvelle version du ${app_name} est disponible.\n\nVous pouvez la télécharger depuis la pages des versions sur Github.</string>
-    <string name="phenotype_db_does_not_exist">La base de données Phenotype n\’existe pas.\n\nInstaller Google Play Services depuis le magasin Google Play et réessayez.</string>
+    <string name="phenotype_db_does_not_exist_gms">La base de données Phenotype n\’existe pas.\n\nInstaller Google Play Services depuis le magasin Google Play et réessayez.</string>
     <string name="root_access_denied">Accès à la racine refusé. Merci d\’autoriser l\’accès à la racine.</string>
 </resources>

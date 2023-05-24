@@ -1,4 +1,4 @@
-package com.jacopomii.gappsmod.ui.application;
+package com.jacopomii.gappsmod.application;
 
 import android.app.Application;
 

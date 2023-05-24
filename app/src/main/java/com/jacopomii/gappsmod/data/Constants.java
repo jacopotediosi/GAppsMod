@@ -21,5 +21,6 @@ public interface Constants {
     // Data / data folders
     String DATA_DATA_PREFIX = "/data/data/";
     String DIALER_CALLRECORDINGPROMPT = DATA_DATA_PREFIX + DIALER_ANDROID_PACKAGE_NAME + "/files/callrecordingprompt";
-    String PHENOTYPE_DB = DATA_DATA_PREFIX + GMS_ANDROID_PACKAGE_NAME + "/databases/phenotype.db";
+    String GMS_PHENOTYPE_DB = DATA_DATA_PREFIX + GMS_ANDROID_PACKAGE_NAME + "/databases/phenotype.db";
+    String VENDING_PHENOTYPE_DB = DATA_DATA_PREFIX + VENDING_ANDROID_PACKAGE_NAME + "/databases/phenotype.db";
 }
