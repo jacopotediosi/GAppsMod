@@ -6,8 +6,8 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:8.0.1'
-        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.9.2'
-        classpath 'com.likethesalad.android:stem-plugin:2.4.0'
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.9.3'
+        classpath 'com.likethesalad.android:stem-plugin:2.4.1'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
