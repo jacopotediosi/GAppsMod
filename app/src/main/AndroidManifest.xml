@@ -8,6 +8,7 @@
         tools:ignore="QueryAllPackagesPermission" />
 
     <application
+        android:name=".ui.application.GAppsModApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
