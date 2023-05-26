@@ -113,7 +113,8 @@ public class Utils {
      *
      * @param context            context.
      * @param androidPackageName the Android package name of the application to get the label for.
-     * @return the application label if the application exists; The string {@code R.string.unknown} otherwise.
+     * @return the application label if the application exists; The localized string
+     * {@link R.string#unknown} otherwise.
      */
     public static String getApplicationLabelOrUnknown(Context context, String androidPackageName) {
         String applicationLabel = context.getString(R.string.unknown);
@@ -139,7 +140,7 @@ public class Utils {
      *
      * @param context             context.
      * @param coreRootServiceIpc  a {@code ICoreRootService} instance.
-     * @param onItemClickListener an implementation of the {@code OnItemClickListener} interface,
+     * @param onItemClickListener an implementation of the {@link OnItemClickListener} interface,
      *                            to perform actions after the user has selected a package.
      *                            The received item is a string containing the selected Phenotype
      *                            (not Android) package name.

@@ -5,7 +5,7 @@
         android:id="@+id/menu_search_icon"
         android:icon="@drawable/ic_menu_search_24"
         android:title="@string/search"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:actionViewClass="com.jacopomii.gappsmod.ui.view.FilterableSearchView"
         app:iconTint="?attr/colorControlNormal"
         app:showAsAction="ifRoom|collapseActionView" />
 </menu>

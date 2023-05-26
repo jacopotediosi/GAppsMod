@@ -12,8 +12,10 @@ import com.jacopomii.gappsmod.R;
 import com.jacopomii.gappsmod.databinding.SwitchCardBinding;
 
 /**
- * A card that contains a text and a switch on a single line.
- * The text will be rendered in a separate TextView from the switch to prevent accidentally clicking on the text from triggering the switch.
+ * A card that contains a {@link android.widget.TextView} and a
+ * {@link ProgrammaticMaterialSwitchView} on a single line.
+ * The text will be rendered in a separate textview from the switch to prevent accidentally
+ * clicking on the text from triggering the switch.
  */
 public class SwitchCardView extends LinearLayout {
     final SwitchCardBinding mBinding;
@@ -38,7 +40,7 @@ public class SwitchCardView extends LinearLayout {
         mBinding.switchCardSwitch.setEnabled(enabled);
     }
 
-    public ProgrammaticMaterialSwitch getSwitch() {
+    public ProgrammaticMaterialSwitchView getSwitch() {
         return mBinding.switchCardSwitch;
     }
 }

@@ -19,7 +19,7 @@ import com.jacopomii.gappsmod.ICoreRootService;
 import com.jacopomii.gappsmod.R;
 import com.jacopomii.gappsmod.data.BooleanFlag;
 import com.jacopomii.gappsmod.databinding.SwitchCardBinding;
-import com.jacopomii.gappsmod.ui.view.ProgrammaticMaterialSwitch;
+import com.jacopomii.gappsmod.ui.view.ProgrammaticMaterialSwitchView;
 import com.l4digital.fastscroll.FastScroller;
 
 import org.json.JSONException;
@@ -172,7 +172,7 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView mTextView;
-        private final ProgrammaticMaterialSwitch mSwitch;
+        private final ProgrammaticMaterialSwitchView mSwitch;
 
         public ViewHolder(SwitchCardBinding binding) {
             super(binding.getRoot());

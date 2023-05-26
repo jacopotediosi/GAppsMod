@@ -14,7 +14,7 @@
         android:orientation="vertical"
         android:padding="@dimen/margin_generic">
 
-        <com.jacopomii.gappsmod.ui.view.SuggestedModsAppHeader
+        <com.jacopomii.gappsmod.ui.view.SuggestedModsAppHeaderView
             android:id="@+id/dialer_app_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
 
         </LinearLayout>
 
-        <com.jacopomii.gappsmod.ui.view.SuggestedModsAppHeader
+        <com.jacopomii.gappsmod.ui.view.SuggestedModsAppHeaderView
             android:id="@+id/messages_app_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

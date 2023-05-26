@@ -31,7 +31,7 @@ import com.jacopomii.gappsmod.R;
 import com.jacopomii.gappsmod.databinding.FragmentSuggestedModsBinding;
 import com.jacopomii.gappsmod.protos.Call_screen_i18n_config;
 import com.jacopomii.gappsmod.ui.activity.MainActivity;
-import com.jacopomii.gappsmod.ui.view.ProgrammaticMaterialSwitch;
+import com.jacopomii.gappsmod.ui.view.ProgrammaticMaterialSwitchView;
 import com.topjohnwu.superuser.Shell;
 import com.topjohnwu.superuser.nio.ExtendedFile;
 import com.topjohnwu.superuser.nio.FileSystemManager;
@@ -250,14 +250,14 @@ public class SuggestedModsFragment extends Fragment {
                 mBinding.dialerPermissionAlert.setVisibility(View.VISIBLE);
 
             // dialerForceEnableCallRecordingSwitch
-            ProgrammaticMaterialSwitch dialerForceEnableCallRecordingSwitch = mBinding.dialerForceEnableCallRecording.getSwitch();
+            ProgrammaticMaterialSwitchView dialerForceEnableCallRecordingSwitch = mBinding.dialerForceEnableCallRecording.getSwitch();
             boolean dialerForceEnableCallRecordingSwitchChecked = modCheckAreAllFlagsOverridden(DIALER_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(DIALER_ENABLE_CALL_RECORDING_FLAGS.keySet()));
             dialerForceEnableCallRecordingSwitch.setCheckedProgrammatically(dialerForceEnableCallRecordingSwitchChecked);
             dialerForceEnableCallRecordingSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> modSetBooleanFlags(isChecked, DIALER_PHENOTYPE_PACKAGE_NAME, DIALER_ENABLE_CALL_RECORDING_FLAGS));
             dialerForceEnableCallRecordingSwitch.setEnabled(true);
 
             // dialerSilenceCallRecordingAlertsSwitch
-            ProgrammaticMaterialSwitch dialerSilenceCallRecordingAlertsSwitch = mBinding.dialerSilenceCallRecordingAlerts.getSwitch();
+            ProgrammaticMaterialSwitchView dialerSilenceCallRecordingAlertsSwitch = mBinding.dialerSilenceCallRecordingAlerts.getSwitch();
             boolean dialerSilenceCallRecordingAlertsSwitchChecked = false;
             try {
                 ExtendedFile startingVoiceFile = mCoreRootServiceFSManager.getFile(DIALER_CALLRECORDINGPROMPT, DIALER_CALLRECORDINGPROMPT_STARTING_VOICE_US);
@@ -303,7 +303,7 @@ public class SuggestedModsFragment extends Fragment {
             }
 
             // dialerForceEnableCallScreenSwitch
-            ProgrammaticMaterialSwitch dialerForceEnableCallScreenSwitch = mBinding.dialerForceEnableCallScreen.getSwitch();
+            ProgrammaticMaterialSwitchView dialerForceEnableCallScreenSwitch = mBinding.dialerForceEnableCallScreen.getSwitch();
             boolean dialerForceEnableCallScreenSwitchChecked = modCheckAreAllFlagsOverridden(DIALER_PHENOTYPE_PACKAGE_NAME, Collections.singletonList(DIALER_CALL_SCREEN_I18N_CONFIG_FLAG));
             dialerForceEnableCallScreenSwitch.setCheckedProgrammatically(dialerForceEnableCallScreenSwitchChecked);
             dialerForceEnableCallScreenSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> dialerForceEnableCallScreen(isChecked));
@@ -322,77 +322,77 @@ public class SuggestedModsFragment extends Fragment {
             requireContext().getPackageManager().getApplicationInfo(MESSAGES_ANDROID_PACKAGE_NAME, 0);
 
             // messagesForceEnableDebugMenuSwitch
-            ProgrammaticMaterialSwitch messagesForceEnableDebugMenuSwitch = mBinding.messagesForceEnableDebugMenu.getSwitch();
+            ProgrammaticMaterialSwitchView messagesForceEnableDebugMenuSwitch = mBinding.messagesForceEnableDebugMenu.getSwitch();
             boolean messagesForceEnableDebugMenuSwitchChecked = modCheckAreAllFlagsOverridden(MESSAGES_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(MESSAGES_ENABLE_DEBUG_MENU_FLAGS.keySet()));
             messagesForceEnableDebugMenuSwitch.setCheckedProgrammatically(messagesForceEnableDebugMenuSwitchChecked);
             messagesForceEnableDebugMenuSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> modSetBooleanFlags(isChecked, MESSAGES_PHENOTYPE_PACKAGE_NAME, MESSAGES_ENABLE_DEBUG_MENU_FLAGS));
             messagesForceEnableDebugMenuSwitch.setEnabled(true);
 
             // messagesForceEnableMarkingMessageThreadsUnreadSwitch
-            ProgrammaticMaterialSwitch messagesForceEnableMarkingMessageThreadsUnreadSwitch = mBinding.messagesForceEnableMarkingMessageThreadsUnread.getSwitch();
+            ProgrammaticMaterialSwitchView messagesForceEnableMarkingMessageThreadsUnreadSwitch = mBinding.messagesForceEnableMarkingMessageThreadsUnread.getSwitch();
             boolean messagesForceEnableMarkingMessageThreadsUnreadSwitchChecked = modCheckAreAllFlagsOverridden(MESSAGES_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(MESSAGES_ENABLE_MARKING_CONVERSATIONS_UNREAD_FLAGS.keySet()));
             messagesForceEnableMarkingMessageThreadsUnreadSwitch.setCheckedProgrammatically(messagesForceEnableMarkingMessageThreadsUnreadSwitchChecked);
             messagesForceEnableMarkingMessageThreadsUnreadSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> modSetBooleanFlags(isChecked, MESSAGES_PHENOTYPE_PACKAGE_NAME, MESSAGES_ENABLE_MARKING_CONVERSATIONS_UNREAD_FLAGS));
             messagesForceEnableMarkingMessageThreadsUnreadSwitch.setEnabled(true);
 
             // messagesForceEnableMessageOrganizationSwitch
-            ProgrammaticMaterialSwitch messagesForceEnableMessageOrganizationSwitch = mBinding.messagesForceEnableMessageOrganization.getSwitch();
+            ProgrammaticMaterialSwitchView messagesForceEnableMessageOrganizationSwitch = mBinding.messagesForceEnableMessageOrganization.getSwitch();
             boolean messagesForceEnableMessageOrganizationSwitchChecked = modCheckAreAllFlagsOverridden(MESSAGES_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(MESSAGES_ENABLE_MESSAGE_ORGANIZATION_FLAGS.keySet()));
             messagesForceEnableMessageOrganizationSwitch.setCheckedProgrammatically(messagesForceEnableMessageOrganizationSwitchChecked);
             messagesForceEnableMessageOrganizationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> modSetBooleanFlags(isChecked, MESSAGES_PHENOTYPE_PACKAGE_NAME, MESSAGES_ENABLE_MESSAGE_ORGANIZATION_FLAGS));
             messagesForceEnableMessageOrganizationSwitch.setEnabled(true);
 
             // messagesForceEnableVerifiedSmsSwitch
-            ProgrammaticMaterialSwitch messagesForceEnableVerifiedSmsSwitch = mBinding.messagesForceEnableVerifiedSms.getSwitch();
+            ProgrammaticMaterialSwitchView messagesForceEnableVerifiedSmsSwitch = mBinding.messagesForceEnableVerifiedSms.getSwitch();
             boolean messagesForceEnableVerifiedSmsSwitchChecked = modCheckAreAllFlagsOverridden(MESSAGES_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(MESSAGES_ENABLE_VERIFIED_SMS_FLAGS.keySet()));
             messagesForceEnableVerifiedSmsSwitch.setCheckedProgrammatically(messagesForceEnableVerifiedSmsSwitchChecked);
             messagesForceEnableVerifiedSmsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> modSetBooleanFlags(isChecked, MESSAGES_PHENOTYPE_PACKAGE_NAME, MESSAGES_ENABLE_VERIFIED_SMS_FLAGS));
             messagesForceEnableVerifiedSmsSwitch.setEnabled(true);
 
             // messagesForceEnableGphotosSwitch
-            ProgrammaticMaterialSwitch messagesForceEnableGphotosSwitch = mBinding.messagesForceEnableGphotos.getSwitch();
+            ProgrammaticMaterialSwitchView messagesForceEnableGphotosSwitch = mBinding.messagesForceEnableGphotos.getSwitch();
             boolean messagesForceEnableGphotosSwitchChecked = modCheckAreAllFlagsOverridden(MESSAGES_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(MESSAGES_ENABLE_IMAGES_VIA_GPHOTOS_FLAGS.keySet()));
             messagesForceEnableGphotosSwitch.setCheckedProgrammatically(messagesForceEnableGphotosSwitchChecked);
             messagesForceEnableGphotosSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> modSetBooleanFlags(isChecked, MESSAGES_PHENOTYPE_PACKAGE_NAME, MESSAGES_ENABLE_IMAGES_VIA_GPHOTOS_FLAGS));
             messagesForceEnableGphotosSwitch.setEnabled(true);
 
             // messagesForceEnableNudgesSwitch
-            ProgrammaticMaterialSwitch messagesForceEnableNudgesSwitch = mBinding.messagesForceEnableNudges.getSwitch();
+            ProgrammaticMaterialSwitchView messagesForceEnableNudgesSwitch = mBinding.messagesForceEnableNudges.getSwitch();
             boolean messagesForceEnableNudgesSwitchChecked = modCheckAreAllFlagsOverridden(MESSAGES_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(MESSAGES_ENABLE_NUDGES_FLAGS.keySet()));
             messagesForceEnableNudgesSwitch.setCheckedProgrammatically(messagesForceEnableNudgesSwitchChecked);
             messagesForceEnableNudgesSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> modSetBooleanFlags(isChecked, MESSAGES_PHENOTYPE_PACKAGE_NAME, MESSAGES_ENABLE_NUDGES_FLAGS));
             messagesForceEnableNudgesSwitch.setEnabled(true);
 
             // messagesForceEnableSpotlightsSwitch
-            ProgrammaticMaterialSwitch messagesForceEnableSpotlightsSwitch = mBinding.messagesForceEnableSpotlights.getSwitch();
+            ProgrammaticMaterialSwitchView messagesForceEnableSpotlightsSwitch = mBinding.messagesForceEnableSpotlights.getSwitch();
             boolean messagesForceEnableSpotlightsSwitchChecked = modCheckAreAllFlagsOverridden(MESSAGES_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(MESSAGES_ENABLE_SPOTLIGHTS_FLAGS.keySet()));
             messagesForceEnableSpotlightsSwitch.setCheckedProgrammatically(messagesForceEnableSpotlightsSwitchChecked);
             messagesForceEnableSpotlightsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> modSetBooleanFlags(isChecked, MESSAGES_PHENOTYPE_PACKAGE_NAME, MESSAGES_ENABLE_SPOTLIGHTS_FLAGS));
             messagesForceEnableSpotlightsSwitch.setEnabled(true);
 
             // messagesForceEnableSmartComposeSwitch
-            ProgrammaticMaterialSwitch messagesForceEnableSmartComposeSwitch = mBinding.messagesForceEnableSmartCompose.getSwitch();
+            ProgrammaticMaterialSwitchView messagesForceEnableSmartComposeSwitch = mBinding.messagesForceEnableSmartCompose.getSwitch();
             boolean messagesForceEnableSmartComposeSwitchChecked = modCheckAreAllFlagsOverridden(MESSAGES_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(MESSAGES_ENABLE_SMART_COMPOSE_FLAGS.keySet()));
             messagesForceEnableSmartComposeSwitch.setCheckedProgrammatically(messagesForceEnableSmartComposeSwitchChecked);
             messagesForceEnableSmartComposeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> modSetBooleanFlags(isChecked, MESSAGES_PHENOTYPE_PACKAGE_NAME, MESSAGES_ENABLE_SMART_COMPOSE_FLAGS));
             messagesForceEnableSmartComposeSwitch.setEnabled(true);
 
             // messagesForceEnableMagicComposeSwitch
-            ProgrammaticMaterialSwitch messagesForceEnableMagicComposeSwitch = mBinding.messagesForceEnableMagicCompose.getSwitch();
+            ProgrammaticMaterialSwitchView messagesForceEnableMagicComposeSwitch = mBinding.messagesForceEnableMagicCompose.getSwitch();
             boolean messagesForceEnableMagicComposeSwitchChecked = modCheckAreAllFlagsOverridden(MESSAGES_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(MESSAGES_ENABLE_MAGIC_COMPOSE_FLAGS.keySet()));
             messagesForceEnableMagicComposeSwitch.setCheckedProgrammatically(messagesForceEnableMagicComposeSwitchChecked);
             messagesForceEnableMagicComposeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> modSetBooleanFlags(isChecked, MESSAGES_PHENOTYPE_PACKAGE_NAME, MESSAGES_ENABLE_MAGIC_COMPOSE_FLAGS));
             messagesForceEnableMagicComposeSwitch.setEnabled(true);
 
             // messagesForceEnableSmartActionsInNotificationsSwitch
-            ProgrammaticMaterialSwitch messagesForceEnableSmartActionsInNotificationsSwitch = mBinding.messagesForceEnableSmartActionsInNotifications.getSwitch();
+            ProgrammaticMaterialSwitchView messagesForceEnableSmartActionsInNotificationsSwitch = mBinding.messagesForceEnableSmartActionsInNotifications.getSwitch();
             boolean messagesForceEnableSmartActionsInNotificationsSwitchChecked = modCheckAreAllFlagsOverridden(MESSAGES_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(MESSAGES_ENABLE_SMART_ACTIONS_IN_NOTIFICATIONS_FLAGS.keySet()));
             messagesForceEnableSmartActionsInNotificationsSwitch.setCheckedProgrammatically(messagesForceEnableSmartActionsInNotificationsSwitchChecked);
             messagesForceEnableSmartActionsInNotificationsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> modSetBooleanFlags(isChecked, MESSAGES_PHENOTYPE_PACKAGE_NAME, MESSAGES_ENABLE_SMART_ACTIONS_IN_NOTIFICATIONS_FLAGS));
             messagesForceEnableSmartActionsInNotificationsSwitch.setEnabled(true);
 
             // messagesForceEnableSuggestedStickersSwitch
-            ProgrammaticMaterialSwitch messagesForceEnableSuggestedStickersSwitch = mBinding.messagesForceEnableSuggestedStickers.getSwitch();
+            ProgrammaticMaterialSwitchView messagesForceEnableSuggestedStickersSwitch = mBinding.messagesForceEnableSuggestedStickers.getSwitch();
             boolean messagesForceEnableSuggestedStickersSwitchChecked = modCheckAreAllFlagsOverridden(MESSAGES_PHENOTYPE_PACKAGE_NAME, new ArrayList<>(MESSAGES_ENABLE_SUGGESTED_STICKERS_FLAGS.keySet()));
             messagesForceEnableSuggestedStickersSwitch.setCheckedProgrammatically(messagesForceEnableSuggestedStickersSwitchChecked);
             messagesForceEnableSuggestedStickersSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> modSetBooleanFlags(isChecked, MESSAGES_PHENOTYPE_PACKAGE_NAME, MESSAGES_ENABLE_SUGGESTED_STICKERS_FLAGS));

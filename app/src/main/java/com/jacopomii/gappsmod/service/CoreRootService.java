@@ -223,14 +223,14 @@ public class CoreRootService extends RootService {
 
         SQLiteDatabase phenotypeDB = getPhenotypeDBByPhenotypePackageName(phenotypePackageName);
         String sql = "SELECT DISTINCT f.name AS name, COALESCE(fo.boolVal, f.boolVal) AS boolVal, CASE WHEN fo.boolVal != f.boolVal THEN 1 ELSE 0 END AS changed " +
-        "FROM Flags f " +
-        "LEFT JOIN FlagOverrides fo ON f.packageName = fo.packageName AND f.name = fo.name " +
-        "WHERE f.packageName = ? AND f.user = '' AND (f.boolVal IS NOT NULL OR fo.boolVal IS NOT NULL)" +
-        "UNION ALL " +
-        "SELECT DISTINCT fo.name AS name, fo.boolVal, 1 AS changed " +
-        "FROM FlagOverrides fo " +
-        "LEFT JOIN Flags f ON f.packageName = fo.packageName AND f.name = fo.name " +
-        "WHERE fo.packageName = ? AND f.name IS NULL AND fo.user = '' AND fo.boolVal IS NOT NULL";
+                "FROM Flags f " +
+                "LEFT JOIN FlagOverrides fo ON f.packageName = fo.packageName AND f.name = fo.name " +
+                "WHERE f.packageName = ? AND f.user = '' AND (f.boolVal IS NOT NULL OR fo.boolVal IS NOT NULL)" +
+                "UNION ALL " +
+                "SELECT DISTINCT fo.name AS name, fo.boolVal, 1 AS changed " +
+                "FROM FlagOverrides fo " +
+                "LEFT JOIN Flags f ON f.packageName = fo.packageName AND f.name = fo.name " +
+                "WHERE fo.packageName = ? AND f.name IS NULL AND fo.user = '' AND fo.boolVal IS NOT NULL";
         String[] selectionArgs = {phenotypePackageName, phenotypePackageName};
 
         try {
@@ -408,8 +408,10 @@ public class CoreRootService extends RootService {
     /**
      * Get the correct database (GMS or Vending) based on the {@code phenotypePackageName}.
      *
-     * @param phenotypePackageName the Phenotype (not Android) package name for which to get the Phenotype DB.
-     * @return a {@code SQLiteDatabase} reference to the GMS or Vending Phenotype DB. The returned object may be null if there was an error opening the database.
+     * @param phenotypePackageName the Phenotype (not Android) package name for which to get the
+     *                             Phenotype DB.
+     * @return a {@code SQLiteDatabase} reference to the GMS or Vending Phenotype DB.
+     * The returned object may be {@code null} if there was an error opening the database.
      */
     private SQLiteDatabase getPhenotypeDBByPhenotypePackageName(String phenotypePackageName) {
         if (phenotypePackageName.equals("com.google.android.finsky.regular") || phenotypePackageName.equals("com.google.android.finsky.stable")) {
@@ -420,9 +422,11 @@ public class CoreRootService extends RootService {
     }
 
     /**
-     * Kill and delete the Phenotype cache files of the Android application corresponding to the given {@code phenotypePackageName}.
+     * Kill and delete the Phenotype cache files of the Android application corresponding to the
+     * given {@code phenotypePackageName}.
      *
-     * @param phenotypePackageName the Phenotype (not Android) package name to kill and to delete the Phenotype cache files for.
+     * @param phenotypePackageName the Phenotype (not Android) package name to kill and to delete
+     *                             the Phenotype cache files for.
      */
     private void killPackageAndDeletePhenotypeCache(String phenotypePackageName) {
         String androidPackageName = phenotypeDBGetAndroidPackageNameByPhenotypePackageName(phenotypePackageName);

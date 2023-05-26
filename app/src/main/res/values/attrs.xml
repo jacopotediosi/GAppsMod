@@ -7,7 +7,7 @@
         <attr name="enabled" format="boolean" />
     </declare-styleable>
 
-    <declare-styleable name="SuggestedModsAppHeader">
+    <declare-styleable name="SuggestedModsAppHeaderView">
         <!-- The app name. -->
         <attr name="app_name" format="string" />
     </declare-styleable>

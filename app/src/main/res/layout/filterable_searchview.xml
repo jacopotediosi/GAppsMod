@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/l_50"
+        android:layout_weight="1" />
+
+    <ImageView
+        android:id="@+id/collapse_filters_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginHorizontal="@dimen/l1"
+        android:contentDescription="@string/search"
+        android:src="@drawable/ic_arrow_up_24"
+        android:visibility="gone"
+        app:tint="?attr/colorControlNormal"
+        tools:visibility="visible" />
+
+</LinearLayout>

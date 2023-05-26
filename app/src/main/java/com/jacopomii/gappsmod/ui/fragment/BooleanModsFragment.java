@@ -29,6 +29,7 @@ import com.jacopomii.gappsmod.R;
 import com.jacopomii.gappsmod.databinding.FragmentBooleanModsBinding;
 import com.jacopomii.gappsmod.ui.activity.MainActivity;
 import com.jacopomii.gappsmod.ui.adapter.BooleanModsRecyclerViewAdapter;
+import com.jacopomii.gappsmod.ui.view.FilterableSearchView;
 import com.l4digital.fastscroll.FastScrollRecyclerView;
 
 import org.json.JSONException;
@@ -153,40 +154,33 @@ public class BooleanModsFragment extends Fragment {
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
                 menuInflater.inflate(R.menu.search_menu, menu);
 
-                MenuItem searchIcon = menu.findItem(R.id.menu_search_icon);
+                MenuItem menuSearchIcon = menu.findItem(R.id.menu_search_icon);
 
-                SearchView searchView = (SearchView) searchIcon.getActionView();
-                searchView.setQueryHint(getString(R.string.search_by_flag));
+                FilterableSearchView filterableSearchView = (FilterableSearchView) menuSearchIcon.getActionView();
+                filterableSearchView.setQueryHint(getString(R.string.search_by_flag));
+                filterableSearchView.setFiltersContainer(mBinding.filtersContainer);
 
-                RadioGroup radioGroupSearch = mBinding.radioGroupSearch;
+                RadioGroup filtersStatusRadioGroup = mBinding.filtersStatusRadioGroup;
 
-                radioGroupSearch.setOnCheckedChangeListener((group, checkedId) -> {
+                filtersStatusRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
                     RadioButton radioButtonChecked = mBinding.getRoot().findViewById(checkedId);
                     if (radioButtonChecked.isChecked())
-                        applyFlagsFilter(searchView.getQuery());
+                        applyFlagsFilter(filterableSearchView.getQuery());
                 });
 
-                searchIcon.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+                menuSearchIcon.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
                     @Override
                     public boolean onMenuItemActionExpand(MenuItem item) {
-                        for (int i = 0; i < menu.size(); i++) {
-                            MenuItem itemToHide = menu.getItem(i);
-                            if (itemToHide.getItemId() != R.id.menu_search_icon)
-                                itemToHide.setVisible(false);
-                        }
-                        radioGroupSearch.setVisibility(View.VISIBLE);
                         return true;
                     }
 
                     @Override
                     public boolean onMenuItemActionCollapse(MenuItem item) {
-                        radioGroupSearch.check(mBinding.radiobuttonAll.getId());
-                        radioGroupSearch.setVisibility(View.GONE);
-                        requireActivity().invalidateOptionsMenu();
+                        filtersStatusRadioGroup.check(mBinding.filtersStatusRadioButtonAll.getId());
                         return true;
                     }
                 });
-                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                filterableSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
                         return false;
@@ -213,10 +207,10 @@ public class BooleanModsFragment extends Fragment {
 
             filterConfig.put("key", query);
 
-            int radioGroupSearchCheckedButtonId = mBinding.radioGroupSearch.getCheckedRadioButtonId();
-            if (radioGroupSearchCheckedButtonId == mBinding.radiobuttonEnabled.getId())
+            int radioGroupSearchCheckedButtonId = mBinding.filtersStatusRadioGroup.getCheckedRadioButtonId();
+            if (radioGroupSearchCheckedButtonId == mBinding.filtersStatusRadioButtonEnabled.getId())
                 filterConfig.put("mode", "enabled_only");
-            else if (radioGroupSearchCheckedButtonId == mBinding.radiobuttonDisabled.getId())
+            else if (radioGroupSearchCheckedButtonId == mBinding.filtersStatusRadioButtonDisabled.getId())
                 filterConfig.put("mode", "disabled_only");
             else
                 filterConfig.put("mode", "all");

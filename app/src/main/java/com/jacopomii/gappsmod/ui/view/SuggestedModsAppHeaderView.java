@@ -13,25 +13,25 @@ import com.jacopomii.gappsmod.R;
 import com.jacopomii.gappsmod.databinding.SuggestedModsAppHeaderBinding;
 
 /**
- * The application name header used by the Suggested Mods fragment.
- * It includes a large title for the app name and two buttons "Beta" and "Install".
+ * The application name header used by the "Suggested Mods" fragment.
+ * It includes a large title for the app name and two localized buttons "Beta" and "Install".
  */
-public class SuggestedModsAppHeader extends LinearLayout {
+public class SuggestedModsAppHeaderView extends LinearLayout {
     final SuggestedModsAppHeaderBinding mBinding;
 
-    public SuggestedModsAppHeader(Context context) {
+    public SuggestedModsAppHeaderView(Context context) {
         super(context);
 
         mBinding = SuggestedModsAppHeaderBinding.inflate(LayoutInflater.from(context), this, true);
     }
 
-    public SuggestedModsAppHeader(Context context, @Nullable AttributeSet attrs) {
+    public SuggestedModsAppHeaderView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         mBinding = SuggestedModsAppHeaderBinding.inflate(LayoutInflater.from(context), this, true);
 
-        final TypedArray xmlAttrs = context.obtainStyledAttributes(attrs, R.styleable.SuggestedModsAppHeader);
-        final String appName = xmlAttrs.getString(R.styleable.SuggestedModsAppHeader_app_name);
+        final TypedArray xmlAttrs = context.obtainStyledAttributes(attrs, R.styleable.SuggestedModsAppHeaderView);
+        final String appName = xmlAttrs.getString(R.styleable.SuggestedModsAppHeaderView_app_name);
         xmlAttrs.recycle();
 
         mBinding.appName.setText(appName);
