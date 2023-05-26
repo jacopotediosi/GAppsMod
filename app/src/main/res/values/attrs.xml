@@ -14,5 +14,7 @@
 
     <declare-styleable name="ViewStyle">
         <attr name="colorError" format="color" />
+        <attr name="colorSurface" format="color" />
+        <attr name="colorSecondaryContainer" format="color" />
     </declare-styleable>
 </resources>

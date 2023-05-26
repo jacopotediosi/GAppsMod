@@ -2,6 +2,8 @@ package com.jacopomii.gappsmod.ui.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.os.RemoteException;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -12,7 +14,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.card.MaterialCardView;
 import com.jacopomii.gappsmod.ICoreRootService;
+import com.jacopomii.gappsmod.R;
 import com.jacopomii.gappsmod.data.BooleanFlag;
 import com.jacopomii.gappsmod.databinding.SwitchCardBinding;
 import com.jacopomii.gappsmod.ui.view.ProgrammaticMaterialSwitch;
@@ -48,9 +52,14 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
 
         try {
             mFlagsList = new ArrayList<>();
-            TreeMap<String, Boolean> map = new TreeMap<String, Boolean>(mCoreRootServiceIpc.phenotypeDBGetBooleanFlagsOrOverridden(phenotypePackageName));
-            for (Map.Entry<String, Boolean> flag : map.entrySet())
-                mFlagsList.add(new BooleanFlag(flag.getKey(), flag.getValue()));
+            TreeMap<String, List<Object>> map = new TreeMap<String, List<Object>>(mCoreRootServiceIpc.phenotypeDBGetBooleanFlagsOrOverridden(phenotypePackageName));
+            for (Map.Entry<String, List<Object>> flag : map.entrySet()) {
+                String flagName = flag.getKey();
+                List<Object> flagData = flag.getValue();
+                Boolean flagValue = (Boolean) flagData.get(0);
+                Boolean flagOverriddenAndChanged = (Boolean) flagData.get(1);
+                mFlagsList.add(new BooleanFlag(flagName, flagValue, flagOverriddenAndChanged));
+            }
 
             if (mLastFilterPerformed != null) {
                 getFilter().filter(mLastFilterPerformed);
@@ -72,15 +81,19 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
 
         // Set setOnCheckedChangeListener on list items
         viewHolder.mSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            int position = viewHolder.getAdapterPosition();
+            int checkedPosition = viewHolder.getAdapterPosition();
+            BooleanFlag checkedBooleanFlag = mFlagsListFiltered.get(checkedPosition);
+            String checkedBooleanFlagName = checkedBooleanFlag.getFlagName();
 
-            mFlagsListFiltered.get(position).setFlagValue(isChecked);
+            checkedBooleanFlag.setFlagValue(isChecked);
             try {
-                mCoreRootServiceIpc.phenotypeDBOverrideBooleanFlag(mPhenotypePackageName, mFlagsListFiltered.get(position).getFlagName(), isChecked);
+                mCoreRootServiceIpc.phenotypeDBOverrideBooleanFlag(mPhenotypePackageName, checkedBooleanFlagName, isChecked);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
-            notifyItemChanged(position);
+            checkedBooleanFlag.setFlagOverriddenAndChanged(!checkedBooleanFlag.getFlagOverriddenAndChanged());
+
+            notifyItemChanged(checkedPosition);
         });
 
         // Return viewHolder
@@ -89,11 +102,22 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        // Get the boolean flag
+        BooleanFlag booleanFlag = mFlagsListFiltered.get(position);
+
         // Update switch text
-        holder.mTextView.setText(mFlagsListFiltered.get(position).getFlagName());
+        holder.mTextView.setText(booleanFlag.getFlagName());
 
         // Update the switch checked status without triggering any existing listener
-        holder.mSwitch.setCheckedProgrammatically(mFlagsListFiltered.get(position).getFlagValue());
+        holder.mSwitch.setCheckedProgrammatically(booleanFlag.getFlagValue());
+
+        // Change background color for cards containing overridden and changed flags
+        TypedArray typedArray = mContext.getTheme().obtainStyledAttributes(R.styleable.ViewStyle);
+        int colorSurface = typedArray.getColor(R.styleable.ViewStyle_colorSurface, Color.WHITE);
+        int colorSurfaceVariant = typedArray.getColor(R.styleable.ViewStyle_colorSecondaryContainer, Color.LTGRAY);
+        typedArray.recycle();
+        int cardBackgroundColor = booleanFlag.getFlagOverriddenAndChanged() ? colorSurfaceVariant : colorSurface;
+        ((MaterialCardView) holder.itemView).setCardBackgroundColor(cardBackgroundColor);
     }
 
     @Override

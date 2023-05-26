@@ -27,6 +27,7 @@ import org.sqlite.database.sqlite.SQLiteDatabase;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -100,7 +101,7 @@ public class CoreRootService extends RootService {
         }
 
         @Override
-        public Map<String, Boolean> phenotypeDBGetBooleanFlagsOrOverridden(String phenotypePackageName) {
+        public Map<String, List<Object>> phenotypeDBGetBooleanFlagsOrOverridden(String phenotypePackageName) {
             return CoreRootService.this.phenotypeDBGetBooleanFlagsOrOverridden(phenotypePackageName);
         }
 
@@ -217,22 +218,29 @@ public class CoreRootService extends RootService {
         return "";
     }
 
-    private Map<String, Boolean> phenotypeDBGetBooleanFlagsOrOverridden(String phenotypePackageName) {
-        HashMap<String, Boolean> map = new HashMap<>();
+    private Map<String, List<Object>> phenotypeDBGetBooleanFlagsOrOverridden(String phenotypePackageName) {
+        Map<String, List<Object>> map = new HashMap<>();
 
         SQLiteDatabase phenotypeDB = getPhenotypeDBByPhenotypePackageName(phenotypePackageName);
-        String sql = "SELECT DISTINCT name,boolVal " +
-                "FROM Flags " +
-                "WHERE packageName=? AND name NOT IN (SELECT name FROM FlagOverrides WHERE packageName=?) AND user='' AND boolVal!='NULL' " +
-                "UNION ALL " +
-                "SELECT DISTINCT name,boolVal FROM FlagOverrides " +
-                "WHERE packageName=? AND user='' AND boolVal!='NULL'";
-        String[] selectionArgs = {phenotypePackageName, phenotypePackageName, phenotypePackageName};
+        String sql = "SELECT DISTINCT f.name AS name, COALESCE(fo.boolVal, f.boolVal) AS boolVal, CASE WHEN fo.boolVal != f.boolVal THEN 1 ELSE 0 END AS changed " +
+        "FROM Flags f " +
+        "LEFT JOIN FlagOverrides fo ON f.packageName = fo.packageName AND f.name = fo.name " +
+        "WHERE f.packageName = ? AND f.user = '' AND (f.boolVal IS NOT NULL OR fo.boolVal IS NOT NULL)" +
+        "UNION ALL " +
+        "SELECT DISTINCT fo.name AS name, fo.boolVal, 1 AS changed " +
+        "FROM FlagOverrides fo " +
+        "LEFT JOIN Flags f ON f.packageName = fo.packageName AND f.name = fo.name " +
+        "WHERE fo.packageName = ? AND f.name IS NULL AND fo.user = '' AND fo.boolVal IS NOT NULL";
+        String[] selectionArgs = {phenotypePackageName, phenotypePackageName};
 
         try {
             try (Cursor cursor = phenotypeDB.rawQuery(sql, selectionArgs)) {
-                while (cursor.moveToNext())
-                    map.put(cursor.getString(0), cursor.getInt(1) != 0);
+                while (cursor.moveToNext()) {
+                    String name = cursor.getString(0);
+                    Boolean boolVal = cursor.getInt(1) != 0;
+                    Boolean changed = cursor.getInt(2) != 0;
+                    map.put(name, Arrays.asList(boolVal, changed));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
