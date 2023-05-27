@@ -1,7 +1,7 @@
 plugins {
-    id 'com.android.application'
-    id 'com.google.protobuf'
-    id 'com.likethesalad.stem'
+    id "com.android.application"
+    id "com.google.protobuf"
+    id "com.likethesalad.stem"
 }
 
 def keyfile
@@ -10,7 +10,7 @@ def keystoreAlias
 def keystoreAliasPSW
 
 Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
+properties.load(project.rootProject.file("local.properties").newDataInputStream())
 def keystoreFilepath = properties.getProperty("keystore.path")
 
 if (keystoreFilepath) {
@@ -20,14 +20,28 @@ if (keystoreFilepath) {
     keystoreAliasPSW = properties.getProperty("keystore.alias_password")
 } else {
     // Remember to config your keystore settings in local.properties or in the below lines
-    keyfile = file('C:/keystore.jks')
-    keystorePSW = 'CHANGEME'
-    keystoreAlias = 'CHANGEME'
-    keystoreAliasPSW = 'CHANGEME'
+    keyfile = file("C:/keystore.jks")
+    keystorePSW = "CHANGEME"
+    keystoreAlias = "CHANGEME"
+    keystoreAliasPSW = "CHANGEME"
 }
 
 android {
+    namespace "com.jacopomii.gappsmod"
     compileSdk 33
+
+    defaultConfig {
+        applicationId "com.jacopomii.gappsmod"
+        minSdk 21
+        targetSdk 33
+        versionCode 400
+        versionName "4.00"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     signingConfigs {
         release {
@@ -38,61 +52,58 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    defaultConfig {
-        applicationId "com.jacopomii.gappsmod"
-        minSdk 21
-        targetSdk 33
-        versionCode 400
-        versionName "4.00"
-    }
-
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
         }
     }
+
     buildFeatures {
         viewBinding true
         aidl true
-        buildConfig = true
+        buildConfig true
     }
-    namespace 'com.jacopomii.gappsmod'
+
+    sourceSets {
+        main {
+            res.srcDirs = ["src/main/res",
+                           "src/main/res/layouts/activities",
+                           "src/main/res/layouts/dialogs",
+                           "src/main/res/layouts/fragments",
+                           "src/main/res/layouts/items"]
+        }
+    }
 }
 
 dependencies {
     // Libsu
-    def libsuVersion = '5.0.5'
+    def libsuVersion = "5.0.5"
     implementation "com.github.topjohnwu.libsu:core:${libsuVersion}"
     implementation "com.github.topjohnwu.libsu:service:${libsuVersion}"
     implementation "com.github.topjohnwu.libsu:nio:${libsuVersion}"
 
     // Official SQLite Java Bindings, downloaded from https://www.sqlite.org/download.html
-    implementation files('libs/sqlite-android-3410200.aar')
+    implementation files("libs/sqlite-android-3410200.aar")
 
     // Advanced toast
-    implementation 'com.github.GrenderG:Toasty:1.5.2'
+    implementation "com.github.GrenderG:Toasty:1.5.2"
 
     // HTTP
-    implementation 'com.android.volley:volley:1.2.1'
+    implementation "com.android.volley:volley:1.2.1"
 
     // Protobuf
-    implementation 'com.google.protobuf:protobuf-javalite:3.23.1'
+    implementation "com.google.protobuf:protobuf-javalite:3.23.1"
 
     // Apache Commons
     //noinspection GradleDependency
-    implementation 'commons-io:commons-io:2.12.0'
-    implementation  "org.apache.commons:commons-lang3:3.12.0"
+    implementation "commons-io:commons-io:2.12.0"
+    implementation "org.apache.commons:commons-lang3:3.12.0"
 
     // Navigation drawer
-    def navigationVersion = '2.5.3'
+    def navigationVersion = "2.5.3"
     implementation "androidx.navigation:navigation-fragment:${navigationVersion}"
     implementation "androidx.navigation:navigation-ui:${navigationVersion}"
 
@@ -100,14 +111,14 @@ dependencies {
     implementation "io.github.l4digital:fastscroll:2.1.0"
 
     // Other UI Components
-    implementation 'com.google.android.material:material:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation "com.google.android.material:material:1.9.0"
+    implementation "androidx.appcompat:appcompat:1.6.1"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.4"
 }
 
 protobuf {
     protoc {
-        artifact = 'com.google.protobuf:protoc:3.23.1'
+        artifact = "com.google.protobuf:protoc:3.23.1"
     }
     generateProtoTasks {
         all().each { task ->
