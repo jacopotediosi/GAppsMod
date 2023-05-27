@@ -17,8 +17,8 @@ import com.jacopomii.gappsmod.databinding.FilterableSearchviewBinding;
 /**
  * A View, containing a {@link SearchView}, to which an additional View can optionally be connected
  * as a container to contain components for filtering the search, via the
- * {@link #setFiltersContainer} method. When a filtersContainer is set, a button appears next to the
- * SearchView that allows the user to manually show / hide the filtersContainer.
+ * {@link #setFilterContainer} method. When a filterContainer is set, a button appears next to the
+ * SearchView that allows the user to manually show / hide the filterContainer.
  */
 // Here I use the deprecated CollapsibleActionView interface because otherwise the
 // onActionViewExpanded and onActionViewCollapsed methods are never called, idk why
@@ -27,8 +27,9 @@ public class FilterableSearchView extends LinearLayout implements CollapsibleAct
     FilterableSearchviewBinding mBinding;
     private final Context mContext;
 
-    private View mFiltersContainer;
-    private boolean mIsFiltersContainerVisible;
+    private View mFilterContainer;
+    private boolean mIsFilterContainerVisible;
+    private boolean mFilterContainerAutoExpand;
 
     public FilterableSearchView(Context context) {
         super(context);
@@ -44,20 +45,23 @@ public class FilterableSearchView extends LinearLayout implements CollapsibleAct
 
     private void init() {
         mBinding = FilterableSearchviewBinding.inflate(LayoutInflater.from(mContext), this, true);
-        mBinding.collapseFiltersButton.setOnClickListener(v -> {
-            if (mFiltersContainer != null) setFiltersVisibility(!mIsFiltersContainerVisible);
+        mBinding.collapseFilterContainerButton.setOnClickListener(v -> {
+            if (mFilterContainer != null) setFilterContainerVisibility(!mIsFilterContainerVisible);
         });
     }
 
     /**
-     * Connects a filters container to the SearchView, which can be shown / hidden by the user
+     * Connects a filter container to the SearchView, which can be shown / hidden by the user
      * using a special button.
      *
-     * @param filtersContainer the filters container to attach.
+     * @param filterContainer           the filter container to attach.
+     * @param filterContainerAutoExpand whether the filter container should open itself when the
+     *                                  SearchView is expanded.
      */
-    public void setFiltersContainer(View filtersContainer) {
-        this.mFiltersContainer = filtersContainer;
-        mBinding.collapseFiltersButton.setVisibility(VISIBLE);
+    public void setFilterContainer(View filterContainer, boolean filterContainerAutoExpand) {
+        mFilterContainer = filterContainer;
+        mFilterContainerAutoExpand = filterContainerAutoExpand;
+        mBinding.collapseFilterContainerButton.setVisibility(VISIBLE);
     }
 
     /**
@@ -90,33 +94,34 @@ public class FilterableSearchView extends LinearLayout implements CollapsibleAct
 
     @Override
     public void onActionViewExpanded() {
-        if (mFiltersContainer != null) setFiltersVisibility(true);
+        if (mFilterContainer != null && mFilterContainerAutoExpand)
+            setFilterContainerVisibility(true);
         mBinding.searchView.onActionViewExpanded();
     }
 
     @Override
     public void onActionViewCollapsed() {
-        if (mFiltersContainer != null) setFiltersVisibility(false);
+        if (mFilterContainer != null) setFilterContainerVisibility(false);
         mBinding.searchView.onActionViewCollapsed();
     }
 
-    private void setFiltersVisibility(boolean visible) {
-        mIsFiltersContainerVisible = visible;
+    private void setFilterContainerVisibility(boolean visible) {
+        mIsFilterContainerVisible = visible;
 
-        int newFiltersViewVisibility;
-        int newCollapseFiltersButtonDrawableID;
+        int newFilterContainerVisibility;
+        int newCollapseFilterButtonDrawableID;
 
         if (visible) {
-            newFiltersViewVisibility = View.VISIBLE;
-            newCollapseFiltersButtonDrawableID = R.drawable.ic_arrow_up_24;
+            newFilterContainerVisibility = View.VISIBLE;
+            newCollapseFilterButtonDrawableID = R.drawable.ic_arrow_up_24;
         } else {
-            newFiltersViewVisibility = View.GONE;
-            newCollapseFiltersButtonDrawableID = R.drawable.ic_arrow_down_24;
+            newFilterContainerVisibility = View.GONE;
+            newCollapseFilterButtonDrawableID = R.drawable.ic_arrow_down_24;
         }
 
-        mFiltersContainer.setVisibility(newFiltersViewVisibility);
+        mFilterContainer.setVisibility(newFilterContainerVisibility);
 
-        Drawable newCollapseFiltersButtonDrawable = ResourcesCompat.getDrawable(getResources(), newCollapseFiltersButtonDrawableID, null);
-        mBinding.collapseFiltersButton.setImageDrawable(newCollapseFiltersButtonDrawable);
+        Drawable newCollapseFilterButtonDrawable = ResourcesCompat.getDrawable(getResources(), newCollapseFilterButtonDrawableID, null);
+        mBinding.collapseFilterContainerButton.setImageDrawable(newCollapseFilterButtonDrawable);
     }
 }

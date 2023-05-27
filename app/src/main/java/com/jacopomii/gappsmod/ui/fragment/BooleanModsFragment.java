@@ -158,7 +158,7 @@ public class BooleanModsFragment extends Fragment {
 
                 FilterableSearchView filterableSearchView = (FilterableSearchView) menuSearchIcon.getActionView();
                 filterableSearchView.setQueryHint(getString(R.string.search_by_flag));
-                filterableSearchView.setFiltersContainer(mBinding.filtersContainer);
+                filterableSearchView.setFilterContainer(mBinding.filtersContainer, false);
 
                 RadioGroup filtersStatusRadioGroup = mBinding.filtersStatusRadioGroup;
 

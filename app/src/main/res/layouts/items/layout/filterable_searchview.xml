@@ -14,13 +14,13 @@
         android:layout_weight="1" />
 
     <ImageView
-        android:id="@+id/collapse_filters_button"
+        android:id="@+id/collapse_filter_container_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginHorizontal="@dimen/l1"
         android:contentDescription="@string/search"
-        android:src="@drawable/ic_arrow_up_24"
+        android:src="@drawable/ic_arrow_down_24"
         android:visibility="gone"
         app:tint="?attr/colorControlNormal"
         tools:visibility="visible" />
