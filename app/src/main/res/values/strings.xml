@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- App name -->
     <string name="app_name" translatable="false">GAppsMod</string>
 
@@ -10,15 +10,12 @@
     <!-- GApp names, taken from https://play.google.com/store/apps/details?id=PACKAGE_NAME&hl=en -->
     <string name="dialer_app_name">Phone by Google</string>
     <string name="messages_app_name">Messages by Google</string>
-    <string name="photos_app_name">Google Photos</string>
+    <string name="photos_app_name" tools:keep="@string/photos_app_name">Google Photos</string>
 
     <!-- Common -->
-    <string name="all">All</string>
     <string name="beta" translatable="false">Beta</string>
     <string name="continue_anyway">Continue anyway</string>
-    <string name="disabled_only">Disabled only</string>
     <string name="done">Done</string>
-    <string name="enabled_only">Enabled only</string>
     <string name="exit">Exit</string>
     <string name="install">Install</string>
     <string name="no">No</string>
@@ -29,10 +26,20 @@
     <string name="select_package">Select package</string>
     <string name="unknown">Unknown</string>
 
-    <!-- Search -->
+    <!-- Search and search filters -->
+    <string name="additional_filters">Additional filters:</string>
+    <string name="changed_and_unchanged">Changed and unchanged</string>
+    <string name="changed_only">Changed only</string>
+    <string name="changed_status_filter">Changed status filter</string>
+    <string name="disabled_only">Disabled only</string>
+    <string name="enabled_and_disabled">Enabled and disabled</string>
+    <string name="enabled_only">Enabled only</string>
+    <string name="enabled_status_filter">Enabled status filter</string>
+    <string name="expand_additional_filters">Expand additional filters</string>
     <string name="search">Search</string>
     <string name="search_by_flag">Search by flag</string>
     <string name="search_by_package_or_app">Search by package or application</string>
+    <string name="unchanged_only">Unchanged only</string>
 
     <!-- Fragment titles -->
     <string name="boolean_mods">Boolean mods</string>

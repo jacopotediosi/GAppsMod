@@ -1,15 +1,12 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- GApp names, taken from https://play.google.com/store/apps/details?id=PACKAGE_NAME&hl=fr -->
     <string name="dialer_app_name">Téléphone de Google</string>
     <string name="messages_app_name">Messages par Google</string>
-    <string name="photos_app_name">Google Photos</string>
+    <string name="photos_app_name" tools:keep="@string/photos_app_name">Google Photos</string>
 
     <!-- Common -->
-    <string name="all">Tout</string>
     <string name="continue_anyway">Continuer quand même</string>
-    <string name="disabled_only">Désactiver uniquement</string>
     <string name="done">Fait</string>
-    <string name="enabled_only">Activer uniquement</string>
     <string name="exit">Sortir</string>
     <string name="install">Installer</string>
     <string name="no">Non</string>
@@ -19,10 +16,21 @@
     <string name="select_package">Sélectionnez un package</string>
     <string name="unknown">Inconnu</string>
 
-    <!-- Search -->
+    <!-- Search and search filters -->
+    <string name="additional_filters">Filtres supplémentaires:</string>
+
+    <string name="changed_and_unchanged">Changé et pas changé</string>
+    <string name="changed_only">Changé seulement</string>
+    <string name="changed_status_filter">Filtrer par changé</string>
+    <string name="enabled_status_filter">Filtrer par état</string>
+    <string name="disabled_only">Désactivé seulement</string>
+    <string name="enabled_and_disabled">Activé et désactivé</string>
+    <string name="enabled_only">Activé seulement</string>
+    <string name="expand_additional_filters">Étendre les filtres supplémentaires</string>
     <string name="search">Rechercher</string>
     <string name="search_by_flag">Rechercher par option</string>
     <string name="search_by_package_or_app">Rechercher par package ou application</string>
+    <string name="unchanged_only">Inchangé seulement</string>
 
     <!-- Fragment titles -->
     <string name="boolean_mods">Mods booléens</string>

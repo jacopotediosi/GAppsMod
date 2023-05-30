@@ -74,15 +74,6 @@ public class FilterableSearchView extends LinearLayout implements CollapsibleAct
     }
 
     /**
-     * Returns the query string currently in the text field of the SearchView.
-     *
-     * @return the query string currently in the text field of the SearchView.
-     */
-    public CharSequence getQuery() {
-        return mBinding.searchView.getQuery();
-    }
-
-    /**
      * Sets a listener for user actions within the SearchView.
      *
      * @param listener the listener object that receives callbacks when the user performs actions

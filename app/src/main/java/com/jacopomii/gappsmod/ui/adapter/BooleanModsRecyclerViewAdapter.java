@@ -135,13 +135,17 @@ public class BooleanModsRecyclerViewAdapter extends RecyclerView.Adapter<Boolean
                 try {
                     JSONObject filterConfig = new JSONObject(charSequence.toString());
                     String key = filterConfig.getString("key");
-                    String mode = filterConfig.getString("mode");
+                    boolean enabled = filterConfig.getBoolean("enabled");
+                    boolean disabled = filterConfig.getBoolean("disabled");
+                    boolean changed = filterConfig.getBoolean("changed");
+                    boolean unchanged = filterConfig.getBoolean("unchanged");
 
                     List<BooleanFlag> flagsListFiltered = new ArrayList<>();
                     for (BooleanFlag booleanFlag : mFlagsList) {
                         if (booleanFlag.getFlagName().toLowerCase().contains(key.toLowerCase())) {
                             boolean flagValue = booleanFlag.getFlagValue();
-                            if (mode.equals("all") || (mode.equals("enabled_only") && flagValue) || (mode.equals("disabled_only") && !flagValue))
+                            boolean flagChanged = booleanFlag.getFlagOverriddenAndChanged();
+                            if (((enabled && flagValue) || (disabled && !flagValue)) && ((changed && flagChanged) || (unchanged && !flagChanged)))
                                 flagsListFiltered.add(booleanFlag);
                         }
                     }

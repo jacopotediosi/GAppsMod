@@ -1,15 +1,12 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- GApp names, taken from https://play.google.com/store/apps/details?id=PACKAGE_NAME&hl=it -->
     <string name="dialer_app_name">Telefono Google</string>
     <string name="messages_app_name">Messaggi</string>
-    <string name="photos_app_name">Google Foto</string>
+    <string name="photos_app_name" tools:keep="@string/photos_app_name">Google Foto</string>
 
     <!-- Common -->
-    <string name="all">Tutti</string>
     <string name="continue_anyway">Continua comunque</string>
-    <string name="disabled_only">Solo disabilitati</string>
     <string name="done">Fatto</string>
-    <string name="enabled_only">Solo abilitati</string>
     <string name="exit">Esci</string>
     <string name="install">Installa</string>
     <string name="no">No</string>
@@ -19,10 +16,20 @@
     <string name="select_package">Seleziona un package</string>
     <string name="unknown">Sconosciuto</string>
 
-    <!-- Search -->
+    <!-- Search and search filters -->
+    <string name="additional_filters">Filtri aggiuntivi:</string>
+    <string name="changed_and_unchanged">Cambiati e non cambiati</string>
+    <string name="changed_only">Solo cambiati</string>
+    <string name="changed_status_filter">Filtra per cambiati</string>
+    <string name="disabled_only">Solo disabilitati</string>
+    <string name="enabled_and_disabled">Abilitati e disabilitati</string>
+    <string name="enabled_only">Solo abilitati</string>
+    <string name="enabled_status_filter">Filtra per stato</string>
+    <string name="expand_additional_filters">Espandi filtri aggiuntivi</string>
     <string name="search">Cerca</string>
     <string name="search_by_flag">Cerca per flag</string>
     <string name="search_by_package_or_app">Cerca per package o applicazione</string>
+    <string name="unchanged_only">Solo non cambiati</string>
 
     <!-- Fragment titles -->
     <string name="boolean_mods">Mod booleane</string>

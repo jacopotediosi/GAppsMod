@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginHorizontal="@dimen/l1"
-        android:contentDescription="@string/search"
+        android:contentDescription="@string/expand_additional_filters"
         android:src="@drawable/ic_arrow_down_24"
         android:visibility="gone"
         app:tint="?attr/colorControlNormal"

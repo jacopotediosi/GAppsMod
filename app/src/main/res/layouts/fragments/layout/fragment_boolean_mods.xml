@@ -20,51 +20,66 @@
             android:showDividers="middle">
 
             <LinearLayout
-                android:id="@+id/filters_container"
+                android:id="@+id/filter_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/l1"
+                android:paddingVertical="@dimen/l_50"
                 android:visibility="gone"
                 tools:visibility="visible">
 
-                <RadioGroup
-                    android:id="@+id/filters_status_radio_group"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/l_50"
+                    android:text="@string/additional_filters" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/l_50"
-                    android:checkedButton="@id/filters_status_radio_button_all"
-                    android:gravity="center"
+                    android:baselineAligned="false"
                     android:orientation="horizontal">
 
-                    <RadioButton
-                        android:id="@+id/filters_status_radio_button_all"
-                        android:layout_width="wrap_content"
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/l_75"
-                        android:minHeight="0dp"
-                        android:saveEnabled="false"
-                        android:text="@string/all"
-                        tools:ignore="TouchTargetSizeCheck" />
+                        android:layout_marginEnd="@dimen/l_50"
+                        android:layout_weight="1"
+                        android:hint="@string/enabled_status_filter">
 
-                    <RadioButton
-                        android:id="@+id/filters_status_radio_button_enabled"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/l_75"
-                        android:minHeight="0dp"
-                        android:saveEnabled="false"
-                        android:text="@string/enabled_only"
-                        tools:ignore="TouchTargetSizeCheck" />
+                        <AutoCompleteTextView
+                            android:id="@+id/filter_enabled_status_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:inputType="none"
+                            android:singleLine="true"
+                            tools:ignore="LabelFor,TextContrastCheck,VisualLintTextFieldSize" />
 
-                    <RadioButton
-                        android:id="@+id/filters_status_radio_button_disabled"
-                        android:layout_width="wrap_content"
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/l_75"
-                        android:minHeight="0dp"
-                        android:saveEnabled="false"
-                        android:text="@string/disabled_only"
-                        tools:ignore="TouchTargetSizeCheck" />
-                </RadioGroup>
+                        android:layout_marginStart="@dimen/l_50"
+                        android:layout_weight="1"
+                        android:hint="@string/changed_status_filter">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/filter_changed_status_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:inputType="none"
+                            android:singleLine="true"
+                            tools:ignore="LabelFor,TextContrastCheck,VisualLintTextFieldSize" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
 

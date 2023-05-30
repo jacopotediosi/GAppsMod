@@ -11,8 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -43,6 +42,12 @@ public class BooleanModsFragment extends Fragment {
     private BooleanModsRecyclerViewAdapter mFlagsRecyclerViewAdapter;
 
     private ICoreRootService mCoreRootServiceIpc;
+
+    private String flagsFilterKey = "";
+    private boolean flagsFilterEnabled = true;
+    private boolean flagsFilterDisabled = true;
+    private boolean flagsFilterChanged = true;
+    private boolean flagsFilterUnchanged = true;
 
     public BooleanModsFragment() {
     }
@@ -76,31 +81,31 @@ public class BooleanModsFragment extends Fragment {
 
         // Select package onClick
         selectPackage.setOnClickListener(v -> {
+            // Clear focus from other views
+            View currentFocus = requireActivity().getCurrentFocus();
+            if (currentFocus != null) currentFocus.clearFocus();
+
             // If the select package dialog isn't already opened
             if (!selectPackageDialogOpened.get()) {
                 // Set the selectPackageDialogOpened to true
                 selectPackageDialogOpened.set(true);
 
                 // Show the select package dialog
-                showSelectPackageDialog(
-                        getContext(),
-                        mCoreRootServiceIpc,
-                        item -> {
-                            // The item received by the listener here is the Phenotype package name chosen by the user
+                showSelectPackageDialog(getContext(), mCoreRootServiceIpc, item -> {
+                    // The item received by the listener here is the Phenotype package name chosen by the user
 
-                            // Update the select package textview
-                            selectPackage.setText((String) item);
+                    // Update the select package textview
+                    selectPackage.setText((String) item);
 
-                            // Update the selectPackageRecyclerView adapter
-                            mFlagsRecyclerViewAdapter.selectPhenotypePackageName((String) item);
+                    // Update the selectPackageRecyclerView adapter
+                    mFlagsRecyclerViewAdapter.selectPhenotypePackageName((String) item);
 
-                            // Set the selectPackageDialogOpened to false
-                            selectPackageDialogOpened.set(false);
-                        },
-                        dialog -> {
-                            // Set the selectPackageDialogOpened to false dismissing the dialog
-                            selectPackageDialogOpened.set(false);
-                        });
+                    // Set the selectPackageDialogOpened to false
+                    selectPackageDialogOpened.set(false);
+                }, dialog -> {
+                    // Set the selectPackageDialogOpened to false dismissing the dialog
+                    selectPackageDialogOpened.set(false);
+                });
             }
         });
 
@@ -129,8 +134,7 @@ public class BooleanModsFragment extends Fragment {
 
                 int itemPosition = parent.getChildAdapterPosition(view);
 
-                if (itemPosition == 0)
-                    outRect.top = padding;
+                if (itemPosition == 0) outRect.top = padding;
                 else if (itemPosition == mFlagsRecyclerViewAdapter.getItemCount() - 1)
                     outRect.bottom = padding;
 
@@ -152,22 +156,39 @@ public class BooleanModsFragment extends Fragment {
         requireActivity().addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                // Inflate the menu layout
                 menuInflater.inflate(R.menu.search_menu, menu);
 
+                // Initialize the menuSearchIcon
                 MenuItem menuSearchIcon = menu.findItem(R.id.menu_search_icon);
 
+                // Initialize filterableSearchView and the additional filter container
                 FilterableSearchView filterableSearchView = (FilterableSearchView) menuSearchIcon.getActionView();
                 filterableSearchView.setQueryHint(getString(R.string.search_by_flag));
-                filterableSearchView.setFilterContainer(mBinding.filtersContainer, false);
+                filterableSearchView.setFilterContainer(mBinding.filterContainer, false);
 
-                RadioGroup filtersStatusRadioGroup = mBinding.filtersStatusRadioGroup;
-
-                filtersStatusRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-                    RadioButton radioButtonChecked = mBinding.getRoot().findViewById(checkedId);
-                    if (radioButtonChecked.isChecked())
-                        applyFlagsFilter(filterableSearchView.getQuery());
+                // Initialize the filterEnabledStatusSpinner
+                String[] filterEnabledStatusSpinnerChoices = new String[]{getString(R.string.enabled_and_disabled), getString(R.string.enabled_only), getString(R.string.disabled_only)};
+                mBinding.filterEnabledStatusSpinner.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, filterEnabledStatusSpinnerChoices));
+                mBinding.filterEnabledStatusSpinner.setOnItemClickListener((parent, view, position, id) -> {
+                    flagsFilterEnabled = position == 0 || position == 1;
+                    flagsFilterDisabled = position == 2;
+                    applyFlagsFilters();
                 });
 
+                // Initialize the filterChangedStatusSpinner
+                String[] filterChangedStatusSpinnerChoices = new String[]{getString(R.string.changed_and_unchanged), getString(R.string.changed_only), getString(R.string.unchanged_only)};
+                mBinding.filterChangedStatusSpinner.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, filterChangedStatusSpinnerChoices));
+                mBinding.filterChangedStatusSpinner.setOnItemClickListener((parent, view, position, id) -> {
+                    flagsFilterChanged = position == 0 || position == 1;
+                    flagsFilterUnchanged = position == 2;
+                    applyFlagsFilters();
+                });
+
+                // Set flags filters to default values
+                resetFlagsFilters();
+
+                // Handle menuSearchIcon expand / collapse actions
                 menuSearchIcon.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
                     @Override
                     public boolean onMenuItemActionExpand(MenuItem item) {
@@ -176,10 +197,14 @@ public class BooleanModsFragment extends Fragment {
 
                     @Override
                     public boolean onMenuItemActionCollapse(MenuItem item) {
-                        filtersStatusRadioGroup.check(mBinding.filtersStatusRadioButtonAll.getId());
+                        // When the search view is collapsed, flag filters need to be reset and applied
+                        resetFlagsFilters();
+                        applyFlagsFilters();
                         return true;
                     }
                 });
+
+                // Handle filterableSearchView search query changes
                 filterableSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
@@ -188,7 +213,8 @@ public class BooleanModsFragment extends Fragment {
 
                     @Override
                     public boolean onQueryTextChange(String newText) {
-                        applyFlagsFilter(newText);
+                        flagsFilterKey = newText;
+                        applyFlagsFilters();
                         return false;
                     }
                 });
@@ -201,19 +227,25 @@ public class BooleanModsFragment extends Fragment {
         }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
     }
 
-    private void applyFlagsFilter(CharSequence query) {
+    private void resetFlagsFilters() {
+        flagsFilterKey = "";
+        flagsFilterEnabled = true;
+        flagsFilterDisabled = true;
+        flagsFilterChanged = true;
+        flagsFilterUnchanged = true;
+        mBinding.filterEnabledStatusSpinner.setText(mBinding.filterEnabledStatusSpinner.getAdapter().getItem(0).toString(), false);
+        mBinding.filterChangedStatusSpinner.setText(mBinding.filterChangedStatusSpinner.getAdapter().getItem(0).toString(), false);
+    }
+
+    private void applyFlagsFilters() {
         try {
             JSONObject filterConfig = new JSONObject();
 
-            filterConfig.put("key", query);
-
-            int radioGroupSearchCheckedButtonId = mBinding.filtersStatusRadioGroup.getCheckedRadioButtonId();
-            if (radioGroupSearchCheckedButtonId == mBinding.filtersStatusRadioButtonEnabled.getId())
-                filterConfig.put("mode", "enabled_only");
-            else if (radioGroupSearchCheckedButtonId == mBinding.filtersStatusRadioButtonDisabled.getId())
-                filterConfig.put("mode", "disabled_only");
-            else
-                filterConfig.put("mode", "all");
+            filterConfig.put("key", flagsFilterKey);
+            filterConfig.put("enabled", flagsFilterEnabled);
+            filterConfig.put("disabled", flagsFilterDisabled);
+            filterConfig.put("changed", flagsFilterChanged);
+            filterConfig.put("unchanged", flagsFilterUnchanged);
 
             mFlagsRecyclerViewAdapter.getFilter().filter(filterConfig.toString());
         } catch (JSONException e) {
