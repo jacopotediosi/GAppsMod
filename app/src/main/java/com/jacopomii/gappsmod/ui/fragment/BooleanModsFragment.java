@@ -172,7 +172,7 @@ public class BooleanModsFragment extends Fragment {
                 mBinding.filterEnabledStatusSpinner.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, filterEnabledStatusSpinnerChoices));
                 mBinding.filterEnabledStatusSpinner.setOnItemClickListener((parent, view, position, id) -> {
                     flagsFilterEnabled = position == 0 || position == 1;
-                    flagsFilterDisabled = position == 2;
+                    flagsFilterDisabled = position == 0 || position == 2;
                     applyFlagsFilters();
                 });
 
@@ -181,7 +181,7 @@ public class BooleanModsFragment extends Fragment {
                 mBinding.filterChangedStatusSpinner.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, filterChangedStatusSpinnerChoices));
                 mBinding.filterChangedStatusSpinner.setOnItemClickListener((parent, view, position, id) -> {
                     flagsFilterChanged = position == 0 || position == 1;
-                    flagsFilterUnchanged = position == 2;
+                    flagsFilterUnchanged = position == 0 || position == 2;
                     applyFlagsFilters();
                 });
 
