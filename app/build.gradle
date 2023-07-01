@@ -95,7 +95,7 @@ dependencies {
     implementation "com.android.volley:volley:1.2.1"
 
     // Protobuf
-    implementation "com.google.protobuf:protobuf-javalite:3.23.1"
+    implementation "com.google.protobuf:protobuf-javalite:3.23.3"
 
     // Apache Commons
     //noinspection GradleDependency
