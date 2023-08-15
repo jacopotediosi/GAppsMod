@@ -1,0 +1,90 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- GApp names, taken from https://play.google.com/store/apps/details?id=PACKAGE_NAME&hl=zh-cn -->
+    <string name="dialer_app_name">电话</string>
+    <string name="messages_app_name">信息</string>
+    <string name="photos_app_name" tools:keep="@string/photos_app_name">Google 相册</string>
+
+    <!-- Common -->
+    <string name="continue_anyway">继续</string>
+    <string name="done">完成</string>
+    <string name="exit">退出</string>
+    <string name="install">安装</string>
+    <string name="no">否</string>
+    <string name="or">或者</string>
+    <string name="yes">是</string>
+    <string name="package_spinner_label" translatable="false">应用包名：</string>
+    <string name="remember">记住</string>
+    <string name="select_package">选择应用包</string>
+    <string name="unknown">未知</string>
+
+    <!-- Search and search filters -->
+    <string name="additional_filters">筛选</string>
+    <string name="changed_and_unchanged">全部</string>
+    <string name="changed_only">已更改</string>
+    <string name="changed_status_filter">更改状态</string>
+    <string name="disabled_only">已禁用</string>
+    <string name="enabled_and_disabled">全部</string>
+    <string name="enabled_only">已启用</string>
+    <string name="enabled_status_filter">启用状态</string>
+    <string name="expand_additional_filters">展开筛选</string>
+    <string name="search">搜索</string>
+    <string name="search_by_flag">通过布尔值搜索</string>
+    <string name="search_by_package_or_app">通过应用包名或应用搜索</string>
+    <string name="unchanged_only">未更改</string>
+
+    <!-- Fragment titles -->
+    <string name="boolean_mods">布尔值修改</string>
+    <string name="information">信息</string>
+    <string name="revert_mods">重置</string>
+    <string name="suggested_mods">推荐修改项</string>
+
+    <!-- Splash screen -->
+    <string name="splash_screen_phenotype_gms">检查 Phenotype 数据库…</string>
+    <string name="splash_screen_root">检查 root 权限…</string>
+    <string name="splash_screen_root_service">连接到 root 服务…</string>
+    <string name="splash_screen_updates">检查更新…</string>
+
+    <!-- Suggested mods -->
+    <!-- Dialer -->
+    <string name="choose_a_language_for_call_screen">选择通话屏幕语言</string>
+    <string name="force_enable_call_recording">强制启用通话录音</string>
+    <string name="force_enable_call_screen">强制启用通话屏幕</string>
+    <string name="silence_call_recording_alerts">禁用通话录音提醒 (仅限94.x及以下版本的${dialer_app_name})</string>
+    <!-- Messages -->
+    <string name="force_enable_debug_menu">强制启用调试菜单</string>
+    <string name="force_enable_images_via_gphotos">强制启用通过 ${photos_app_name} 的链接发送图片</string>
+    <string name="force_enable_magic_compose">强制启用 Bard AI 的草稿建议</string>
+    <string name="force_enable_marking_conversations_as_unread">强制启用将对话标记为未读</string>
+    <string name="force_enable_message_organization">强制启用消息组织 (超级排序)</string>
+    <string name="force_enable_nudges_and_birthdays">强制启用提示和生日提醒</string>
+    <string name="force_enable_smart_actions_in_notifications">强制启用通知中的智能操作 (智能回复)</string>
+    <string name="force_enable_smart_compose_settings_menu">强制启用智能撰写设置菜单</string>
+    <string name="force_enable_spotlights">强制启用焦点建议设置菜单</string>
+    <string name="force_enable_suggested_stickers_settings_menu">强制启用建议的贴纸设置菜单</string>
+    <string name="force_enable_verified_sms">强制启用已验证短信设置菜单</string>
+
+    <!-- Revert mods -->
+    <string name="revert_mods_for_all_packages">重置所有应用包的修改</string>
+    <string name="revert_mods_for_all_packages_confirm">您真的要重置所有修改吗？</string>
+    <string name="revert_mods_for_all_packages_explanation">按下面的按钮还原应重置所有应用包的修改。</string>
+    <string name="revert_mods_for_the_selected_package">重置所选应用包的修改</string>
+    <string name="revert_mods_for_the_selected_package_confirm">您真的要重置应用包 %1$s 的修改吗？</string>
+    <string name="revert_mods_for_the_selected_package_explanation">选择一个应用包，然后按下面的按钮重置该应用包的修改。</string>
+
+    <!-- Information -->
+    <string name="credits">鸣谢</string>
+    <string name="how_it_works">工作原理</string>
+    <string name="how_it_works_explanation">通过 ${app_name} 应用的修补程序在 Google Apps 更新后仍然保留，即使在卸载和重新安装后也能保持生效。\n因此，这些修改被视为永久性修改，但您可以从侧边栏菜单的 "${revert_mods}" 部分轻松还原它们。\n应用所需的修改生效后，可能需要多次强制关闭并重新打开您尝试修改的 Google 应用，才能使修改生效。</string>
+    <string name="if_bug_found_open_github_issue">如果您认为发现了任何错误，请在 Github 上提交 issues（仅限英语）：</string>
+    <string name="made_with_love_by">由 <a href="https://github.com/jacopotediosi">Jacopo Tediosi</a>（以及其他出色的贡献者）用 ❤ 制作</string>
+    <string name="what_is_app_name">什么是 ${app_name}</string>
+    <string name="what_is_it_explanation">${app_name} 是一个应用，允许使用 root 权限修改 Google Play 服务的 "Phenotype" 数据库中的值，从而改变谷歌应用（如 ${dialer_app_name} 和 ${messages_app_name}）的行为，以解锁实验功能或仅在特定国家或设备上可用的功能。</string>
+
+    <!-- Warning and error messages -->
+    <string name="an_error_has_occurred">发生错误</string>
+    <string name="app_not_installed_error">应用未安装</string>
+    <string name="dialer_permission_alert">${dialer_app_name} 未作为系统应用安装，因此没有 CAPTURE_AUDIO_OUTPUT 权限。\n某些功能，如通话录音，可能无法正常工作。</string>
+    <string name="new_version_alert">有新版本的 ${app_name} 可用。\n\n您可以从 Github 的发布页面下载。</string>
+    <string name="phenotype_db_does_not_exist_gms">Phenotype 数据库似乎不存在。\n\n请从 Google Play 安装 Google Play 服务并重试。</string>
+    <string name="root_access_denied">未授予 root 访问权限。请允许 root 访问权限。</string>
+</resources>
