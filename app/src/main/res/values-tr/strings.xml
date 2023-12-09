@@ -84,7 +84,7 @@
     <string name="credits">Krediler</string>
     <string name="how_it_works">Nasıl çalışır</string>
     <string name="how_it_works_explanation">${app_name} tarafından uygulanan yamalar, kaldırılıp yeniden yüklendikten sonra bile zaman içinde Google Apps güncellemelerinden kurtulur.\nModlar bu nedenle kalıcı olarak kabul edilmelidir, ancak kenar çubuğu menüsünün \"${revert_mods}\" bölümünden kolayca geri alınabilir.\nİstenen modları uyguladıktan sonra bu uygulamayı yüklü tutmanıza gerek yoktur.\n\nDeğişiklikleri uyguladıktan sonra, etkili olmaları için değiştirmeye çalıştığınız Google uygulamasını birkaç kez kapatmaya ve yeniden açmaya zorlamanız gerekebilir.</string>
-    <string name="if_bug_found_open_github_issue">Herhangi bir hata bulduğunuzu düşünüyorsanız lütfen Github'da bir sorun açın:</string>
+    <string name="if_bug_found_open_github_issue">Herhangi bir hata bulduğunuzu düşünüyorsanız lütfen Github'da bir sorun açın</string>
     <string name="made_with_love_by"><a href="https://github.com/jacopotediosi">Jacopo Tediosi</a> tarafından ❤ ile yapılmıştır, <a href="https://github.com/CanerKaraca23">Caner Karaca</a> tarafından ❤ ile Türkçe'ye çevrilmiştir (ve diğer harika katkıda bulunanlar)</string>
     <string name="what_is_app_name">${app_name} nedir</string>
     <string name="what_is_it_explanation">${app_name}, kök ayrıcalıklarını kullanarak Google Play Hizmetleri'nin "Phenotype" veritabanında bulunan değerleri değiştirmeye ve böylece Google Uygulamalarının (${dialer_app_name} ve ${messages_app_name} gibi) davranışını değiştirerek deneysel özelliklerin veya yalnızca belirli ülkelerde veya cihazlarda kullanılabilen özelliklerin kilidini açmaya izin veren bir uygulamadır.</string>
