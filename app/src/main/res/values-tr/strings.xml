@@ -84,16 +84,16 @@
     <string name="credits">Krediler</string>
     <string name="how_it_works">Nasıl çalışır</string>
     <string name="how_it_works_explanation">${app_name} tarafından uygulanan yamalar, kaldırılıp yeniden yüklendikten sonra bile zaman içinde Google Apps güncellemelerinden kurtulur.\nModlar bu nedenle kalıcı olarak kabul edilmelidir, ancak kenar çubuğu menüsünün \"${revert_mods}\" bölümünden kolayca geri alınabilir.\nİstenen modları uyguladıktan sonra bu uygulamayı yüklü tutmanıza gerek yoktur.\n\nDeğişiklikleri uyguladıktan sonra, etkili olmaları için değiştirmeye çalıştığınız Google uygulamasını birkaç kez kapatmaya ve yeniden açmaya zorlamanız gerekebilir.</string>
-    <string name="if_bug_found_open_github_issue">Herhangi bir hata bulduğunuzu düşünüyorsanız lütfen Github'da bir sorun açın</string>
-    <string name="made_with_love_by"><a href="https://github.com/jacopotediosi">Jacopo Tediosi</a> tarafından ❤ ile yapılmıştır, <a href="https://github.com/CanerKaraca23">Caner Karaca</a> tarafından ❤ ile Türkçe'ye çevrilmiştir (ve diğer harika katkıda bulunanlar)</string>
+    <string name="if_bug_found_open_github_issue">Herhangi bir hata bulduğunuzu düşünüyorsanız lütfen Githubda bir sorun açın:</string>
+    <string name="made_with_love_by"><a href="https://github.com/jacopotediosi">Jacopo Tediosi</a> tarafından ❤ ile yapılmıştır, <a href="https://github.com/CanerKaraca23">Caner Karaca</a> tarafından 🖤 ile Türkçeye çevrilmiştir (ve diğer harika katkıda bulunanlar)</string>
     <string name="what_is_app_name">${app_name} nedir</string>
-    <string name="what_is_it_explanation">${app_name}, kök ayrıcalıklarını kullanarak Google Play Hizmetleri'nin "Phenotype" veritabanında bulunan değerleri değiştirmeye ve böylece Google Uygulamalarının (${dialer_app_name} ve ${messages_app_name} gibi) davranışını değiştirerek deneysel özelliklerin veya yalnızca belirli ülkelerde veya cihazlarda kullanılabilen özelliklerin kilidini açmaya izin veren bir uygulamadır.</string>
+    <string name="what_is_it_explanation">${app_name}, kök ayrıcalıklarını kullanarak Google Play Hizmetlerinin "Phenotype" veritabanında bulunan değerleri değiştirmeye ve böylece Google Uygulamalarının (${dialer_app_name} ve ${messages_app_name} gibi) davranışını değiştirerek deneysel özelliklerin veya yalnızca belirli ülkelerde veya cihazlarda kullanılabilen özelliklerin kilidini açmaya izin veren bir uygulamadır.</string>
 
     <!-- Warning and error messages -->
     <string name="an_error_has_occurred">Bir hata oluştu</string>
     <string name="app_not_installed_error">Uygulama yüklü değil gibi görünüyor.</string>
     <string name="dialer_permission_alert">${dialer_app_name} bir sistem uygulaması olarak yüklü değildir ve bu nedenle CAPTURE_AUDIO_OUTPUT iznine sahip değildir.\nArama kaydı gibi bazı özellikler çalışmayabilir.</string>
     <string name="new_version_alert">Yeni bir ${app_name} sürümü mevcuttur.\n\nGithub Sürümler sayfasından indirebilirsiniz.</string>
-    <string name="phenotype_db_does_not_exist_gms">Phenotype DB mevcut görünmüyor.\n\nGoogle Play Services'i Google Play'den yükleyin ve tekrar deneyin.</string>
+    <string name="phenotype_db_does_not_exist_gms">Phenotype DB mevcut görünmüyor.\n\nGoogle Play Servicesi Google Playden yükleyin ve tekrar deneyin.</string>
     <string name="root_access_denied">Kök erişimi reddedildi. Lütfen kök erişimine izin verin.</string>
 </resources>
