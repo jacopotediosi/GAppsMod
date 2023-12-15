@@ -103,7 +103,7 @@ dependencies {
     implementation "org.apache.commons:commons-lang3:3.14.0"
 
     // Navigation drawer
-    def navigationVersion = "2.7.5"
+    def navigationVersion = "2.7.6"
     implementation "androidx.navigation:navigation-fragment:${navigationVersion}"
     implementation "androidx.navigation:navigation-ui:${navigationVersion}"
 
@@ -111,7 +111,7 @@ dependencies {
     implementation "io.github.l4digital:fastscroll:2.1.0"
 
     // Other UI Components
-    implementation "com.google.android.material:material:1.10.0"
+    implementation "com.google.android.material:material:1.11.0"
     implementation "androidx.appcompat:appcompat:1.6.1"
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
 }
