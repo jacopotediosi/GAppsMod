@@ -80,7 +80,7 @@ android {
 
 dependencies {
     // Libsu
-    def libsuVersion = "5.2.1"
+    def libsuVersion = "5.2.2"
     implementation "com.github.topjohnwu.libsu:core:${libsuVersion}"
     implementation "com.github.topjohnwu.libsu:service:${libsuVersion}"
     implementation "com.github.topjohnwu.libsu:nio:${libsuVersion}"
