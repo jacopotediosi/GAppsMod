@@ -1,4 +1,4 @@
-name: Assemble on push
+name: Build CI
 
 on:
   push:
@@ -10,28 +10,19 @@ on:
 
 jobs:
   build:
-    name: Build on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ ubuntu-latest ]
-
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          submodules: 'recursive'
           fetch-depth: 0
-
-      - name: Gradle wrapper validation
-        uses: gradle/wrapper-validation-action@v1
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          cache: gradle
+          distribution: temurin
+          java-version: 17
 
       - name: Write keystore parameters
         run: |
@@ -42,28 +33,24 @@ jobs:
           echo "${{ secrets.KEYSTORE_KEY }}" | base64 --decode > keystore.jks
 
       - name: Gradle Dependency Submission
-        uses: mikepenz/gradle-dependency-submission@v0.9.2
+        uses: mikepenz/gradle-dependency-submission@main
         with:
           gradle-build-module: ":app"
 
       - name: Assemble
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: assemble
+        run: ./gradlew assemble
 
       - name: Get short commit hash
         run: |
           echo "LATEST_COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Upload debug
-        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: ${{ github.event.repository.name }}-${{ env.LATEST_COMMIT_HASH }}-debug.apk
           path: "app/build/outputs/apk/debug/app-debug.apk"
 
       - name: Upload release
-        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: ${{ github.event.repository.name }}-${{ env.LATEST_COMMIT_HASH }}-release.apk
