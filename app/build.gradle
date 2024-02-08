@@ -103,7 +103,7 @@ dependencies {
     implementation "org.apache.commons:commons-lang3:3.14.0"
 
     // Navigation drawer
-    def navigationVersion = "2.7.6"
+    def navigationVersion = "2.7.7"
     implementation "androidx.navigation:navigation-fragment:${navigationVersion}"
     implementation "androidx.navigation:navigation-ui:${navigationVersion}"
 
