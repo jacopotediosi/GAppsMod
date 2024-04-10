@@ -28,19 +28,19 @@ if (keystoreFilepath) {
 
 android {
     namespace "com.jacopomii.gappsmod"
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.jacopomii.gappsmod"
         minSdk 21
-        targetSdk 33
+        targetSdk 34
         versionCode 400
         versionName "4.00"
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     signingConfigs {
@@ -80,7 +80,7 @@ android {
 
 dependencies {
     // Libsu
-    def libsuVersion = "5.0.5"
+    def libsuVersion = "5.2.2"
     implementation "com.github.topjohnwu.libsu:core:${libsuVersion}"
     implementation "com.github.topjohnwu.libsu:service:${libsuVersion}"
     implementation "com.github.topjohnwu.libsu:nio:${libsuVersion}"
@@ -95,15 +95,15 @@ dependencies {
     implementation "com.android.volley:volley:1.2.1"
 
     // Protobuf
-    implementation "com.google.protobuf:protobuf-javalite:3.23.1"
+    implementation "com.google.protobuf:protobuf-javalite:4.26.1"
 
     // Apache Commons
     //noinspection GradleDependency
-    implementation "commons-io:commons-io:2.12.0"
-    implementation "org.apache.commons:commons-lang3:3.12.0"
+    implementation "commons-io:commons-io:2.16.1"
+    implementation "org.apache.commons:commons-lang3:3.14.0"
 
     // Navigation drawer
-    def navigationVersion = "2.5.3"
+    def navigationVersion = "2.7.7"
     implementation "androidx.navigation:navigation-fragment:${navigationVersion}"
     implementation "androidx.navigation:navigation-ui:${navigationVersion}"
 
@@ -111,14 +111,14 @@ dependencies {
     implementation "io.github.l4digital:fastscroll:2.1.0"
 
     // Other UI Components
-    implementation "com.google.android.material:material:1.9.0"
+    implementation "com.google.android.material:material:1.11.0"
     implementation "androidx.appcompat:appcompat:1.6.1"
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
 }
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:3.23.1"
+        artifact = "com.google.protobuf:protoc:4.26.1"
     }
     generateProtoTasks {
         all().each { task ->

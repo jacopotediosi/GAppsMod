@@ -1,0 +1,99 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- App name -->
+    <string name="app_name" translatable="false">GAppsMod</string>
+
+    <!-- Github and links -->
+    <string name="github" translatable="false">GitHub</string>
+    <string name="github_api_link" translatable="false">https://api.github.com/repos/jacopotediosi/GAppsMod</string>
+    <string name="github_link" translatable="false">https://github.com/jacopotediosi/GAppsMod</string>
+
+    <!-- GApp names, taken from https://play.google.com/store/apps/details?id=PACKAGE_NAME&hl=tr -->
+    <string name="dialer_app_name">Google Telefon</string>
+    <string name="messages_app_name">Google Mesajlar</string>
+    <string name="photos_app_name" tools:keep="@string/photos_app_name">Google Fotoğraflar</string>
+
+    <!-- Common -->
+    <string name="beta" translatable="false">Beta</string>
+    <string name="continue_anyway">Yine de devam et</string>
+    <string name="done">Bitti</string>
+    <string name="exit">Çıkış</string>
+    <string name="install">Yükle</string>
+    <string name="no">Hayır</string>
+    <string name="or">Ya da</string>
+    <string name="yes">Evet</string>
+    <string name="package_spinner_label" translatable="false">Paket:</string>
+    <string name="remember">Hatırla</string>
+    <string name="select_package">Paket seçin</string>
+    <string name="unknown">Bilinmeyen</string>
+
+    <!-- Search and search filters -->
+    <string name="additional_filters">Ek filtreler:</string>
+    <string name="changed_and_unchanged">Değişen ve değişmeyen</string>
+    <string name="changed_only">Sadece değişen</string>
+    <string name="changed_status_filter">Değişen durum filtresi</string>
+    <string name="disabled_only">Sadece devre dışı</string>
+    <string name="enabled_and_disabled">Etkin ve devre dışı</string>
+    <string name="enabled_only">Sadece etkin</string>
+    <string name="enabled_status_filter">Etkin durum filtresi</string>
+    <string name="expand_additional_filters">Ek filtreleri genişlet</string>
+    <string name="search">Ara</string>
+    <string name="search_by_flag">Bayrağa göre ara</string>
+    <string name="search_by_package_or_app">Paket veya uygulamaya göre ara</string>
+    <string name="unchanged_only">Sadece değişmeyen</string>
+
+    <!-- Fragment titles -->
+    <string name="boolean_mods">Boolean modları</string>
+    <string name="information">Bilgi</string>
+    <string name="revert_mods">Modları geri al</string>
+    <string name="suggested_mods">Önerilen modlar</string>
+
+    <!-- Splash screen -->
+    <string name="splash_screen_phenotype_gms">Fenotip Veritabanın Kontrol Ediliyor…</string>
+    <string name="splash_screen_root">Kök izinleri kontrol ediliyor…</string>
+    <string name="splash_screen_root_service">Kök servise bağlanılıyor…</string>
+    <string name="splash_screen_updates">Güncellemeler kontrol ediliyor…</string>
+
+    <!-- Suggested mods -->
+    <!-- Dialer -->
+    <string name="choose_a_language_for_call_screen">Çağrı ekranı için bir dil seçin</string>
+    <string name="force_enable_call_recording">Çağrı kaydını etkinleştirmeye zorla</string>
+    <string name="force_enable_call_screen">Çağrı ekranını etkinleştirmeye zorla</string>
+    <string name="silence_call_recording_alerts">Çağrı kayıt uyarılarını susturma (${dialer_app_name} &lt;= sadece 94.x)</string>
+    <!-- Messages -->
+    <string name="force_enable_debug_menu">Hata ayıklama menüsünü etkinleştirmeye zorla</string>
+    <string name="force_enable_images_via_gphotos">Görüntüleri ${photos_app_name} üzerinden göndermeyi etkinleştirmeye zorla</string>
+    <string name="force_enable_magic_compose">Sihirli kompozisyonu etkinleştirmeye zorla (Bard AI ile taslak öneriler)</string>
+    <string name="force_enable_marking_conversations_as_unread">Konuşmaları okunmamış olarak işaretlemeyi etkinleştirmeye zorla</string>
+    <string name="force_enable_message_organization">Mesaj organizasyonunu etkinleştirmeye zorla (süper sıralama)</string>
+    <string name="force_enable_nudges_and_birthdays">Dürtmeleri ve doğum günü hatırlatıcılarını etkinleştirmeye zorla</string>
+    <string name="force_enable_smart_actions_in_notifications">Bildirimlerde akıllı eylemleri (akıllı yanıt) etkinleştirmeye zorla</string>
+    <string name="force_enable_smart_compose_settings_menu">Akıllı oluşturma ayarları menüsünü etkinleştirmeye zorla</string>
+    <string name="force_enable_spotlights">Spot ışıkları öneriler ayarlar menüsünü etkinleştirmeye zorla</string>
+    <string name="force_enable_suggested_stickers_settings_menu">Önerilen çıkartmalar ayarlar menüsünü etkinleştirmeye zorla</string>
+    <string name="force_enable_verified_sms">Doğrulanmış SMS ayarları menüsünü etkinleştirmeye zorla</string>
+
+    <!-- Revert mods -->
+    <string name="revert_mods_for_all_packages">Tüm paketler için modları geri al</string>
+    <string name="revert_mods_for_all_packages_confirm">Gerçekten tüm modları geri almak istiyor musunuz?</string>
+    <string name="revert_mods_for_all_packages_explanation">Tüm paketlere uygulanan tüm modları geri almak için aşağıdaki düğmeye basın.</string>
+    <string name="revert_mods_for_the_selected_package">Seçilen paket için modları geri al</string>
+    <string name="revert_mods_for_the_selected_package_confirm">Gerçekten %1$s paketi için modları geri almak istiyor musunuz?</string>
+    <string name="revert_mods_for_the_selected_package_explanation">Bir paket seçin ve pakete uygulanan değişiklikleri geri almak için aşağıdaki düğmeye basın.</string>
+
+    <!-- Information -->
+    <string name="credits">Krediler</string>
+    <string name="how_it_works">Nasıl çalışır</string>
+    <string name="how_it_works_explanation">${app_name} tarafından uygulanan yamalar, kaldırılıp yeniden yüklendikten sonra bile zaman içinde Google Apps güncellemelerinden kurtulur.\nModlar bu nedenle kalıcı olarak kabul edilmelidir, ancak kenar çubuğu menüsünün \"${revert_mods}\" bölümünden kolayca geri alınabilir.\nİstenen modları uyguladıktan sonra bu uygulamayı yüklü tutmanıza gerek yoktur.\n\nDeğişiklikleri uyguladıktan sonra, etkili olmaları için değiştirmeye çalıştığınız Google uygulamasını birkaç kez kapatmaya ve yeniden açmaya zorlamanız gerekebilir.</string>
+    <string name="if_bug_found_open_github_issue">Herhangi bir hata bulduğunuzu düşünüyorsanız lütfen Githubda bir sorun açın:</string>
+    <string name="made_with_love_by"><a href="https://github.com/jacopotediosi">Jacopo Tediosi</a> tarafından ❤ ile yapılmıştır, <a href="https://github.com/CanerKaraca23">Caner Karaca</a> tarafından 🖤 ile Türkçeye çevrilmiştir (ve diğer harika katkıda bulunanlar)</string>
+    <string name="what_is_app_name">${app_name} nedir</string>
+    <string name="what_is_it_explanation">${app_name}, kök ayrıcalıklarını kullanarak Google Play Hizmetlerinin "Phenotype" veritabanında bulunan değerleri değiştirmeye ve böylece Google Uygulamalarının (${dialer_app_name} ve ${messages_app_name} gibi) davranışını değiştirerek deneysel özelliklerin veya yalnızca belirli ülkelerde veya cihazlarda kullanılabilen özelliklerin kilidini açmaya izin veren bir uygulamadır.</string>
+
+    <!-- Warning and error messages -->
+    <string name="an_error_has_occurred">Bir hata oluştu</string>
+    <string name="app_not_installed_error">Uygulama yüklü değil gibi görünüyor.</string>
+    <string name="dialer_permission_alert">${dialer_app_name} bir sistem uygulaması olarak yüklü değildir ve bu nedenle CAPTURE_AUDIO_OUTPUT iznine sahip değildir.\nArama kaydı gibi bazı özellikler çalışmayabilir.</string>
+    <string name="new_version_alert">Yeni bir ${app_name} sürümü mevcuttur.\n\nGithub Sürümler sayfasından indirebilirsiniz.</string>
+    <string name="phenotype_db_does_not_exist_gms">Phenotype DB mevcut görünmüyor.\n\nGoogle Play Servicesi Google Playden yükleyin ve tekrar deneyin.</string>
+    <string name="root_access_denied">Kök erişimi reddedildi. Lütfen kök erişimine izin verin.</string>
+</resources>
