@@ -1,3 +1,14 @@
+# Deprecation notice
+## !!! This project is no longer maintained !!!
+
+I had started researching how Phenotype DB works as a hobby, and this application was only meant to be a proof of concept.
+
+Making things work required a huge amount of reverse engineering of Google applications, and today I no longer have time to dedicate to it.
+
+I've also been told that the structure of Phenotype DB has been recently changed, so I expect this project to no longer work, or to stop working soon.
+
+If you are looking for a replacement, I suggest you take a look at [GMS-Flags](https://github.com/polodarb/GMS-Flags), a still maintained application created by other users who were part of the community of this project itself.
+
 # GAppsMod (ex GoogleDialerMod)
 The ultimate All-In-One Utility to tweak Google applications.
 
