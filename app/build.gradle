@@ -99,7 +99,7 @@ dependencies {
 
     // Apache Commons
     //noinspection GradleDependency
-    implementation "commons-io:commons-io:2.12.0"
+    implementation "commons-io:commons-io:2.18.0"
     implementation "org.apache.commons:commons-lang3:3.12.0"
 
     // Navigation drawer
